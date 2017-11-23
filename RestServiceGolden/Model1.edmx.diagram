@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e6589935a50747f0aeae9cb084583c77" Name="Diagram1">
+        <EntityTypeShape EntityType="goldenModel.arbitros" Width="1.5" PointX="9" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.canchas" Width="1.5" PointX="3" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.categorias_torneos" Width="1.5" PointX="1.5" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.clubes" Width="1.5" PointX="0.75" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.contactos" Width="1.5" PointX="4.5" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.domicilios" Width="1.5" PointX="0.75" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.equipos" Width="1.5" PointX="6" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.estado_fecha" Width="1.5" PointX="6.75" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.estados_civil" Width="1.5" PointX="4.5" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.estados_partidos" Width="1.5" PointX="9" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.fechas" Width="1.5" PointX="9" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.fotos" Width="1.5" PointX="8.25" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.goles" Width="1.5" PointX="13.5" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.jugadores" Width="1.5" PointX="11.25" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.localidades" Width="1.5" PointX="1.5" PointY="26.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.nacionalidades" Width="1.5" PointX="4.5" PointY="19.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.noticias" Width="1.5" PointX="6.75" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.partidos" Width="1.5" PointX="11.25" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.perfiles" Width="1.5" PointX="11.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.personas" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.posiciones" Width="1.5" PointX="8.25" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.provincias" Width="1.5" PointX="1.5" PointY="30.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.reglas_torneo" Width="1.5" PointX="3" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.resultados" Width="1.5" PointX="8.25" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.sponsors" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.tipos_cancha" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.tipos_documento" Width="1.5" PointX="4.5" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.tipos_torneos" Width="1.5" PointX="1.5" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.torneos" Width="1.5" PointX="0.75" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.usuarios" Width="1.5" PointX="14" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.veedores" Width="1.5" PointX="9" PointY="6" IsExpanded="true" />
+        <AssociationConnector Association="goldenModel.fk_arbitro_partido" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_arbitro_persona" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_cancha_domicilio" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_club_cancha" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_tipo_cancha" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_categoria_torneo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_equipo_club" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_foto_club" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_sponsor_club" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_persona_contacto" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_domicilio_localidad" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_persona_domicilio" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_equipo_torneo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_foto_equipo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_ganador_equipo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_jugador_equipo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_local_partido" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_perdedor_equipo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_posicion_equipo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_visitante_partido" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_estado_fecha" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_persona_estado_civil" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_estado_partido" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_fecha_partido" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_foto_fecha" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_foto_torneo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_jugador_gol" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_partido_gol" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_jugador_persona" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_localidad_provincia" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_persona_nacionalidad" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_usuario_perfil" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_persona_tipo_doc" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_veedor_persona" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_regla_torneo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_sponsor_torneo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_tipo_torneo" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
