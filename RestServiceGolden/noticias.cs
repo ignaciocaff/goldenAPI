@@ -18,5 +18,12 @@ namespace RestServiceGolden
         public string titulo { get; set; }
         public string descripcion { get; set; }
         public Nullable<System.DateTime> fecha { get; set; }
+        public Nullable<int> id_torneo { get; set; }
+        public Nullable<int> id_club { get; set; }
+        public Nullable<int> id_fecha { get; set; }
+    
+        public virtual clubes clubes { get; set; }
+        public virtual fechas fechas { get; set; }
+        public virtual torneos torneos { get; set; }
     }
 }

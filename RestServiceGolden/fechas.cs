@@ -19,6 +19,7 @@ namespace RestServiceGolden
         {
             this.partidos = new HashSet<partidos>();
             this.fotos = new HashSet<fotos>();
+            this.noticias = new HashSet<noticias>();
         }
     
         public int id_fecha { get; set; }
@@ -30,5 +31,7 @@ namespace RestServiceGolden
         public virtual ICollection<partidos> partidos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<fotos> fotos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<noticias> noticias { get; set; }
     }
 }

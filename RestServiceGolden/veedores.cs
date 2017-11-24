@@ -14,10 +14,18 @@ namespace RestServiceGolden
     
     public partial class veedores
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public veedores()
+        {
+            this.partidos = new HashSet<partidos>();
+        }
+    
         public int id_veedor { get; set; }
         public Nullable<System.DateTime> fecha_alta { get; set; }
         public Nullable<int> id_persona { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<partidos> partidos { get; set; }
         public virtual personas personas { get; set; }
     }
 }

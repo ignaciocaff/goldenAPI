@@ -29,13 +29,17 @@ namespace RestServiceGolden
         public Nullable<int> visitante { get; set; }
         public Nullable<int> id_arbitro { get; set; }
         public Nullable<int> id_estado { get; set; }
+        public Nullable<int> id_cancha { get; set; }
+        public Nullable<int> id_veedor { get; set; }
     
         public virtual arbitros arbitros { get; set; }
+        public virtual canchas canchas { get; set; }
         public virtual equipos equipos { get; set; }
         public virtual equipos equipos1 { get; set; }
         public virtual estados_partidos estados_partidos { get; set; }
         public virtual fechas fechas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<goles> goles { get; set; }
+        public virtual veedores veedores { get; set; }
     }
 }

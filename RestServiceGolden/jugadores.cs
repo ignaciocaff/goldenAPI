@@ -17,7 +17,10 @@ namespace RestServiceGolden
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public jugadores()
         {
+            this.goleadores = new HashSet<goleadores>();
             this.goles = new HashSet<goles>();
+            this.sanciones = new HashSet<sanciones>();
+            this.sanciones_torneo = new HashSet<sanciones_torneo>();
         }
     
         public int id_jugador { get; set; }
@@ -28,7 +31,13 @@ namespace RestServiceGolden
     
         public virtual equipos equipos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<goleadores> goleadores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<goles> goles { get; set; }
         public virtual personas personas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sanciones> sanciones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sanciones_torneo> sanciones_torneo { get; set; }
     }
 }

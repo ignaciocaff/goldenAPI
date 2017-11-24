@@ -12,18 +12,19 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class reglas_torneo
+    public partial class permisos
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public reglas_torneo()
+        public permisos()
         {
-            this.torneos = new HashSet<torneos>();
+            this.perfiles = new HashSet<perfiles>();
         }
     
-        public int id_regla { get; set; }
+        public int id_permiso { get; set; }
         public string descripcion { get; set; }
+        public Nullable<System.DateTime> fechaExpiracion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<torneos> torneos { get; set; }
+        public virtual ICollection<perfiles> perfiles { get; set; }
     }
 }

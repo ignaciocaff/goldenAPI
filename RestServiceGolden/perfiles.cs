@@ -22,7 +22,9 @@ namespace RestServiceGolden
     
         public int id_perfil { get; set; }
         public string n_perfil { get; set; }
+        public Nullable<int> id_permiso { get; set; }
     
+        public virtual permisos permisos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<usuarios> usuarios { get; set; }
     }

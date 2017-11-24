@@ -14,16 +14,10 @@ namespace RestServiceGolden
     
     public partial class tipos_cancha
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tipos_cancha()
-        {
-            this.canchas = new HashSet<canchas>();
-        }
-    
         public int id_tipo { get; set; }
         public string descripcion { get; set; }
+        public Nullable<int> id_cancha { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<canchas> canchas { get; set; }
+        public virtual canchas canchas { get; set; }
     }
 }

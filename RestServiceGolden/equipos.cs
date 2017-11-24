@@ -33,7 +33,9 @@ namespace RestServiceGolden
         public byte[] logo { get; set; }
         public Nullable<int> id_club { get; set; }
         public Nullable<int> id_torneo { get; set; }
+        public Nullable<int> id_categoria { get; set; }
     
+        public virtual categorias categorias { get; set; }
         public virtual clubes clubes { get; set; }
         public virtual torneos torneos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

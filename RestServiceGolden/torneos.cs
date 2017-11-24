@@ -19,7 +19,10 @@ namespace RestServiceGolden
         {
             this.equipos = new HashSet<equipos>();
             this.fotos = new HashSet<fotos>();
-            this.reglas_torneo = new HashSet<reglas_torneo>();
+            this.goleadores = new HashSet<goleadores>();
+            this.horarios_fijos = new HashSet<horarios_fijos>();
+            this.noticias = new HashSet<noticias>();
+            this.sanciones_torneo = new HashSet<sanciones_torneo>();
             this.sponsors = new HashSet<sponsors>();
         }
     
@@ -30,14 +33,22 @@ namespace RestServiceGolden
         public Nullable<System.DateTime> fecha_fin { get; set; }
         public Nullable<int> id_tipo { get; set; }
         public Nullable<int> id_categoria { get; set; }
+        public Nullable<int> id_regla { get; set; }
     
-        public virtual categorias_torneos categorias_torneos { get; set; }
+        public virtual categorias categorias { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<equipos> equipos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<fotos> fotos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<reglas_torneo> reglas_torneo { get; set; }
+        public virtual ICollection<goleadores> goleadores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<horarios_fijos> horarios_fijos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<noticias> noticias { get; set; }
+        public virtual reglas_torneo reglas_torneo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sanciones_torneo> sanciones_torneo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sponsors> sponsors { get; set; }
         public virtual tipos_torneos tipos_torneos { get; set; }
