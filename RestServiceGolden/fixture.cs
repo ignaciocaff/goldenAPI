@@ -12,22 +12,21 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class resultados
+    public partial class fixture
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public resultados()
+        public fixture()
         {
-            this.partidos = new HashSet<partidos>();
+            this.fechas = new HashSet<fechas>();
         }
     
-        public int id_resultado { get; set; }
-        public Nullable<int> id_ganador { get; set; }
-        public Nullable<int> id_perdedor { get; set; }
-        public Nullable<sbyte> empate { get; set; }
+        public int id_fixture { get; set; }
+        public Nullable<int> id_torneo { get; set; }
+        public Nullable<int> id_tipo { get; set; }
     
-        public virtual equipos equipos { get; set; }
-        public virtual equipos equipos1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<partidos> partidos { get; set; }
+        public virtual ICollection<fechas> fechas { get; set; }
+        public virtual tipos_fixture tipos_fixture { get; set; }
+        public virtual torneos torneos { get; set; }
     }
 }

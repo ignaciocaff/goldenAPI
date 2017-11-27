@@ -63,5 +63,12 @@ namespace RestServiceGolden
         public virtual DbSet<torneos> torneos { get; set; }
         public virtual DbSet<usuarios> usuarios { get; set; }
         public virtual DbSet<veedores> veedores { get; set; }
+        public virtual DbSet<equipos_zona> equipos_zona { get; set; }
+        public virtual DbSet<fixture> fixture { get; set; }
+        public virtual DbSet<modalidades> modalidades { get; set; }
+        public virtual DbSet<posiciones_zona> posiciones_zona { get; set; }
+        public virtual DbSet<resultados_zona> resultados_zona { get; set; }
+        public virtual DbSet<tipos_fixture> tipos_fixture { get; set; }
+        public virtual DbSet<zonas> zonas { get; set; }
     }
 }

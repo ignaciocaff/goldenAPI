@@ -25,6 +25,7 @@ namespace RestServiceGolden
         public int id_fecha { get; set; }
         public Nullable<System.DateTime> fecha { get; set; }
         public Nullable<int> id_estado { get; set; }
+        public Nullable<int> id_fixture { get; set; }
     
         public virtual estado_fecha estado_fecha { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -33,5 +34,6 @@ namespace RestServiceGolden
         public virtual ICollection<fotos> fotos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<noticias> noticias { get; set; }
+        public virtual fixture fixture { get; set; }
     }
 }

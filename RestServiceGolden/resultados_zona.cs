@@ -12,10 +12,10 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class resultados
+    public partial class resultados_zona
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public resultados()
+        public resultados_zona()
         {
             this.partidos = new HashSet<partidos>();
         }

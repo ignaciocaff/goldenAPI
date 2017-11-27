@@ -24,6 +24,8 @@ namespace RestServiceGolden
             this.noticias = new HashSet<noticias>();
             this.sanciones_torneo = new HashSet<sanciones_torneo>();
             this.sponsors = new HashSet<sponsors>();
+            this.equipos_zona = new HashSet<equipos_zona>();
+            this.fixture = new HashSet<fixture>();
         }
     
         public int id_torneo { get; set; }
@@ -34,6 +36,7 @@ namespace RestServiceGolden
         public Nullable<int> id_tipo { get; set; }
         public Nullable<int> id_categoria { get; set; }
         public Nullable<int> id_regla { get; set; }
+        public Nullable<int> id_modalidad { get; set; }
     
         public virtual categorias categorias { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -52,5 +55,10 @@ namespace RestServiceGolden
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sponsors> sponsors { get; set; }
         public virtual tipos_torneos tipos_torneos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<equipos_zona> equipos_zona { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<fixture> fixture { get; set; }
+        public virtual modalidades modalidades { get; set; }
     }
 }

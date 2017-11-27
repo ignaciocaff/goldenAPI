@@ -95,6 +95,24 @@
         <AssociationConnector Association="goldenModel.fk_jugador_sanciones_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_sponsor_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_tipo_torneo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="goldenModel.equipos_zona" Width="1.5" PointX="12.875" PointY="26.25" />
+        <EntityTypeShape EntityType="goldenModel.fixture" Width="1.5" PointX="6.375" PointY="40.875" />
+        <EntityTypeShape EntityType="goldenModel.modalidades" Width="1.5" PointX="1.125" PointY="14.625" />
+        <EntityTypeShape EntityType="goldenModel.posiciones_zona" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="goldenModel.resultados_zona" Width="1.5" PointX="7.875" PointY="47.25" />
+        <EntityTypeShape EntityType="goldenModel.tipos_fixture" Width="1.5" PointX="4.125" PointY="41.25" />
+        <EntityTypeShape EntityType="goldenModel.zonas" Width="1.5" PointX="10.625" PointY="30.625" />
+        <AssociationConnector Association="goldenModel.fk_equipo_zona" />
+        <AssociationConnector Association="goldenModel.fk_ganador_equipo_zona" />
+        <AssociationConnector Association="goldenModel.fk_perdedor_equipo_zona" />
+        <AssociationConnector Association="goldenModel.fk_torneo_zona" />
+        <AssociationConnector Association="goldenModel.fk_zona_zonas" />
+        <AssociationConnector Association="goldenModel.fk_fecha_fixture" />
+        <AssociationConnector Association="goldenModel.fk_fixture_tipo" />
+        <AssociationConnector Association="goldenModel.fk_fixture_torneo" />
+        <AssociationConnector Association="goldenModel.fk_modalidad_torneo" />
+        <AssociationConnector Association="goldenModel.fk_resultado_partido" />
+        <AssociationConnector Association="goldenModel.fk_resultado_partido_zona" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
