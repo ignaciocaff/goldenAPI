@@ -62,3 +62,6 @@ C:\Users\nachh\Desktop\Golden\RestServiceGolden\RestServiceGolden\obj\Debug\Rest
 C:\Users\nachh\Desktop\Golden\RestServiceGolden\RestServiceGolden\obj\Debug\RestServiceGolden.csproj.CoreCompileInputs.cache
 C:\Users\nachh\Desktop\Golden\RestServiceGolden\RestServiceGolden\obj\Debug\RestServiceGolden.dll
 C:\Users\nachh\Desktop\Golden\RestServiceGolden\RestServiceGolden\obj\Debug\RestServiceGolden.pdb
+C:\Users\nachh\Desktop\Golden\RestServiceGolden\RestServiceGolden\bin\System.Web.Cors.dll
+C:\Users\nachh\Desktop\Golden\RestServiceGolden\RestServiceGolden\bin\System.Web.Http.Cors.dll
+C:\Users\nachh\Desktop\Golden\RestServiceGolden\RestServiceGolden\bin\System.Web.Http.Cors.xml

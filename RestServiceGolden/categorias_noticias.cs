@@ -12,21 +12,18 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class perfiles
+    public partial class categorias_noticias
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public perfiles()
+        public categorias_noticias()
         {
-            this.permisos = new HashSet<permisos>();
-            this.usuarios = new HashSet<usuarios>();
+            this.noticias = new HashSet<noticias>();
         }
     
-        public int id_perfil { get; set; }
-        public string n_perfil { get; set; }
+        public int id_categoria_noticia { get; set; }
+        public string descripcion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<permisos> permisos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<usuarios> usuarios { get; set; }
+        public virtual ICollection<noticias> noticias { get; set; }
     }
 }

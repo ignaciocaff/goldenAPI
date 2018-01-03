@@ -28,7 +28,7 @@ namespace RestServiceGolden
         public Nullable<int> local { get; set; }
         public Nullable<int> visitante { get; set; }
         public Nullable<int> id_arbitro { get; set; }
-        public Nullable<int> id_estado { get; set; }
+        public Nullable<int> id_estado_partido { get; set; }
         public Nullable<int> id_cancha { get; set; }
         public Nullable<int> id_veedor { get; set; }
         public Nullable<int> id_resultados_zona { get; set; }
@@ -42,8 +42,8 @@ namespace RestServiceGolden
         public virtual fechas fechas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<goles> goles { get; set; }
-        public virtual veedores veedores { get; set; }
         public virtual resultados resultados { get; set; }
         public virtual resultados_zona resultados_zona { get; set; }
+        public virtual veedores veedores { get; set; }
     }
 }

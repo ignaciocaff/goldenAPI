@@ -22,8 +22,10 @@ namespace RestServiceGolden
     
         public int id_regla { get; set; }
         public string descripcion { get; set; }
+        public Nullable<int> id_torneo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<torneos> torneos { get; set; }
+        public virtual torneos torneos1 { get; set; }
     }
 }

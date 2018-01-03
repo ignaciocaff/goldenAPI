@@ -17,16 +17,18 @@ namespace RestServiceGolden
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public equipos()
         {
+            this.goles = new HashSet<goles>();
+            this.goleadores = new HashSet<goleadores>();
+            this.equipos_zona = new HashSet<equipos_zona>();
             this.fotos = new HashSet<fotos>();
             this.resultados = new HashSet<resultados>();
+            this.resultados_zona = new HashSet<resultados_zona>();
             this.jugadores = new HashSet<jugadores>();
             this.partidos = new HashSet<partidos>();
             this.resultados1 = new HashSet<resultados>();
+            this.resultados_zona1 = new HashSet<resultados_zona>();
             this.posiciones = new HashSet<posiciones>();
             this.partidos1 = new HashSet<partidos>();
-            this.equipos_zona = new HashSet<equipos_zona>();
-            this.resultados_zona = new HashSet<resultados_zona>();
-            this.resultados_zona1 = new HashSet<resultados_zona>();
         }
     
         public int id_equipo { get; set; }
@@ -36,15 +38,23 @@ namespace RestServiceGolden
         public byte[] logo { get; set; }
         public Nullable<int> id_club { get; set; }
         public Nullable<int> id_torneo { get; set; }
-        public Nullable<int> id_categoria { get; set; }
+        public Nullable<int> id_categoria_equipo { get; set; }
     
         public virtual categorias categorias { get; set; }
         public virtual clubes clubes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<goles> goles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<goleadores> goleadores { get; set; }
         public virtual torneos torneos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<equipos_zona> equipos_zona { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<fotos> fotos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<resultados> resultados { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<resultados_zona> resultados_zona { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<jugadores> jugadores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -52,14 +62,10 @@ namespace RestServiceGolden
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<resultados> resultados1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<resultados_zona> resultados_zona1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<posiciones> posiciones { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<partidos> partidos1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<equipos_zona> equipos_zona { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<resultados_zona> resultados_zona { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<resultados_zona> resultados_zona1 { get; set; }
     }
 }

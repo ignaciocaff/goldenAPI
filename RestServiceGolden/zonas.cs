@@ -18,12 +18,17 @@ namespace RestServiceGolden
         public zonas()
         {
             this.equipos_zona = new HashSet<equipos_zona>();
+            this.posiciones_zona = new HashSet<posiciones_zona>();
         }
     
         public int id_zona { get; set; }
         public string descripcion { get; set; }
+        public Nullable<int> id_torneo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<equipos_zona> equipos_zona { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<posiciones_zona> posiciones_zona { get; set; }
+        public virtual torneos torneos { get; set; }
     }
 }
