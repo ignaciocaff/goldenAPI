@@ -217,6 +217,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="logs">
+      <EntityTypeMapping TypeName="goldenModel.logs">
+        <MappingFragment StoreEntitySet="logs">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="clase" ColumnName="clase" />
+          <ScalarProperty Name="metodo" ColumnName="metodo" />
+          <ScalarProperty Name="excepcion" ColumnName="excepcion" />
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="modalidades">
       <EntityTypeMapping TypeName="goldenModel.modalidades">
         <MappingFragment StoreEntitySet="modalidades">
@@ -353,6 +364,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="representante_equipo">
+      <EntityTypeMapping TypeName="goldenModel.representante_equipo">
+        <MappingFragment StoreEntitySet="representante_equipo">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+          <ScalarProperty Name="id_equipo" ColumnName="id_equipo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="restricciones">
       <EntityTypeMapping TypeName="goldenModel.restricciones">
         <MappingFragment StoreEntitySet="restricciones">
@@ -474,6 +494,7 @@
     <EntitySetMapping Name="usuarios">
       <EntityTypeMapping TypeName="goldenModel.usuarios">
         <MappingFragment StoreEntitySet="usuarios">
+          <ScalarProperty Name="caducidad" ColumnName="caducidad" />
           <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
           <ScalarProperty Name="n_usuario" ColumnName="n_usuario" />
           <ScalarProperty Name="password" ColumnName="password" />

@@ -264,6 +264,9 @@
     <Compile Include="localidades.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="logs.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Managers\FixtureManager.cs" />
     <Compile Include="modalidades.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -316,6 +319,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="reglas_torneo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="representante_equipo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="restricciones.cs">

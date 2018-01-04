@@ -4,53 +4,55 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a802ca962e564871a33f0c4d1e14aca4" Name="Diagram1">
-        <EntityTypeShape EntityType="goldenModel.arbitros" Width="1.5" PointX="7.5" PointY="39.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.canchas" Width="1.5" PointX="7.5" PointY="42.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.categorias" Width="1.5" PointX="0.75" PointY="28.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.categorias_noticias" Width="1.5" PointX="13.5" PointY="35.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.clubes" Width="1.5" PointX="6" PointY="22.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.contactos" Width="1.5" PointX="9" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.domicilios" Width="1.5" PointX="9" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.equipos" Width="1.5" PointX="5.25" PointY="26.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.equipos_zona" Width="1.5" PointX="10.5" PointY="34.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.estado_fecha" Width="1.5" PointX="11.25" PointY="21" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.estados_civil" Width="1.5" PointX="9" PointY="14.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.estados_partidos" Width="1.5" PointX="7.5" PointY="54" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.fechas" Width="1.5" PointX="13.5" PointY="31.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.fixture" Width="1.5" PointX="8.25" PointY="27.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.fotos" Width="1.5" PointX="10.5" PointY="27.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.goleadores" Width="1.5" PointX="7.5" PointY="31.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.goles" Width="1.5" PointX="10.5" PointY="23.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.horarios_fijos" Width="1.5" PointX="5.25" PointY="34.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.jugadores" Width="1.5" PointX="13.5" PointY="27.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.localidades" Width="1.5" PointX="6.75" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.modalidades" Width="1.5" PointX="0.75" PointY="25" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.nacionalidades" Width="1.5" PointX="9" PointY="17.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.noticias" Width="1.5" PointX="15.75" PointY="31.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.partidos" Width="1.5" PointX="9.75" PointY="37.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.perfiles" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.permisos" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.personas" Width="1.5" PointX="11.25" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.posiciones" Width="1.5" PointX="13.5" PointY="23.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.posiciones_zona" Width="1.5" PointX="7.5" PointY="36" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.provincias" Width="1.5" PointX="4.5" PointY="10.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.reglas_torneo" Width="1.5" PointX="5.25" PointY="40.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.restricciones" Width="1.5" PointX="11.25" PointY="18.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.resultados" Width="1.5" PointX="7.5" PointY="47" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.resultados_zona" Width="1.5" PointX="7.5" PointY="50.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.sanciones" Width="1.5" PointX="15.75" PointY="27.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.sanciones_torneo" Width="1.5" PointX="15.75" PointY="24.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.sponsors" Width="1.5" PointX="8.25" PointY="23.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.tipos_cancha" Width="1.5" PointX="9.75" PointY="44" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.tipos_documento" Width="1.5" PointX="9" PointY="20.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.tipos_fixture" Width="1.5" PointX="6" PointY="20.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.tipos_sanciones" Width="1.5" PointX="13.5" PointY="18" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.tipos_torneos" Width="1.5" PointX="0.75" PointY="31.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.torneos" Width="1.5" PointX="3" PointY="26" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.usuarios" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.veedores" Width="1.5" PointX="7.5" PointY="56.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.zonas" Width="1.5" PointX="5.25" PointY="46.875" IsExpanded="true" />
+      <Diagram DiagramId="17939b6affb341deb548f54bd360f018" Name="Diagram1">
+        <EntityTypeShape EntityType="goldenModel.arbitros" Width="1.5" PointX="7.5" PointY="41.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.canchas" Width="1.5" PointX="7.5" PointY="44.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.categorias" Width="1.5" PointX="0.75" PointY="29.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.categorias_noticias" Width="1.5" PointX="19.5" PointY="32.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.clubes" Width="1.5" PointX="6" PointY="24.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.contactos" Width="1.5" PointX="9" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.domicilios" Width="1.5" PointX="9" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.equipos" Width="1.5" PointX="5.25" PointY="27.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.equipos_zona" Width="1.5" PointX="10.5" PointY="35.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.estado_fecha" Width="1.5" PointX="14.25" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.estados_civil" Width="1.5" PointX="9" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.estados_partidos" Width="1.5" PointX="7.5" PointY="47.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.fechas" Width="1.5" PointX="16.5" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.fixture" Width="1.5" PointX="8.25" PointY="29.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.fotos" Width="1.5" PointX="10.5" PointY="29" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.goleadores" Width="1.5" PointX="7.5" PointY="33.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.goles" Width="1.5" PointX="10.5" PointY="25.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.horarios_fijos" Width="1.5" PointX="5.25" PointY="35.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.jugadores" Width="1.5" PointX="13.5" PointY="28.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.localidades" Width="1.5" PointX="6.75" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.logs" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.modalidades" Width="1.5" PointX="0.75" PointY="26.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.nacionalidades" Width="1.5" PointX="9" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.noticias" Width="1.5" PointX="21.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.partidos" Width="1.5" PointX="9.75" PointY="39.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.perfiles" Width="1.5" PointX="9" PointY="61.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.permisos" Width="1.5" PointX="11.25" PointY="64.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.personas" Width="1.5" PointX="11.25" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.posiciones" Width="1.5" PointX="13.5" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.posiciones_zona" Width="1.5" PointX="7.5" PointY="37.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.provincias" Width="1.5" PointX="4.5" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.reglas_torneo" Width="1.5" PointX="5.25" PointY="42.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.representante_equipo" Width="1.5" PointX="13.5" PointY="33.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.restricciones" Width="1.5" PointX="14.25" PointY="36.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.resultados" Width="1.5" PointX="7.5" PointY="51.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.resultados_zona" Width="1.5" PointX="7.5" PointY="54.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.sanciones" Width="1.5" PointX="18.75" PointY="29.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.sanciones_torneo" Width="1.5" PointX="18.75" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.sponsors" Width="1.5" PointX="8.25" PointY="25.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.tipos_cancha" Width="1.5" PointX="9.75" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.tipos_documento" Width="1.5" PointX="9" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.tipos_fixture" Width="1.5" PointX="6" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.tipos_sanciones" Width="1.5" PointX="16.5" PointY="36.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.tipos_torneos" Width="1.5" PointX="0.75" PointY="32.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.torneos" Width="1.5" PointX="3" PointY="27.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.usuarios" Width="1.5" PointX="11.25" PointY="61.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.veedores" Width="1.5" PointX="7.5" PointY="58.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.zonas" Width="1.5" PointX="5.25" PointY="48.5" IsExpanded="true" />
         <AssociationConnector Association="goldenModel.fk_arbitro_partido" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_arbitro_persona" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_cancha_domicilio" ManuallyRouted="false" />
@@ -79,6 +81,7 @@
         <AssociationConnector Association="goldenModel.fk_perdedor_equipo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_perdedor_equipo_zona" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_posicion_equipo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_representante_equipo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_visitante_partido" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_torneo_zona" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_zona_zonas" ManuallyRouted="false" />
@@ -116,6 +119,7 @@
         <AssociationConnector Association="goldenModel.fk_torneo_posicion_zona" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_regla_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_reglas_torneo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_representante_usuario" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_tipo_restriccion" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_tipo_sancion" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_jugador_sanciones_torneo" ManuallyRouted="false" />

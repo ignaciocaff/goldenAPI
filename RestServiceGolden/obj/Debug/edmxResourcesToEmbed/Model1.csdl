@@ -115,6 +115,7 @@
     <NavigationProperty Name="resultados1" Relationship="Self.fk_perdedor_equipo" FromRole="equipos" ToRole="resultados" />
     <NavigationProperty Name="resultados_zona1" Relationship="Self.fk_perdedor_equipo_zona" FromRole="equipos" ToRole="resultados_zona" />
     <NavigationProperty Name="posiciones" Relationship="Self.fk_posicion_equipo" FromRole="equipos" ToRole="posiciones" />
+    <NavigationProperty Name="representante_equipo" Relationship="Self.fk_representante_equipo" FromRole="equipos" ToRole="representante_equipo" />
     <NavigationProperty Name="partidos1" Relationship="Self.fk_visitante_partido" FromRole="equipos" ToRole="partidos" />
   </EntityType>
   <EntityType Name="equipos_zona">
@@ -261,6 +262,16 @@
     <Property Name="fecha_baja" Type="DateTime" />
     <NavigationProperty Name="domicilios" Relationship="Self.fk_domicilio_localidad" FromRole="localidades" ToRole="domicilios" />
     <NavigationProperty Name="provincias" Relationship="Self.fk_localidad_provincia" FromRole="localidades" ToRole="provincias" />
+  </EntityType>
+  <EntityType Name="logs">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="clase" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="metodo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="excepcion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="fecha" Type="DateTime" />
   </EntityType>
   <EntityType Name="modalidades">
     <Key>
@@ -421,6 +432,16 @@
     <NavigationProperty Name="torneos" Relationship="Self.fk_regla_torneo" FromRole="reglas_torneo" ToRole="torneos" />
     <NavigationProperty Name="torneos1" Relationship="Self.fk_reglas_torneo" FromRole="reglas_torneo" ToRole="torneos" />
   </EntityType>
+  <EntityType Name="representante_equipo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuario" Type="Int32" />
+    <Property Name="id_equipo" Type="Int32" />
+    <NavigationProperty Name="equipos" Relationship="Self.fk_representante_equipo" FromRole="representante_equipo" ToRole="equipos" />
+    <NavigationProperty Name="usuarios" Relationship="Self.fk_representante_usuario" FromRole="representante_equipo" ToRole="usuarios" />
+  </EntityType>
   <EntityType Name="restricciones">
     <Key>
       <PropertyRef Name="id_restriccion" />
@@ -573,6 +594,8 @@
     <Property Name="id_perfil" Type="Int32" />
     <Property Name="fecha_alta" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <NavigationProperty Name="perfiles" Relationship="Self.fk_usuario_perfil" FromRole="usuarios" ToRole="perfiles" />
+    <NavigationProperty Name="representante_equipo" Relationship="Self.fk_representante_usuario" FromRole="usuarios" ToRole="representante_equipo" />
+    <Property Name="caducidad" Type="DateTime" />
   </EntityType>
   <EntityType Name="veedores">
     <Key>
@@ -927,6 +950,18 @@
         <PropertyRef Name="id_equipo" />
       </Principal>
       <Dependent Role="posiciones">
+        <PropertyRef Name="id_equipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_representante_equipo">
+    <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+    <End Role="representante_equipo" Type="Self.representante_equipo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="equipos">
+        <PropertyRef Name="id_equipo" />
+      </Principal>
+      <Dependent Role="representante_equipo">
         <PropertyRef Name="id_equipo" />
       </Dependent>
     </ReferentialConstraint>
@@ -1375,6 +1410,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="fk_representante_usuario">
+    <End Role="usuarios" Type="Self.usuarios" Multiplicity="0..1" />
+    <End Role="representante_equipo" Type="Self.representante_equipo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="representante_equipo">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_tipo_restriccion">
     <End Role="restricciones" Type="Self.restricciones" Multiplicity="0..1" />
     <End Role="tipos_sanciones" Type="Self.tipos_sanciones" Multiplicity="*" />
@@ -1468,6 +1515,7 @@
     <EntitySet Name="horarios_fijos" EntityType="Self.horarios_fijos" />
     <EntitySet Name="jugadores" EntityType="Self.jugadores" />
     <EntitySet Name="localidades" EntityType="Self.localidades" />
+    <EntitySet Name="logs" EntityType="Self.logs" />
     <EntitySet Name="modalidades" EntityType="Self.modalidades" />
     <EntitySet Name="nacionalidades" EntityType="Self.nacionalidades" />
     <EntitySet Name="noticias" EntityType="Self.noticias" />
@@ -1479,6 +1527,7 @@
     <EntitySet Name="posiciones_zona" EntityType="Self.posiciones_zona" />
     <EntitySet Name="provincias" EntityType="Self.provincias" />
     <EntitySet Name="reglas_torneo" EntityType="Self.reglas_torneo" />
+    <EntitySet Name="representante_equipo" EntityType="Self.representante_equipo" />
     <EntitySet Name="restricciones" EntityType="Self.restricciones" />
     <EntitySet Name="resultados" EntityType="Self.resultados" />
     <EntitySet Name="resultados_zona" EntityType="Self.resultados_zona" />
@@ -1605,6 +1654,10 @@
     <AssociationSet Name="fk_posicion_equipo" Association="Self.fk_posicion_equipo">
       <End Role="equipos" EntitySet="equipos" />
       <End Role="posiciones" EntitySet="posiciones" />
+    </AssociationSet>
+    <AssociationSet Name="fk_representante_equipo" Association="Self.fk_representante_equipo">
+      <End Role="equipos" EntitySet="equipos" />
+      <End Role="representante_equipo" EntitySet="representante_equipo" />
     </AssociationSet>
     <AssociationSet Name="fk_visitante_partido" Association="Self.fk_visitante_partido">
       <End Role="equipos" EntitySet="equipos" />
@@ -1753,6 +1806,10 @@
     <AssociationSet Name="fk_reglas_torneo" Association="Self.fk_reglas_torneo">
       <End Role="torneos" EntitySet="torneos" />
       <End Role="reglas_torneo" EntitySet="reglas_torneo" />
+    </AssociationSet>
+    <AssociationSet Name="fk_representante_usuario" Association="Self.fk_representante_usuario">
+      <End Role="usuarios" EntitySet="usuarios" />
+      <End Role="representante_equipo" EntitySet="representante_equipo" />
     </AssociationSet>
     <AssociationSet Name="fk_tipo_restriccion" Association="Self.fk_tipo_restriccion">
       <End Role="restricciones" EntitySet="restricciones" />

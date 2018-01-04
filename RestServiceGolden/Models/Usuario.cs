@@ -11,5 +11,6 @@ namespace RestServiceGolden.Models
         public string n_usuario { get; set; }
         public string password { get; set; }
         public Perfil perfil { get; set; }
+        public DateTime caducidad { get; set; }
     }
 }

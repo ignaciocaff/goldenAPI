@@ -196,6 +196,16 @@
     <Property Name="fecha_modificacion" Type="datetime" Precision="0" />
     <Property Name="fecha_baja" Type="datetime" Precision="0" />
   </EntityType>
+  <EntityType Name="logs">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="clase" Type="varchar" MaxLength="1000" />
+    <Property Name="metodo" Type="varchar" MaxLength="1000" />
+    <Property Name="excepcion" Type="varchar" MaxLength="1000" />
+    <Property Name="fecha" Type="datetime" Precision="0" />
+  </EntityType>
   <EntityType Name="modalidades">
     <Key>
       <PropertyRef Name="id_modalidad" />
@@ -321,6 +331,14 @@
     <Property Name="descripcion" Type="varchar" MaxLength="200" />
     <Property Name="id_torneo" Type="int" />
   </EntityType>
+  <EntityType Name="representante_equipo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_usuario" Type="int" />
+    <Property Name="id_equipo" Type="int" />
+  </EntityType>
   <EntityType Name="restricciones">
     <Key>
       <PropertyRef Name="id_restriccion" />
@@ -436,6 +454,7 @@
     <Property Name="password" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="id_perfil" Type="int" />
     <Property Name="fecha_alta" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="caducidad" Type="date" />
   </EntityType>
   <EntityType Name="veedores">
     <Key>
@@ -1113,6 +1132,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="fk_representante_equipo">
+    <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+    <End Role="representante_equipo" Type="Self.representante_equipo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="equipos">
+        <PropertyRef Name="id_equipo" />
+      </Principal>
+      <Dependent Role="representante_equipo">
+        <PropertyRef Name="id_equipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_representante_usuario">
+    <End Role="usuarios" Type="Self.usuarios" Multiplicity="0..1" />
+    <End Role="representante_equipo" Type="Self.representante_equipo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="representante_equipo">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_resultado_partido">
     <End Role="resultados" Type="Self.resultados" Multiplicity="0..1" />
     <End Role="partidos" Type="Self.partidos" Multiplicity="*" />
@@ -1326,6 +1369,7 @@
     <EntitySet Name="horarios_fijos" EntityType="Self.horarios_fijos" Schema="golden" store:Type="Tables" />
     <EntitySet Name="jugadores" EntityType="Self.jugadores" Schema="golden" store:Type="Tables" />
     <EntitySet Name="localidades" EntityType="Self.localidades" Schema="golden" store:Type="Tables" />
+    <EntitySet Name="logs" EntityType="Self.logs" Schema="golden" store:Type="Tables" />
     <EntitySet Name="modalidades" EntityType="Self.modalidades" Schema="golden" store:Type="Tables" />
     <EntitySet Name="nacionalidades" EntityType="Self.nacionalidades" Schema="golden" store:Type="Tables" />
     <EntitySet Name="noticias" EntityType="Self.noticias" Schema="golden" store:Type="Tables" />
@@ -1337,6 +1381,7 @@
     <EntitySet Name="posiciones_zona" EntityType="Self.posiciones_zona" Schema="golden" store:Type="Tables" />
     <EntitySet Name="provincias" EntityType="Self.provincias" Schema="golden" store:Type="Tables" />
     <EntitySet Name="reglas_torneo" EntityType="Self.reglas_torneo" Schema="golden" store:Type="Tables" />
+    <EntitySet Name="representante_equipo" EntityType="Self.representante_equipo" Schema="golden" store:Type="Tables" />
     <EntitySet Name="restricciones" EntityType="Self.restricciones" Schema="golden" store:Type="Tables" />
     <EntitySet Name="resultados" EntityType="Self.resultados" Schema="golden" store:Type="Tables" />
     <EntitySet Name="resultados_zona" EntityType="Self.resultados_zona" Schema="golden" store:Type="Tables" />
@@ -1571,6 +1616,14 @@
     <AssociationSet Name="fk_reglas_torneo" Association="Self.fk_reglas_torneo">
       <End Role="torneos" EntitySet="torneos" />
       <End Role="reglas_torneo" EntitySet="reglas_torneo" />
+    </AssociationSet>
+    <AssociationSet Name="fk_representante_equipo" Association="Self.fk_representante_equipo">
+      <End Role="equipos" EntitySet="equipos" />
+      <End Role="representante_equipo" EntitySet="representante_equipo" />
+    </AssociationSet>
+    <AssociationSet Name="fk_representante_usuario" Association="Self.fk_representante_usuario">
+      <End Role="usuarios" EntitySet="usuarios" />
+      <End Role="representante_equipo" EntitySet="representante_equipo" />
     </AssociationSet>
     <AssociationSet Name="fk_resultado_partido" Association="Self.fk_resultado_partido">
       <End Role="resultados" EntitySet="resultados" />
