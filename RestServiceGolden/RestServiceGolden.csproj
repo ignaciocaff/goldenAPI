@@ -220,6 +220,7 @@
     <Compile Include="Controllers\ReglasController.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ModalidadesController.cs" />
+    <Compile Include="Controllers\TorneoController.cs" />
     <Compile Include="Controllers\TipoTorneoController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -297,6 +298,7 @@
     <Compile Include="Models\TipoTorneo.cs" />
     <Compile Include="Models\Modalidad.cs" />
     <Compile Include="Models\Permiso.cs" />
+    <Compile Include="Models\Torneo.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="nacionalidades.cs">
       <DependentUpon>Model1.tt</DependentUpon>
