@@ -7,8 +7,8 @@ namespace RestServiceGolden.Models
 {
     public class Club
     {
-        public String descripcion { get; set; }
         public int? id_club { get; set; }
-        public String nombre{ get; set; }
+        public string nombre { get; set; }
+        public string descripcion { get; set; }
     }
 }
