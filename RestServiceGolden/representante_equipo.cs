@@ -12,17 +12,13 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class posiciones
+    public partial class representante_equipo
     {
-        public int id_posicion { get; set; }
+        public int id { get; set; }
+        public Nullable<int> id_usuario { get; set; }
         public Nullable<int> id_equipo { get; set; }
-        public Nullable<int> puntos { get; set; }
-        public Nullable<int> goles_favor { get; set; }
-        public Nullable<int> goles_contra { get; set; }
-        public Nullable<int> dif_gol { get; set; }
-        public Nullable<int> id_torneo { get; set; }
     
         public virtual equipos equipos { get; set; }
-        public virtual torneos torneos { get; set; }
+        public virtual usuarios usuarios { get; set; }
     }
 }

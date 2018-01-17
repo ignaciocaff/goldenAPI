@@ -12,20 +12,12 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class noticias
+    public partial class logs
     {
-        public int id_noticia { get; set; }
-        public string titulo { get; set; }
-        public string descripcion { get; set; }
+        public int id { get; set; }
+        public string clase { get; set; }
+        public string metodo { get; set; }
+        public string excepcion { get; set; }
         public Nullable<System.DateTime> fecha { get; set; }
-        public Nullable<int> id_torneo { get; set; }
-        public Nullable<int> id_club { get; set; }
-        public Nullable<int> id_fecha { get; set; }
-        public Nullable<int> id_categoria_noticia { get; set; }
-    
-        public virtual categorias_noticias categorias_noticias { get; set; }
-        public virtual clubes clubes { get; set; }
-        public virtual fechas fechas { get; set; }
-        public virtual torneos torneos { get; set; }
     }
 }

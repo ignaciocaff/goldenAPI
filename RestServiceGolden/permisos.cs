@@ -14,17 +14,11 @@ namespace RestServiceGolden
     
     public partial class permisos
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public permisos()
-        {
-            this.perfiles = new HashSet<perfiles>();
-        }
-    
         public int id_permiso { get; set; }
         public string descripcion { get; set; }
         public Nullable<System.DateTime> fechaExpiracion { get; set; }
+        public Nullable<int> id_perfil { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<perfiles> perfiles { get; set; }
+        public virtual perfiles perfiles { get; set; }
     }
 }

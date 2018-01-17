@@ -18,14 +18,18 @@ namespace RestServiceGolden
         public torneos()
         {
             this.equipos = new HashSet<equipos>();
+            this.equipos_zona = new HashSet<equipos_zona>();
+            this.fixture = new HashSet<fixture>();
             this.fotos = new HashSet<fotos>();
             this.goleadores = new HashSet<goleadores>();
             this.horarios_fijos = new HashSet<horarios_fijos>();
             this.noticias = new HashSet<noticias>();
+            this.posiciones = new HashSet<posiciones>();
+            this.posiciones_zona = new HashSet<posiciones_zona>();
+            this.reglas_torneo1 = new HashSet<reglas_torneo>();
             this.sanciones_torneo = new HashSet<sanciones_torneo>();
             this.sponsors = new HashSet<sponsors>();
-            this.equipos_zona = new HashSet<equipos_zona>();
-            this.fixture = new HashSet<fixture>();
+            this.zonas = new HashSet<zonas>();
         }
     
         public int id_torneo { get; set; }
@@ -42,23 +46,31 @@ namespace RestServiceGolden
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<equipos> equipos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<equipos_zona> equipos_zona { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<fixture> fixture { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<fotos> fotos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<goleadores> goleadores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<horarios_fijos> horarios_fijos { get; set; }
+        public virtual modalidades modalidades { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<noticias> noticias { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<posiciones> posiciones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<posiciones_zona> posiciones_zona { get; set; }
         public virtual reglas_torneo reglas_torneo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<reglas_torneo> reglas_torneo1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sanciones_torneo> sanciones_torneo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sponsors> sponsors { get; set; }
         public virtual tipos_torneos tipos_torneos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<equipos_zona> equipos_zona { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<fixture> fixture { get; set; }
-        public virtual modalidades modalidades { get; set; }
+        public virtual ICollection<zonas> zonas { get; set; }
     }
 }

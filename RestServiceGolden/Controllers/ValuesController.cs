@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RestServiceGolden.Managers;
+using RestServiceGolden.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,9 +12,11 @@ namespace RestServiceGolden.Controllers
     public class ValuesController : ApiController
     {
         // GET api/values
-        public IEnumerable<string> Get()
+        public List<Partido> Get()
         {
-            return new string[] { "value1", "value2" };
+            FixtureManager fm = new FixtureManager();
+
+            return fm.crearFixture();
         }
 
         // GET api/values/5

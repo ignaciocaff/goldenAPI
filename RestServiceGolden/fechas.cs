@@ -28,12 +28,12 @@ namespace RestServiceGolden
         public Nullable<int> id_fixture { get; set; }
     
         public virtual estado_fecha estado_fecha { get; set; }
+        public virtual fixture fixture { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<partidos> partidos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<fotos> fotos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<noticias> noticias { get; set; }
-        public virtual fixture fixture { get; set; }
     }
 }

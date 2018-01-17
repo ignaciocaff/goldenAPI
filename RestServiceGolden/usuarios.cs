@@ -14,12 +14,21 @@ namespace RestServiceGolden
     
     public partial class usuarios
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public usuarios()
+        {
+            this.representante_equipo = new HashSet<representante_equipo>();
+        }
+    
         public int id_usuario { get; set; }
         public string n_usuario { get; set; }
         public string password { get; set; }
         public Nullable<int> id_perfil { get; set; }
         public System.DateTime fecha_alta { get; set; }
+        public Nullable<System.DateTime> caducidad { get; set; }
     
         public virtual perfiles perfiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<representante_equipo> representante_equipo { get; set; }
     }
 }
