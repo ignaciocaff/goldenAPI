@@ -107,7 +107,7 @@ namespace RestServiceGolden.Controllers
             persona.apellido = jugador.apellido;
             persona.fecha_nacimiento = jugador.fecha_nacimiento;
             persona.nro_documento = jugador.nro_documento;
-            persona.id_tipo_documento= jugador.tipoDocumento.id_tipo_documento;
+            persona.id_tipo_documento= jugador.tipoDocumento.id_tipo_documento.Value;
 
             try { 
 

@@ -293,10 +293,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Arbitro.cs" />
+    <Compile Include="Models\Cancha.cs" />
+    <Compile Include="Models\CategoriaNoticia.cs" />
     <Compile Include="Models\Club.cs" />
     <Compile Include="Models\Contacto.cs" />
     <Compile Include="Models\Domicilio.cs" />
     <Compile Include="Models\Equipo.cs" />
+    <Compile Include="Models\EstadoCivil.cs" />
+    <Compile Include="Models\EstadoFecha.cs" />
+    <Compile Include="Models\EstadoPartido.cs" />
+    <Compile Include="Models\Goleador.cs" />
     <Compile Include="Models\Jugador.cs" />
     <Compile Include="Models\Localidad.cs" />
     <Compile Include="Models\Partido.cs" />
