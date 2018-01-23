@@ -24,7 +24,7 @@ namespace RestServiceGolden.Controllers
 
             equipoDto.nombre       = equipo.nombre;
             equipoDto.descripcion  = equipo.descripcion;
-            equipoDto.fecha_alta   = equipo.fecha_alta;
+            equipoDto.fecha_alta   = DateTime.Now;
             //equipoDto.logo         = equipo.logo;
             equipoDto.id_club      = equipo.club.id_club;
             equipoDto.id_categoria_equipo = equipo.categoria.id_categoria;
