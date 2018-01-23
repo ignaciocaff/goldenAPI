@@ -43,5 +43,25 @@ namespace RestServiceGolden.Controllers
 
             return BadRequest();
         }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/torneo/todos")]
+        public IHttpActionResult GetAll()
+        {
+            List<Torneo> lsTorneos= new List<Torneo>();
+
+            var torneos = db.torneos.ToList();
+
+            foreach (var t in torneos)
+            {
+                Torneo torneo = new Torneo();
+                torneo.id_torneo   = t.id_torneo;
+                torneo.nombre      = t.nombre;
+                torneo.descripcion = t.descripcion;
+                lsTorneos.Add(torneo);
+            }
+
+            return Ok(lsTorneos);
+        }
     }
 }

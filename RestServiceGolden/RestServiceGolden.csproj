@@ -216,6 +216,7 @@
     <Compile Include="contactos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\EquipoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JugadorController.cs" />
@@ -303,21 +304,34 @@
     <Compile Include="Models\EstadoCivil.cs" />
     <Compile Include="Models\EstadoFecha.cs" />
     <Compile Include="Models\EstadoPartido.cs" />
+    <Compile Include="Models\Gol.cs" />
     <Compile Include="Models\Goleador.cs" />
+    <Compile Include="Models\HorarioFijo.cs" />
     <Compile Include="Models\Jugador.cs" />
     <Compile Include="Models\Localidad.cs" />
     <Compile Include="Models\Partido.cs" />
     <Compile Include="Models\Perfil.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Persona.cs" />
+    <Compile Include="Models\Posiciones.cs" />
     <Compile Include="Models\Provincia.cs" />
     <Compile Include="Models\Regla.cs" />
+    <Compile Include="Models\ReglaTorneo.cs" />
+    <Compile Include="Models\Representante.cs" />
+    <Compile Include="Models\Restriccion.cs" />
+    <Compile Include="Models\Sancion.cs" />
+    <Compile Include="Models\SancionesTorneo.cs" />
+    <Compile Include="Models\Sponsor.cs" />
+    <Compile Include="Models\TipoCancha.cs" />
     <Compile Include="Models\TipoDocumento.cs" />
+    <Compile Include="Models\TipoFixture.cs" />
+    <Compile Include="Models\TipoSancion.cs" />
     <Compile Include="Models\TipoTorneo.cs" />
     <Compile Include="Models\Modalidad.cs" />
     <Compile Include="Models\Permiso.cs" />
     <Compile Include="Models\Torneo.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\Veedor.cs" />
     <Compile Include="nacionalidades.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
