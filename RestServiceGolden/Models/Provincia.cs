@@ -9,5 +9,8 @@ namespace RestServiceGolden.Models
     {
         public int? id_provincia { get; set; }
         public string n_provincia { get; set; }
+        public DateTime fecha_alta { get; set; }
+        public DateTime fecha_modificacion { get; set; }
+        public DateTime fecha_baja { get; set; }
     }
 }

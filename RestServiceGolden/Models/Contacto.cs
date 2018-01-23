@@ -8,8 +8,8 @@ namespace RestServiceGolden.Models
     public class Contacto
     {
         public int? id_contacto { get; set; }
-        public int? telefono_fijo { get; set; }
-        public int? telefono_movil { get; set; }
+        public string telefono_fijo { get; set; }
+        public string telefono_movil { get; set; }
         public string email { get; set; }
     }
 }

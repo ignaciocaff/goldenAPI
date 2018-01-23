@@ -50,8 +50,8 @@
             <PropertyRef Name="id_contacto" />
           </Key>
           <Property Name="id_contacto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="telefono_fijo" Type="bigint" />
-          <Property Name="telefono_movil" Type="bigint" />
+          <Property Name="telefono_fijo" Type="varchar" MaxLength="50" />
+          <Property Name="telefono_movil" Type="varchar" MaxLength="50" />
           <Property Name="email" Type="varchar" MaxLength="45" />
           <Property Name="fecha_alta" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="fecha_modificacion" Type="datetime" Precision="0" />
@@ -1758,8 +1758,8 @@
             <PropertyRef Name="id_contacto" />
           </Key>
           <Property Name="id_contacto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="telefono_fijo" Type="Int64" />
-          <Property Name="telefono_movil" Type="Int64" />
+          <Property Name="telefono_fijo" Type="String" MaxLength="50" />
+          <Property Name="telefono_movil" Type="String" MaxLength="50" />
           <Property Name="email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="fecha_alta" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="fecha_modificacion" Type="DateTime" />

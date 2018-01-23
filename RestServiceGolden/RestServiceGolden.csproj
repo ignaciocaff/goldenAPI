@@ -223,6 +223,7 @@
     <Compile Include="Controllers\ReglasController.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ModalidadesController.cs" />
+    <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\TorneoController.cs" />
     <Compile Include="Controllers\TipoTorneoController.cs" />
     <Compile Include="Controllers\UsersController.cs" />

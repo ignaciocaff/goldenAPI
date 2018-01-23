@@ -21,8 +21,8 @@ namespace RestServiceGolden
         }
     
         public int id_contacto { get; set; }
-        public Nullable<long> telefono_fijo { get; set; }
-        public Nullable<long> telefono_movil { get; set; }
+        public String telefono_fijo { get; set; }
+        public String telefono_movil { get; set; }
         public string email { get; set; }
         public System.DateTime fecha_alta { get; set; }
         public Nullable<System.DateTime> fecha_modificacion { get; set; }

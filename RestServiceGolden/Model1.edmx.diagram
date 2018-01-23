@@ -25,7 +25,7 @@
         <EntityTypeShape EntityType="goldenModel.horarios_fijos" Width="1.5" PointX="5.25" PointY="35.875" IsExpanded="true" />
         <EntityTypeShape EntityType="goldenModel.jugadores" Width="1.5" PointX="13.5" PointY="28.875" IsExpanded="true" />
         <EntityTypeShape EntityType="goldenModel.localidades" Width="1.5" PointX="6.75" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldenModel.logs" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldenModel.logs" Width="1.5" PointX="4.625" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="goldenModel.modalidades" Width="1.5" PointX="0.75" PointY="26.5" IsExpanded="true" />
         <EntityTypeShape EntityType="goldenModel.nacionalidades" Width="1.5" PointX="9" PointY="18.875" IsExpanded="true" />
         <EntityTypeShape EntityType="goldenModel.noticias" Width="1.5" PointX="21.75" PointY="28.75" IsExpanded="true" />

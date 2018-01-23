@@ -56,11 +56,11 @@ namespace RestServiceGolden.Controllers
                 equipo.id_equipo    = tEquipo.id_equipo;
                 equipo.nombre       = tEquipo.nombre;
                 equipo.descripcion  = tEquipo.descripcion;
-                equipo.fecha_alta   = Convert.ToDateTime(tEquipo.fecha_alta);
-               // equipo.logo         = tEquipo.logo;
-                equipo.categoria.id_categoria= tEquipo.categorias.id_categoria;
-                equipo.club.id_club = tEquipo.id_club;
-                equipo.torneo.id_torneo = tEquipo.id_torneo;
+                //equipo.fecha_alta = Convert.ToDateTime(tEquipo.fecha_alta);
+                //// equipo.logo         = tEquipo.logo;
+                //equipo.categoria.id_categoria = tEquipo.categorias.id_categoria;
+                //equipo.club.id_club = tEquipo.id_club;
+                //equipo.torneo.id_torneo = tEquipo.id_torneo;
                 lsEquipos.Add(equipo);
             }
 
