@@ -126,6 +126,7 @@
         <AssociationConnector Association="goldenModel.fk_sponsor_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_tipo_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_zonas_torneo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="goldenModel.files" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
