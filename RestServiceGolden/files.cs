@@ -18,8 +18,8 @@ namespace RestServiceGolden
         public string FileName { get; set; }
         public string ImagePath { get; set; }
         public string ThumbPath { get; set; }
-        public int ProjectId { get; set; }
-        public int SectionId { get; set; }
+        public string ProjectId { get; set; }
+        public string SectionId { get; set; }
         public int FileSize { get; set; }
     }
 }

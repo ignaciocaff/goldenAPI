@@ -7,6 +7,10 @@ using System.Web.Http;
 using System.Data.Entity;
 using System.Drawing;
 using System.Web.Http.Cors;
+using System.Web.Hosting;
+using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 
 namespace RestServiceGolden.Controllers
 {
@@ -16,7 +20,7 @@ namespace RestServiceGolden.Controllers
         goldenEntities db = new goldenEntities();
 
         [HttpPost]
-        public async Task<HttpResponseMessage> Upload(int projectId, int sectionId)
+        public async Task<HttpResponseMessage> Upload(string projectId, string sectionId)
         {
             var status = new MyReponse();
             try
@@ -37,7 +41,7 @@ namespace RestServiceGolden.Controllers
                         file.ImagePath = String.Format("/UploadedFiles/{0}_{1}_{2}", projectId, sectionId, file.FileName);
                         file.ThumbPath = String.Format("/UploadedFiles/{0}_{1}_th_{2}", projectId, sectionId, file.FileName);
                         var img = Image.FromStream(new System.IO.MemoryStream(fileBytes));
-                        await SaveFiles(file, img);
+                        status.subidas.Add(await SaveFiles(file, img));
                         index++;
                     }
                     status.Status = true;
@@ -52,30 +56,43 @@ namespace RestServiceGolden.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, status);
         }
 
-        private async Task SaveFiles(files file, Image img)
+        private async Task<int> SaveFiles(files file, Image img)
         {
             // save thumb
-           // SaveToFolder(img, new Size(160, 160), file.ThumbPath);
+            SaveToFolder(img, new Size(160, 160), file.ThumbPath);
             // save image of size max 600 x 600
-            //SaveToFolder(img, new Size(600, 600), file.ImagePath);
+            SaveToFolder(img, new Size(650, 650), file.ImagePath);
             // Save  to database
-            await Save(file);
+            return await Save(file);
         }
-        public async Task<HttpResponseMessage> GetImages()
+        [Route("api/archivos/getimages")]
+        [HttpPost]
+        public IHttpActionResult getimages([FromBody] string[] subidas)
         {
+            List<files> lsMostrar = new List<files>();
             var response = new MyReponse();
-            var files = await db.files.ToListAsync();
-            response.Result = files;
-            response.Status = true;
-            response.Message = "Success";
-            return Request.CreateResponse(HttpStatusCode.OK, response);
+            try
+            {
+                foreach (var id in subidas)
+                {
+                    int idConvertido = Convert.ToInt32(id);
+                    files f = db.files.Where(x => x.Id == idConvertido).FirstOrDefault();
+                    lsMostrar.Add(f);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message, e.InnerException);
+            }
+            return Ok(lsMostrar);
         }
 
-        private async Task<bool> Save(files file)
+        private async Task<int> Save(files file)
         {
             db.files.Add(file);
             await db.SaveChangesAsync();
-            return true;
+            int id = file.Id;
+            return id;
         }
 
         private Size NewImageSize(Size imageSize, Size newSize)
@@ -104,6 +121,7 @@ namespace RestServiceGolden.Controllers
             using (System.Drawing.Image newImg = new Bitmap(img, imgSize.Width, imgSize.Height))
             {
                 // Remove image if already exist and save again
+                String currentPath = HttpContext.Current.Server.MapPath(pathToSave);
                 if (System.IO.File.Exists(HttpContext.Current.Server.MapPath(pathToSave)))
                     System.IO.File.Delete(HttpContext.Current.Server.MapPath(pathToSave));
 
@@ -117,10 +135,11 @@ namespace RestServiceGolden.Controllers
     {
         public Boolean Status { get; set; }
         public String Message { get; set; }
-        public Object Result { get; set; }
+        public List<int> subidas { get; set; }
 
         public MyReponse()
         {
+            this.subidas = new List<int>();
             this.Status = false;
             this.Message = "Some internal error";
         }
