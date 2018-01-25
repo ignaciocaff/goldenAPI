@@ -216,6 +216,7 @@
     <Compile Include="contactos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\ArchivosController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\EquipoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -247,6 +248,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="fechas.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="files.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="fixture.cs">

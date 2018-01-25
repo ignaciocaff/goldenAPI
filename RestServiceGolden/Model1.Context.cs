@@ -73,5 +73,6 @@ namespace RestServiceGolden
         public virtual DbSet<usuarios> usuarios { get; set; }
         public virtual DbSet<veedores> veedores { get; set; }
         public virtual DbSet<zonas> zonas { get; set; }
+        public virtual DbSet<files> files { get; set; }
     }
 }
