@@ -16,5 +16,6 @@ namespace RestServiceGolden.Models
         public Regla regla { get; set; }
         public TipoTorneo tipoTorneo { get; set; }
         public Modalidad modalidad { get; set; }
+        public List<Equipo> lsEquipos { get; set; }
     }
 }

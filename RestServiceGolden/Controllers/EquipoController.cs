@@ -53,11 +53,17 @@ namespace RestServiceGolden.Controllers
             foreach (var tEquipo in equipos)
             {
                 Equipo equipo       = new Equipo();
+                Categoria categoria = new Categoria();
+                Torneo torneo = new Torneo();
+                Club club = new Club();
                 equipo.id_equipo    = tEquipo.id_equipo;
                 equipo.nombre       = tEquipo.nombre;
                 equipo.descripcion  = tEquipo.descripcion;
                 equipo.fecha_alta   = Convert.ToDateTime(tEquipo.fecha_alta);
-               // equipo.logo         = tEquipo.logo;
+                // equipo.logo         = tEquipo.logo;
+                equipo.categoria = categoria;
+                equipo.club = club;
+                equipo.torneo = torneo;
                 equipo.categoria.id_categoria= tEquipo.categorias.id_categoria;
                 equipo.club.id_club = tEquipo.id_club;
                 equipo.torneo.id_torneo = tEquipo.id_torneo;
