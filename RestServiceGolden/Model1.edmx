@@ -84,7 +84,7 @@
           <Property Name="nombre" Type="varchar" MaxLength="45" />
           <Property Name="descripcion" Type="varchar" MaxLength="45" />
           <Property Name="fecha_alta" Type="date" />
-          <Property Name="logo" Type="blob" />
+          <Property Name="logo" Type="int" />
           <Property Name="id_club" Type="int" />
           <Property Name="id_torneo" Type="int" />
           <Property Name="id_categoria_equipo" Type="int" />
@@ -1809,7 +1809,7 @@
           <Property Name="nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="fecha_alta" Type="DateTime" />
-          <Property Name="logo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="logo" Type="Int32"/>
           <Property Name="id_club" Type="Int32" />
           <Property Name="id_torneo" Type="Int32" />
           <Property Name="id_categoria_equipo" Type="Int32" />

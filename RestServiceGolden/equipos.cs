@@ -36,7 +36,7 @@ namespace RestServiceGolden
         public string nombre { get; set; }
         public string descripcion { get; set; }
         public Nullable<System.DateTime> fecha_alta { get; set; }
-        public byte[] logo { get; set; }
+        public int logo { get; set; }
         public Nullable<int> id_club { get; set; }
         public Nullable<int> id_torneo { get; set; }
         public Nullable<int> id_categoria_equipo { get; set; }
