@@ -25,21 +25,20 @@ namespace RestServiceGolden.Controllers
             equipoDto.nombre       = equipo.nombre;
             equipoDto.descripcion  = equipo.descripcion;
             equipoDto.fecha_alta   = DateTime.Now;
-            //equipoDto.logo         = equipo.logo;
+            equipoDto.logo         = equipo.logo;
             equipoDto.id_club      = equipo.club.id_club;
             equipoDto.id_categoria_equipo = equipo.categoria.id_categoria;
             equipoDto.id_torneo = equipo.torneo.id_torneo;
 
-            equipos equiposCheck = db.equipos.Where(x => x.nombre.ToUpper().Equals(equipoDto.nombre.ToUpper()) && x.id_torneo == equipoDto.id_torneo).FirstOrDefault();
+            int equiposCheck = db.equipos.Where(x => x.nombre.ToUpper().Equals(equipoDto.nombre.ToUpper()) && x.id_categoria_equipo == equipoDto.id_categoria_equipo).Count();
 
-            if (equiposCheck == null)
-            {
+            if(equiposCheck == 0) { 
                 db.equipos.Add(equipoDto);
                 db.SaveChanges();
                 return Ok();
             }
 
-            return BadRequest("El equipo ya existe");
+            return BadRequest("Ya existe un equipo registrado para esta categoría con ese nombre.");
         }
 
         [ResponseType(typeof(Equipo))]
@@ -60,7 +59,7 @@ namespace RestServiceGolden.Controllers
                 equipo.nombre       = tEquipo.nombre;
                 equipo.descripcion  = tEquipo.descripcion;
                 equipo.fecha_alta   = Convert.ToDateTime(tEquipo.fecha_alta);
-                // equipo.logo         = tEquipo.logo;
+                equipo.logo         = tEquipo.logo;
                 equipo.categoria = categoria;
                 equipo.club = club;
                 equipo.torneo = torneo;

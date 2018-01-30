@@ -22,16 +22,16 @@ namespace RestServiceGolden.Controllers
             jugadores jugadorDto = new jugadores();
             equipos equipo = new equipos();
 
-            personas personaInexistente = db.personas.Where(x => x.nro_documento == jugador.nro_documento).FirstOrDefault();
+         //  personas personaInexistente = db.personas.Where(x => x.nro_documento == jugador.nro_documento).FirstOrDefault();
 
-            if (!personaInexistente.Equals(null))
-                return BadRequest("El jugador ya existe");
+         //   if (!personaInexistente.Equals(null))
+         //       return BadRequest("El jugador ya existe");
 
 
             jugadorDto.id_persona = registrarPersona(jugador);
             
             jugadorDto.numero = jugador.numero;
-            jugadorDto.fecha_alta = jugador.fecha_alta;
+            jugadorDto.fecha_alta = DateTime.Now;
             jugadorDto.id_equipo = jugador.equipo.id_equipo;
 
             db.jugadores.Add(jugadorDto);

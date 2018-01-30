@@ -8,6 +8,6 @@ namespace RestServiceGolden.Models
     public class TipoDocumento
     {
         public int? id_tipo_documento { get; set; }
-        public string n_tipo_documento { get; set; }
+        public string descripcion { get; set; }
     }
 }
