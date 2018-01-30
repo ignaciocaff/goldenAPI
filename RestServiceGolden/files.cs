@@ -14,6 +14,12 @@ namespace RestServiceGolden
     
     public partial class files
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public files()
+        {
+            this.equipos = new HashSet<equipos>();
+        }
+    
         public int Id { get; set; }
         public string FileName { get; set; }
         public string ImagePath { get; set; }
@@ -21,5 +27,8 @@ namespace RestServiceGolden
         public string ProjectId { get; set; }
         public string SectionId { get; set; }
         public int FileSize { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<equipos> equipos { get; set; }
     }
 }

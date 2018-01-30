@@ -38,6 +38,7 @@ namespace RestServiceGolden
         public virtual DbSet<estados_civil> estados_civil { get; set; }
         public virtual DbSet<estados_partidos> estados_partidos { get; set; }
         public virtual DbSet<fechas> fechas { get; set; }
+        public virtual DbSet<files> files { get; set; }
         public virtual DbSet<fixture> fixture { get; set; }
         public virtual DbSet<fotos> fotos { get; set; }
         public virtual DbSet<goleadores> goleadores { get; set; }
@@ -73,6 +74,5 @@ namespace RestServiceGolden
         public virtual DbSet<usuarios> usuarios { get; set; }
         public virtual DbSet<veedores> veedores { get; set; }
         public virtual DbSet<zonas> zonas { get; set; }
-        public virtual DbSet<files> files { get; set; }
     }
 }

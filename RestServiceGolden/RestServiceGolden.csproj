@@ -301,6 +301,7 @@
     <Compile Include="Models\Arbitro.cs" />
     <Compile Include="Models\Cancha.cs" />
     <Compile Include="Models\CategoriaNoticia.cs" />
+    <Compile Include="Models\Images.cs" />
     <Compile Include="Models\Club.cs" />
     <Compile Include="Models\Contacto.cs" />
     <Compile Include="Models\Domicilio.cs" />

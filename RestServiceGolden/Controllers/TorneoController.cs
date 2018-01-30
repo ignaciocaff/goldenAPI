@@ -82,5 +82,18 @@ namespace RestServiceGolden.Controllers
 
             return Ok(lsTorneos);
         }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/torneo/{nombre}")]
+        public IHttpActionResult GetById(String nombre)
+        {
+            var torneos = db.torneos.Where(x => x.nombre == nombre).FirstOrDefault();
+            Torneo torneo = new Torneo();
+            torneo.id_torneo = torneos.id_torneo;
+            torneo.nombre = torneos.nombre;
+            torneo.descripcion = torneos.descripcion;
+
+            return Ok(torneo);
+        }
     }
 }

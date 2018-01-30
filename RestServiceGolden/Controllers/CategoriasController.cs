@@ -15,7 +15,7 @@ namespace RestServiceGolden.Controllers
         goldenEntities db = new goldenEntities();
 
         [ResponseType(typeof(IHttpActionResult))]
-        [Route("api/torneo/categorias")]
+        [Route("api/categorias")]
         public IHttpActionResult GetAll()
         {
             List<Categoria> lsCategorias = new List<Categoria>();
