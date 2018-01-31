@@ -15,7 +15,7 @@ namespace RestServiceGolden.Controllers
         goldenEntities db = new goldenEntities();
 
         [ResponseType(typeof(IHttpActionResult))]
-        [Route("api/torneo/tipoTorneo")]
+        [Route("api/tipoTorneo")]
         public IHttpActionResult GetAll()
         {
             List<TipoTorneo> lsTiposTorneo = new List<TipoTorneo>();
