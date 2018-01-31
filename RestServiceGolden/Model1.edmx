@@ -1826,11 +1826,7 @@
           <Property Name="nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="fecha_alta" Type="DateTime" />
-<<<<<<< HEAD
           <Property Name="logo" Type="Int32"/>
-=======
-          <Property Name="logo" Type="Int32" />
->>>>>>> Nacho
           <Property Name="id_club" Type="Int32" />
           <Property Name="id_torneo" Type="Int32" />
           <Property Name="id_categoria_equipo" Type="Int32" />
