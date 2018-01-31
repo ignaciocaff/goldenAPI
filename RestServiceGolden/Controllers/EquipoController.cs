@@ -59,7 +59,7 @@ namespace RestServiceGolden.Controllers
                 equipo.nombre       = tEquipo.nombre;
                 equipo.descripcion  = tEquipo.descripcion;
                 equipo.fecha_alta   = Convert.ToDateTime(tEquipo.fecha_alta);
-                equipo.logo         = tEquipo.logo;
+                equipo.logo         = tEquipo.logo.Value;
                 equipo.categoria = categoria;
                 equipo.club = club;
                 equipo.torneo = torneo;
