@@ -70,13 +70,53 @@ namespace RestServiceGolden.Controllers
             List<Torneo> lsTorneos = new List<Torneo>();
 
             var torneos = db.torneos.ToList();
+            var categorias = db.categorias.ToList();
+            var modalidades = db.modalidades.ToList();
+            var tipos_torneos = db.tipos_torneos.ToList();
+            var reglas = db.reglas_torneo.ToList();
 
             foreach (var t in torneos)
             {
                 Torneo torneo = new Torneo();
+                Modalidad modalidad = new Modalidad();
+                Categoria categoria = new Categoria();
+                TipoTorneo tTorneo = new TipoTorneo();
+                Regla regla = new Regla();
+                List<Equipo> lsEquipos = new List<Equipo>();
+                var equipos = db.equipos.Where(x => x.id_torneo == t.id_torneo).ToList();
+
                 torneo.id_torneo = t.id_torneo;
                 torneo.nombre = t.nombre;
                 torneo.descripcion = t.descripcion;
+                torneo.modalidad = modalidad;
+                torneo.modalidad.id_modalidad = (int)t.id_modalidad;
+                torneo.modalidad.descripcion = modalidades.Where(x => x.id_modalidad == t.id_modalidad).FirstOrDefault().descripcion;
+                torneo.categoria = categoria;
+                torneo.categoria.id_categoria = (int)t.id_categoria;
+                torneo.categoria.descripcion = categorias.Where(x => x.id_categoria == t.id_categoria).FirstOrDefault().descripcion;
+                torneo.regla = regla;
+                torneo.regla.id_regla = (int)t.id_regla;
+                torneo.regla.descripcion = reglas.Where(x => x.id_regla == t.id_regla).FirstOrDefault().descripcion;
+                torneo.tipoTorneo = tTorneo;
+                torneo.tipoTorneo.id_tipo = (int)t.id_tipo;
+                torneo.tipoTorneo.descripcion = tipos_torneos.Where(x => x.id_tipo == t.id_tipo).FirstOrDefault().descripcion;
+                torneo.fecha_fin = t.fecha_fin.Value.Date;
+                torneo.fecha_inicio = t.fecha_inicio.Value.Date;
+
+                foreach (var e in equipos)
+                {
+                    Equipo equipo = new Equipo();
+                    Torneo torneoEquipo = new Torneo();
+                    Categoria categoriaEquipo = new Categoria();
+                    equipo.id_equipo = e.id_equipo;
+                    equipo.nombre = e.nombre;
+                    equipo.torneo = torneoEquipo;
+                    equipo.torneo.id_torneo = e.id_torneo;
+                    equipo.categoria = categoriaEquipo;
+                    equipo.categoria.id_categoria = (int)e.id_categoria_equipo;
+                    lsEquipos.Add(equipo);
+                }
+                torneo.lsEquipos = lsEquipos;
                 lsTorneos.Add(torneo);
             }
 

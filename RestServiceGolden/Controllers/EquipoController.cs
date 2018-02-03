@@ -22,17 +22,18 @@ namespace RestServiceGolden.Controllers
             categorias categoria = new categorias();
             clubes club = new clubes();
 
-            equipoDto.nombre       = equipo.nombre;
-            equipoDto.descripcion  = equipo.descripcion;
-            equipoDto.fecha_alta   = DateTime.Now;
-            equipoDto.logo         = equipo.logo;
-            equipoDto.id_club      = equipo.club.id_club;
+            equipoDto.nombre = equipo.nombre;
+            equipoDto.descripcion = equipo.descripcion;
+            equipoDto.fecha_alta = DateTime.Now;
+            equipoDto.logo = equipo.logo;
+            equipoDto.id_club = equipo.club.id_club;
             equipoDto.id_categoria_equipo = equipo.categoria.id_categoria;
             equipoDto.id_torneo = equipo.torneo.id_torneo;
 
             int equiposCheck = db.equipos.Where(x => x.nombre.ToUpper().Equals(equipoDto.nombre.ToUpper()) && x.id_categoria_equipo == equipoDto.id_categoria_equipo).Count();
 
-            if(equiposCheck == 0) { 
+            if (equiposCheck == 0)
+            {
                 db.equipos.Add(equipoDto);
                 db.SaveChanges();
                 return Ok();
@@ -45,25 +46,25 @@ namespace RestServiceGolden.Controllers
         [Route("api/equipo/obtenerTodos")]
         public IHttpActionResult getAll()
         {
-            List<Equipo> lsEquipos= new List<Equipo>();
+            List<Equipo> lsEquipos = new List<Equipo>();
 
             var equipos = db.equipos.ToList();
 
             foreach (var tEquipo in equipos)
             {
-                Equipo equipo       = new Equipo();
+                Equipo equipo = new Equipo();
                 Categoria categoria = new Categoria();
                 Torneo torneo = new Torneo();
                 Club club = new Club();
-                equipo.id_equipo    = tEquipo.id_equipo;
-                equipo.nombre       = tEquipo.nombre;
-                equipo.descripcion  = tEquipo.descripcion;
-                equipo.fecha_alta   = Convert.ToDateTime(tEquipo.fecha_alta);
-                equipo.logo         = tEquipo.logo;
+                equipo.id_equipo = tEquipo.id_equipo;
+                equipo.nombre = tEquipo.nombre;
+                equipo.descripcion = tEquipo.descripcion;
+                equipo.fecha_alta = Convert.ToDateTime(tEquipo.fecha_alta);
+                equipo.logo = (int)tEquipo.logo;
                 equipo.categoria = categoria;
                 equipo.club = club;
                 equipo.torneo = torneo;
-                equipo.categoria.id_categoria= tEquipo.categorias.id_categoria;
+                equipo.categoria.id_categoria = (int)tEquipo.id_categoria_equipo;
                 equipo.club.id_club = tEquipo.id_club;
                 equipo.torneo.id_torneo = tEquipo.id_torneo;
                 lsEquipos.Add(equipo);
