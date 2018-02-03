@@ -38,12 +38,12 @@ namespace RestServiceGolden.Controllers
         }
 
         [ResponseType(typeof(Noticia))]
-        [Route("api/noticia/principales")]
-        public IHttpActionResult getPrincipales()
+        [Route("api/noticia/principales/{id}")]
+        public IHttpActionResult getPrincipales(int id)
         {
             List<Noticia> lsNoticiasPrincipales= new List<Noticia>();
 
-            var noticias = db.noticias.Where(x => x.id_categoria_noticia == 1).ToList();
+            var noticias = db.noticias.Where(x => x.id_categoria_noticia == 1 && x.id_torneo == id).ToList();
 
             foreach (var n in noticias)
             {
@@ -70,12 +70,12 @@ namespace RestServiceGolden.Controllers
         }
 
         [ResponseType(typeof(Noticia))]
-        [Route("api/noticia/secundarias")]
-        public IHttpActionResult getSecundarias()
+        [Route("api/noticia/secundarias/{id}")]
+        public IHttpActionResult getSecundarias(int id)
         {
             List<Noticia> lsNoticiasSecundarias = new List<Noticia>();
 
-            var noticias = db.noticias.Where(x => x.id_categoria_noticia == 2).ToList();
+            var noticias = db.noticias.Where(x => x.id_categoria_noticia == 2 && x.id_torneo == id).ToList();
 
             foreach (var n in noticias)
             {
