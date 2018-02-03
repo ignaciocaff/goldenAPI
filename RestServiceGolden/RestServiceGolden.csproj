@@ -221,6 +221,7 @@
     <Compile Include="Controllers\EquipoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JugadorController.cs" />
+    <Compile Include="Controllers\NoticiasController.cs" />
     <Compile Include="Controllers\ReglasController.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ModalidadesController.cs" />
@@ -315,6 +316,7 @@
     <Compile Include="Models\HorarioFijo.cs" />
     <Compile Include="Models\Jugador.cs" />
     <Compile Include="Models\Localidad.cs" />
+    <Compile Include="Models\Noticia.cs" />
     <Compile Include="Models\Partido.cs" />
     <Compile Include="Models\Perfil.cs" />
     <Compile Include="Models\Categoria.cs" />

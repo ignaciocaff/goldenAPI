@@ -18,6 +18,7 @@ namespace RestServiceGolden
         public files()
         {
             this.equipos = new HashSet<equipos>();
+            this.noticias = new HashSet<noticias>();
         }
     
         public int Id { get; set; }
@@ -30,5 +31,7 @@ namespace RestServiceGolden
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<equipos> equipos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<noticias> noticias { get; set; }
     }
 }

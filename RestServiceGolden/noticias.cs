@@ -22,10 +22,13 @@ namespace RestServiceGolden
         public Nullable<int> id_club { get; set; }
         public Nullable<int> id_fecha { get; set; }
         public Nullable<int> id_categoria_noticia { get; set; }
+        public string tags { get; set; }
+        public Nullable<int> id_thumbnail { get; set; }
     
         public virtual categorias_noticias categorias_noticias { get; set; }
         public virtual clubes clubes { get; set; }
         public virtual fechas fechas { get; set; }
+        public virtual files files { get; set; }
         public virtual torneos torneos { get; set; }
     }
 }
