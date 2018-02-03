@@ -127,6 +127,48 @@ namespace RestServiceGolden.Controllers
                 return BadRequest();
             }
         }
+
+        [Route("api/archivos/getbynoticia/{id}")]
+        [HttpGet]
+        public IHttpActionResult getByNoticia(int id)
+        {
+            var response = new MyReponse();
+            List<Images> lsImages = new List<Images>();
+            try
+            {
+                var imgs = (from tImages in db.files
+                            join tNoticias in db.noticias on tImages.Id equals tNoticias.id_thumbnail
+                            where tNoticias.id_noticia == id
+                            select new
+                            {
+                                idImg = tImages.Id,
+                                fileName = tImages.FileName,
+                                thumbPath = tImages.ThumbPath,
+                                imagePath = tImages.ImagePath,
+                                sectionId = tImages.SectionId
+                            });
+
+                foreach (var i in imgs)
+                {
+
+                    Images img = new Images();
+                    img.Id = i.idImg;
+                    img.FileName = i.fileName;
+                    img.ThumbPath = i.thumbPath;
+                    img.ImagePath = i.imagePath;
+                    img.SectionId = i.sectionId;
+                    lsImages.Add(img);
+                }
+                return Ok(lsImages);
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message, e.InnerException);
+                return BadRequest();
+            }
+        }
+
+
         private async Task<int> Save(files file)
         {
             db.files.Add(file);
