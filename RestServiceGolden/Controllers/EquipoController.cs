@@ -56,19 +56,11 @@ namespace RestServiceGolden.Controllers
                 Categoria categoria = new Categoria();
                 Torneo torneo = new Torneo();
                 Club club = new Club();
-<<<<<<< HEAD
-                equipo.id_equipo = tEquipo.id_equipo;
-                equipo.nombre = tEquipo.nombre;
-                equipo.descripcion = tEquipo.descripcion;
-                equipo.fecha_alta = Convert.ToDateTime(tEquipo.fecha_alta);
-                equipo.logo = (int)tEquipo.logo;
-=======
                 equipo.id_equipo    = tEquipo.id_equipo;
                 equipo.nombre       = tEquipo.nombre;
                 equipo.descripcion  = tEquipo.descripcion;
                 equipo.fecha_alta   = Convert.ToDateTime(tEquipo.fecha_alta);
                 equipo.logo         = tEquipo.logo.Value;
->>>>>>> Fede
                 equipo.categoria = categoria;
                 equipo.club = club;
                 equipo.torneo = torneo;
