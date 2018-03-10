@@ -44,6 +44,26 @@ namespace RestServiceGolden.Controllers
             return BadRequest("Ya existe un equipo registrado para esta categoría con ese nombre.");
         }
 
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/equipo/desvincular")]
+        public IHttpActionResult desvincular([FromBody]List<Equipo> lsEquipos)
+        {
+            try
+            {
+                foreach (Equipo e in lsEquipos)
+                {
+                    equipos equipoToUpdate = db.equipos.Where(x => x.id_equipo == e.id_equipo).FirstOrDefault();
+                    equipoToUpdate.id_torneo = null;
+                    db.SaveChanges();
+                }
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("No se pudieron desvincular los equipos");
+            }
+        }
+
         [ResponseType(typeof(Equipo))]
         [Route("api/equipo/obtenerTodos")]
         public IHttpActionResult getAll()

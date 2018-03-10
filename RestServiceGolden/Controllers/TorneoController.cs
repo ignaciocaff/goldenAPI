@@ -67,6 +67,63 @@ namespace RestServiceGolden.Controllers
             }
         }
 
+        [Route("api/torneo/update")]
+        public IHttpActionResult update([FromBody]Torneo torneo)
+        {
+            torneos torneoDto = new torneos();
+            modalidades modalidad = new modalidades();
+            reglas_torneo regla = new reglas_torneo();
+            categorias categoria = new categorias();
+            tipos_torneos tipoTorneo = new tipos_torneos();
+            Boolean transaccion = false;
+
+            try
+            {
+                torneoDto.nombre = torneo.nombre;
+                torneoDto.id_torneo = (int)torneo.id_torneo;
+                torneoDto.descripcion = torneo.descripcion;
+                torneoDto.fecha_inicio = torneo.fecha_inicio;
+                torneoDto.fecha_fin = torneo.fecha_fin;
+                torneoDto.id_modalidad = torneo.modalidad.id_modalidad;
+                torneoDto.id_categoria = torneo.categoria.id_categoria;
+                torneoDto.id_tipo = torneo.tipoTorneo.id_tipo;
+                torneoDto.id_regla = torneo.regla.id_regla;
+
+                var result = db.torneos.SingleOrDefault(b => b.id_torneo == torneoDto.id_torneo);
+                if (result != null)
+                {
+                    result.nombre = torneoDto.nombre;
+                    result.id_torneo = torneoDto.id_torneo;
+                    result.descripcion = torneoDto.descripcion;
+                    result.fecha_inicio = torneoDto.fecha_inicio;
+                    result.fecha_fin = torneoDto.fecha_fin;
+                    result.id_modalidad = torneoDto.id_modalidad;
+                    result.id_categoria = torneoDto.id_categoria;
+                    result.id_tipo = torneoDto.id_tipo;
+                    result.id_regla = torneoDto.id_regla;
+                    db.SaveChanges();
+                    transaccion = true;
+                }
+                int id_torneo = torneoDto.id_torneo;
+                foreach (Equipo e in torneo.lsEquipos)
+                {
+                    if (transaccion)
+                    {
+                        equipos equipoToUpdate = db.equipos.Where(x => x.id_equipo == e.id_equipo).FirstOrDefault();
+                        equipoToUpdate.id_torneo = id_torneo;
+                    }
+                }
+
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e.InnerException);
+            }
+        }
+
+
         [ResponseType(typeof(IHttpActionResult))]
         [Route("api/torneo/todos")]
         public IHttpActionResult GetAll()
