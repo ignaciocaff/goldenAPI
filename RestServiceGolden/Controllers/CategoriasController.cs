@@ -32,5 +32,24 @@ namespace RestServiceGolden.Controllers
 
             return Ok(lsCategorias);
         }
+        //Categorias de equipos(GOLDEN, MASTER, ETC)
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/categorias_equipos")]
+        public IHttpActionResult GetCatEquipos()
+        {
+            List<Torneo> lsTorneos = new List<Torneo>();
+
+            var categorias = db.torneos.ToList();
+
+            foreach (var c in categorias)
+            {
+                Torneo torneo = new Torneo();
+                torneo.descripcion = c.descripcion;
+                torneo.id_torneo = c.id_torneo;
+                lsTorneos.Add(torneo);
+            }
+
+            return Ok(lsTorneos);
+        }
     }
 }

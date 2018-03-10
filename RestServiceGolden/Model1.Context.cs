@@ -27,6 +27,7 @@ namespace RestServiceGolden
     
         public virtual DbSet<arbitros> arbitros { get; set; }
         public virtual DbSet<canchas> canchas { get; set; }
+        public virtual DbSet<categoria_equipos> categoria_equipos { get; set; }
         public virtual DbSet<categorias> categorias { get; set; }
         public virtual DbSet<categorias_noticias> categorias_noticias { get; set; }
         public virtual DbSet<clubes> clubes { get; set; }

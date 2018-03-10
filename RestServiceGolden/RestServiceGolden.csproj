@@ -210,6 +210,9 @@
     <Compile Include="categorias_noticias.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="categoria_equipos.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="clubes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -301,7 +304,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Arbitro.cs" />
-    <Compile Include="Models\Cancha.cs" />
+    <Compile Include="Controllers\Cancha.cs" />
+    <Compile Include="Models\CategoriaEquipo.cs" />
     <Compile Include="Models\CategoriaNoticia.cs" />
     <Compile Include="Models\Images.cs" />
     <Compile Include="Models\Club.cs" />

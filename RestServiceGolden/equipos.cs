@@ -40,6 +40,8 @@ namespace RestServiceGolden
         public Nullable<int> id_club { get; set; }
         public Nullable<int> id_torneo { get; set; }
         public Nullable<int> id_categoria_equipo { get; set; }
+        public Nullable<int> camiseta { get; set; }
+        public Nullable<int> camisetalogo { get; set; }
     
         public virtual categorias categorias { get; set; }
         public virtual clubes clubes { get; set; }
@@ -71,5 +73,7 @@ namespace RestServiceGolden
         public virtual ICollection<representante_equipo> representante_equipo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<partidos> partidos1 { get; set; }
+        public virtual files files1 { get; set; }
+        public virtual files files2 { get; set; }
     }
 }

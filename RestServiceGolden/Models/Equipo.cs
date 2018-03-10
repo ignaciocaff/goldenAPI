@@ -13,6 +13,8 @@ namespace RestServiceGolden.Models
         public string descripcion { get; set; }
         public DateTime fecha_alta { get; set; }
         public int logo { get; set; }
+        public int camiseta { get; set; }
+        public int camisetalogo { get; set; }
         public Categoria categoria { get; set; }
         public Club club { get; set; }
         public Torneo torneo { get; set; }
