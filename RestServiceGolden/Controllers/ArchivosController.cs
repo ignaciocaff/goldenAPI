@@ -168,6 +168,30 @@ namespace RestServiceGolden.Controllers
             }
         }
 
+        [Route("api/archivos/getbyequipo/{id}")]
+        [HttpGet]
+        public IHttpActionResult getByEquipo(int id)
+        {
+            var response = new MyReponse();
+            try
+            {
+                var img = db.files.Where(x => x.Id == id).FirstOrDefault();
+
+                Images image = new Images();
+                image.Id = img.Id;
+                image.FileName = img.FileName;
+                image.ThumbPath = img.ThumbPath;
+                image.ImagePath = img.ImagePath;
+                image.SectionId = img.SectionId;
+                return Ok(image);
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message, e.InnerException);
+                return BadRequest();
+            }
+        }
+
 
         private async Task<int> Save(files file)
         {
