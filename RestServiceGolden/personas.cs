@@ -35,6 +35,8 @@ namespace RestServiceGolden
         public System.DateTime fecha_alta { get; set; }
         public Nullable<System.DateTime> fecha_modificacion { get; set; }
         public Nullable<System.DateTime> fecha_baja { get; set; }
+        public string ocupacion { get; set; }
+        public Nullable<int> id_foto { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<arbitros> arbitros { get; set; }
@@ -47,5 +49,6 @@ namespace RestServiceGolden
         public virtual tipos_documento tipos_documento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<veedores> veedores { get; set; }
+        public virtual files files { get; set; }
     }
 }

@@ -210,6 +210,7 @@
           <Property Name="fecha_alta" Type="date" />
           <Property Name="id_persona" Type="int" />
           <Property Name="id_equipo" Type="int" />
+          <Property Name="rol" Type="varchar" MaxLength="45" />
         </EntityType>
         <EntityType Name="localidades">
           <Key>
@@ -315,6 +316,8 @@
           <Property Name="fecha_alta" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="fecha_modificacion" Type="datetime" Precision="0" />
           <Property Name="fecha_baja" Type="datetime" Precision="0" />
+          <Property Name="ocupacion" Type="varchar" MaxLength="45" />
+          <Property Name="id_foto" Type="int" />
         </EntityType>
         <EntityType Name="posiciones">
           <Key>
@@ -848,18 +851,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_img_equipo">
-          <End Role="files" Type="Self.files" Multiplicity="0..1" />
-          <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="files">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="equipos">
-              <PropertyRef Name="logo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_jugador_equipo">
           <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
           <End Role="jugadores" Type="Self.jugadores" Multiplicity="*" />
@@ -1121,6 +1112,18 @@
             </Principal>
             <Dependent Role="personas">
               <PropertyRef Name="id_estado_civil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_persona_id_foto">
+          <End Role="files" Type="Self.files" Multiplicity="0..1" />
+          <End Role="personas" Type="Self.personas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="files">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="personas">
+              <PropertyRef Name="id_foto" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1591,10 +1594,6 @@
             <End Role="torneos" EntitySet="torneos" />
             <End Role="horarios_fijos" EntitySet="horarios_fijos" />
           </AssociationSet>
-          <AssociationSet Name="fk_img_equipo" Association="Self.fk_img_equipo">
-            <End Role="files" EntitySet="files" />
-            <End Role="equipos" EntitySet="equipos" />
-          </AssociationSet>
           <AssociationSet Name="fk_jugador_equipo" Association="Self.fk_jugador_equipo">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="jugadores" EntitySet="jugadores" />
@@ -1681,6 +1680,10 @@
           </AssociationSet>
           <AssociationSet Name="fk_persona_estado_civil" Association="Self.fk_persona_estado_civil">
             <End Role="estados_civil" EntitySet="estados_civil" />
+            <End Role="personas" EntitySet="personas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_persona_id_foto" Association="Self.fk_persona_id_foto">
+            <End Role="files" EntitySet="files" />
             <End Role="personas" EntitySet="personas" />
           </AssociationSet>
           <AssociationSet Name="fk_persona_nacionalidad" Association="Self.fk_persona_nacionalidad">
@@ -1986,6 +1989,7 @@
           <NavigationProperty Name="noticias" Relationship="Self.fk_noticia_thumbnail" FromRole="files" ToRole="noticias" />
           <NavigationProperty Name="equipos1" Relationship="goldenModel.fk_camiseta" FromRole="files" ToRole="equipos" />
           <NavigationProperty Name="equipos2" Relationship="goldenModel.fk_logo_camiseta" FromRole="files" ToRole="equipos" />
+          <NavigationProperty Name="personas" Relationship="goldenModel.fk_persona_id_foto" FromRole="files" ToRole="personas" />
         </EntityType>
         <EntityType Name="fixture">
           <Key>
@@ -2065,6 +2069,7 @@
           <NavigationProperty Name="personas" Relationship="Self.fk_jugador_persona" FromRole="jugadores" ToRole="personas" />
           <NavigationProperty Name="sanciones" Relationship="Self.fk_jugador_sancion" FromRole="jugadores" ToRole="sanciones" />
           <NavigationProperty Name="sanciones_torneo" Relationship="Self.fk_jugador_sanciones" FromRole="jugadores" ToRole="sanciones_torneo" />
+          <Property Name="rol" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="localidades">
           <Key>
@@ -2200,6 +2205,9 @@
           <NavigationProperty Name="nacionalidades" Relationship="Self.fk_persona_nacionalidad" FromRole="personas" ToRole="nacionalidades" />
           <NavigationProperty Name="tipos_documento" Relationship="Self.fk_persona_tipo_doc" FromRole="personas" ToRole="tipos_documento" />
           <NavigationProperty Name="veedores" Relationship="Self.fk_veedor_persona" FromRole="personas" ToRole="veedores" />
+          <Property Name="ocupacion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="id_foto" Type="Int32" />
+          <NavigationProperty Name="files" Relationship="goldenModel.fk_persona_id_foto" FromRole="personas" ToRole="files" />
         </EntityType>
         <EntityType Name="posiciones">
           <Key>
@@ -3700,6 +3708,14 @@
         <Association Name="fk_camiseta">
           <End Type="goldenModel.files" Role="files" Multiplicity="0..1" />
           <End Type="goldenModel.equipos" Role="equipos" Multiplicity="*" />
+          <AssociationSet Name="fk_persona_id_foto" Association="goldenModel.fk_persona_id_foto">
+            <End Role="files" EntitySet="files" />
+            <End Role="personas" EntitySet="personas" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="fk_persona_id_foto">
+          <End Type="goldenModel.files" Role="files" Multiplicity="0..1" />
+          <End Type="goldenModel.personas" Role="personas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="files">
               <PropertyRef Name="Id" />
@@ -3718,6 +3734,8 @@
             </Principal>
             <Dependent Role="equipos">
               <PropertyRef Name="camisetalogo" />
+            <Dependent Role="personas">
+              <PropertyRef Name="id_foto" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3946,6 +3964,7 @@
           <EntitySetMapping Name="jugadores">
             <EntityTypeMapping TypeName="goldenModel.jugadores">
               <MappingFragment StoreEntitySet="jugadores">
+                <ScalarProperty Name="rol" ColumnName="rol" />
                 <ScalarProperty Name="id_jugador" ColumnName="id_jugador" />
                 <ScalarProperty Name="numero" ColumnName="numero" />
                 <ScalarProperty Name="fecha_alta" ColumnName="fecha_alta" />
@@ -4052,6 +4071,8 @@
           <EntitySetMapping Name="personas">
             <EntityTypeMapping TypeName="goldenModel.personas">
               <MappingFragment StoreEntitySet="personas">
+                <ScalarProperty Name="id_foto" ColumnName="id_foto" />
+                <ScalarProperty Name="ocupacion" ColumnName="ocupacion" />
                 <ScalarProperty Name="id_persona" ColumnName="id_persona" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="apellido" ColumnName="apellido" />

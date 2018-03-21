@@ -73,7 +73,8 @@ namespace RestServiceGolden.Controllers
                                     nUsuario = tUsuarios.n_usuario,
                                     passwordU = tUsuarios.password,
                                     nPerfil = tPerfiles.n_perfil,
-                                    nCaducidad = tUsuarios.caducidad
+                                    nCaducidad = tUsuarios.caducidad,
+                                    id_perfil = tPerfiles.id_perfil
                                 });
 
 
@@ -88,6 +89,7 @@ namespace RestServiceGolden.Controllers
                         objUsuario.n_usuario = u.nUsuario;
                         objUsuario.caducidad = Convert.ToDateTime(u.nCaducidad);
                         objPerfil.n_perfil = u.nPerfil;
+                        objPerfil.id_perfil = u.id_perfil;
                         objUsuario.perfil = objPerfil;
 
 
@@ -100,6 +102,34 @@ namespace RestServiceGolden.Controllers
                 return e.Message.ToString();
             }
             return null;
+        }
+
+        [ResponseType(typeof(Equipo))]
+        [Route("api/user/representante/{id}")]
+        public IHttpActionResult getEquipoRepresentante(int id)
+        {
+            goldenEntities db = new goldenEntities();
+            var representante = db.representante_equipo.Where(x => x.id_usuario == id).First();
+            var tEquipo = db.equipos.Where(x => x.id_equipo == representante.id_equipo).First();
+
+            Equipo equipo = new Equipo();
+            Categoria categoria = new Categoria();
+            Torneo torneo = new Torneo();
+            Club club = new Club();
+
+            equipo.id_equipo = tEquipo.id_equipo;
+            equipo.nombre = tEquipo.nombre;
+            equipo.descripcion = tEquipo.descripcion;
+            equipo.fecha_alta = Convert.ToDateTime(tEquipo.fecha_alta);
+            equipo.logo = tEquipo.logo.Value;
+            equipo.categoria = categoria;
+            equipo.club = club;
+            equipo.torneo = torneo;
+            equipo.categoria.id_categoria = (int)tEquipo.id_categoria_equipo;
+            equipo.club.id_club = tEquipo.id_club;
+            equipo.torneo.id_torneo = tEquipo.id_torneo;
+
+            return Ok(equipo);
         }
     }
 }

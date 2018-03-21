@@ -21,6 +21,7 @@ namespace RestServiceGolden
             this.noticias = new HashSet<noticias>();
             this.equipos1 = new HashSet<equipos>();
             this.equipos2 = new HashSet<equipos>();
+            this.personas = new HashSet<personas>();
         }
     
         public int Id { get; set; }
@@ -39,5 +40,6 @@ namespace RestServiceGolden
         public virtual ICollection<equipos> equipos1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<equipos> equipos2 { get; set; }
+        public virtual ICollection<personas> personas { get; set; }
     }
 }

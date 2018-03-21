@@ -132,6 +132,7 @@
         <AssociationConnector Association="goldenModel.fk_zonas_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_camiseta" />
         <AssociationConnector Association="goldenModel.fk_logo_camiseta" />
+        <AssociationConnector Association="goldenModel.fk_persona_id_foto" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

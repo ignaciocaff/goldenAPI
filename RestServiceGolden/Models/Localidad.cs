@@ -13,5 +13,20 @@ namespace RestServiceGolden.Models
         public DateTime fecha_alta { get; set; }
         public DateTime fecha_modificacion { get; set; }
         public DateTime fecha_baja { get; set; }
+
+        public Localidad(int? id_localidad, string n_localidad)
+        {
+            this.id_localidad = id_localidad;
+            this.n_localidad = n_localidad;
+        }
+
+        public Localidad()
+        {
+        }
+
+        public Localidad(int? id_localidad, string n_localidad, Provincia provincia) : this(id_localidad, n_localidad)
+        {
+            this.provincia = provincia;
+        }
     }
 }

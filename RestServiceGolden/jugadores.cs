@@ -28,6 +28,7 @@ namespace RestServiceGolden
         public Nullable<System.DateTime> fecha_alta { get; set; }
         public Nullable<int> id_persona { get; set; }
         public Nullable<int> id_equipo { get; set; }
+        public string rol { get; set; }
     
         public virtual equipos equipos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
