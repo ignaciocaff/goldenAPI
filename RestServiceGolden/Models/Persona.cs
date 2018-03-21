@@ -16,5 +16,7 @@ namespace RestServiceGolden.Models
         public Contacto contacto { get; set; }
         public int? id_persona { get; set; }
         public int edad { get; set; }
+        public string ocupacion { get; set; }
+        public int id_foto { get; set; }
     }
 }

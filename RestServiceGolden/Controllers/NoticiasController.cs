@@ -43,7 +43,7 @@ namespace RestServiceGolden.Controllers
         {
             List<Noticia> lsNoticiasPrincipales= new List<Noticia>();
 
-            var noticias = db.noticias.Where(x => x.id_categoria_noticia == 1 && x.id_torneo == id).ToList();
+            var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_categoria_noticia == 1 && (x.id_torneo == id || x.id_torneo == null)).Take(2);
 
             foreach (var n in noticias)
             {
@@ -75,7 +75,7 @@ namespace RestServiceGolden.Controllers
         {
             List<Noticia> lsNoticiasSecundarias = new List<Noticia>();
 
-            var noticias = db.noticias.Where(x => x.id_categoria_noticia == 2 && x.id_torneo == id).ToList();
+            var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_categoria_noticia == 2 && (x.id_torneo == id || x.id_torneo == null)).Take(3);
 
             foreach (var n in noticias)
             {
@@ -105,27 +105,36 @@ namespace RestServiceGolden.Controllers
         [Route("api/noticia/{id}")]
         public IHttpActionResult getById(int id)
         {
-            var noticias = db.noticias.Where(x => x.id_noticia == id).FirstOrDefault();
+            try { 
+                var noticias = db.noticias.Where(x => x.id_noticia == id).FirstOrDefault();
+                var cat_not = db.categorias_noticias.Where(x => x.id_categoria_noticia == noticias.categorias_noticias.id_categoria_noticia).First();
 
-            Noticia noticia = new Noticia();
-            Torneo torneo = new Torneo();
-            Club club = new Club();
-            CategoriaNoticia categoriaNoticia = new CategoriaNoticia();
-            noticia.torneo = torneo;
-            noticia.club = club;
-            noticia.categoriaNoticia = categoriaNoticia;
+                Noticia noticia = new Noticia();
+                Torneo torneo = new Torneo();
+                Club club = new Club();
+                CategoriaNoticia categoriaNoticia = new CategoriaNoticia();
+                noticia.torneo = torneo;
+                noticia.club = club;
+                noticia.categoriaNoticia = categoriaNoticia;
 
-            noticia.id_noticia = noticias.id_noticia;
-            noticia.titulo = noticias.titulo;
-            noticia.descripcion = noticias.descripcion;
-            noticia.fecha = Convert.ToDateTime(noticias.fecha);
-            noticia.torneo.id_torneo = noticias.id_torneo;
-            noticia.club.id_club = noticias.id_club;
-            noticia.categoriaNoticia.id_categoria_noticia = noticias.id_categoria_noticia;
-            noticia.tags = noticias.tags;
-            noticia.id_thumbnail = noticias.id_thumbnail.Value;
+                noticia.id_noticia = noticias.id_noticia;
+                noticia.titulo = noticias.titulo;
+                noticia.descripcion = noticias.descripcion;
+                noticia.fecha = Convert.ToDateTime(noticias.fecha);
+                noticia.torneo.id_torneo = noticias.id_torneo;
+                noticia.torneo.nombre = noticias.torneos.nombre;
+                noticia.club.id_club = noticias.id_club;
+                noticia.categoriaNoticia.id_categoria_noticia = noticias.id_categoria_noticia;
+                noticia.categoriaNoticia.descripcion = noticias.categorias_noticias.descripcion;
+                noticia.tags = noticias.tags;
+                noticia.id_thumbnail = noticias.id_thumbnail.Value;
 
-            return Ok(noticia);
+                return Ok(noticia);
+
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         [ResponseType(typeof(IHttpActionResult))]
@@ -144,6 +153,44 @@ namespace RestServiceGolden.Controllers
                 lsCategoriasNoticias.Add(categoria);
             }
             return Ok(lsCategoriasNoticias);
+        }
+
+    [Route("api/noticia/update")]
+        public IHttpActionResult update([FromBody]Noticia noticia) {
+
+        noticias noticiaDto = new noticias();
+
+        try
+        {
+                noticiaDto.id_noticia = noticia.id_noticia.Value;
+                noticiaDto.titulo = noticia.titulo;
+                noticiaDto.descripcion = noticia.descripcion;
+                noticiaDto.id_torneo = noticia.torneo.id_torneo;
+                noticiaDto.id_club = noticia.club.id_club;
+                noticiaDto.id_categoria_noticia = noticia.categoriaNoticia.id_categoria_noticia;
+                noticiaDto.tags = noticia.tags;
+                noticiaDto.id_thumbnail = noticia.id_thumbnail;
+
+
+                var result = db.noticias.SingleOrDefault(n => n.id_noticia == noticiaDto.id_noticia);
+
+                if(result != null)
+                {
+                    result.id_noticia = noticiaDto.id_noticia;
+                    result.titulo = noticiaDto.titulo;
+                    result.descripcion = noticiaDto.descripcion;
+                    result.id_torneo = noticiaDto.id_torneo;
+                    result.id_club = noticiaDto.id_club;
+                    result.id_categoria_noticia = noticiaDto.id_categoria_noticia;
+                    result.tags = noticiaDto.tags;
+                    result.id_thumbnail = noticiaDto.id_thumbnail;
+                    db.SaveChanges();
+                }
+                return Ok();
+        } catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
     }
 }

@@ -43,8 +43,21 @@ namespace RestServiceGolden.Controllers
             foreach (var p in provincias)
             {
                 Provincia provincia = new Provincia();
+                List<Localidad> lsLocalidades = new List<Localidad>();
+
+                var localidades = db.localidades.Where(x => x.id_provincia == p.id_provincia);
+
                 provincia.id_provincia = p.id_provincia;
                 provincia.n_provincia = p.n_provincia;
+                
+                foreach (var l in localidades)
+                {
+                    Localidad loc = new Localidad();
+                    loc.id_localidad = l.id_localidad;
+                    loc.n_localidad = l.n_localidad;
+                    lsLocalidades.Add(loc);
+                }
+                provincia.lsLocalidades = lsLocalidades;
                 lsProvincias.Add(provincia);
             }
             return Ok(lsProvincias);

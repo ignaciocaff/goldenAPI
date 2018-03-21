@@ -129,6 +129,7 @@
         <AssociationConnector Association="goldenModel.fk_sponsor_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_tipo_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_zonas_torneo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_persona_id_foto" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -11,5 +11,6 @@ namespace RestServiceGolden.Models
         public int numero { get; set; }
         public DateTime fecha_alta { get; set; }
         public Equipo equipo { get; set; }
+        public string rol { get; set; }
     }
 }
