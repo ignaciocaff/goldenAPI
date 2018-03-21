@@ -10,7 +10,7 @@ using System.Web.Http.Description;
 namespace RestServiceGolden.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class JugadorController: ApiController
+    public class JugadorController : ApiController
     {
         goldenEntities db = new goldenEntities();
 
@@ -21,9 +21,10 @@ namespace RestServiceGolden.Controllers
             personas persona = new personas();
             jugadores jugadorDto = new jugadores();
             equipos equipo = new equipos();
-            
-            if (jugador.rol.Equals("jugador")) { 
-                if(!verificarLimiteEquipo(jugador.equipo.id_equipo.Value))
+
+            if (jugador.rol.Equals("jugador"))
+            {
+                if (!verificarLimiteEquipo((int)jugador.equipo.id_equipo))
                 {
                     return BadRequest("La cantidad de jugadores no puede ser superior a 25");
                 }
@@ -32,12 +33,13 @@ namespace RestServiceGolden.Controllers
             if (jugador.id_persona == null)
             {
                 jugadorDto.id_persona = registrarPersona(jugador);
-            } else
+            }
+            else
             {
                 jugadorDto.id_persona = jugador.id_persona;
                 actualizarPersona(jugador);
             }
-            
+
             jugadorDto.numero = jugador.numero;
             jugadorDto.fecha_alta = DateTime.Now;
             jugadorDto.id_equipo = jugador.equipo.id_equipo;
@@ -114,12 +116,13 @@ namespace RestServiceGolden.Controllers
             persona.apellido = jugador.apellido;
             persona.fecha_nacimiento = jugador.fecha_nacimiento;
             persona.nro_documento = jugador.nro_documento;
-            persona.id_tipo_documento= jugador.tipoDocumento.id_tipo_documento.Value;
+            persona.id_tipo_documento = (int)jugador.tipoDocumento.id_tipo_documento;
             persona.id_foto = jugador.id_foto;
             persona.ocupacion = jugador.ocupacion;
             persona.fecha_alta = DateTime.Now;
 
-            try { 
+            try
+            {
 
                 db.personas.Add(persona);
                 db.SaveChanges();
@@ -141,7 +144,7 @@ namespace RestServiceGolden.Controllers
                 actualizarContacto(jugador);
                 actualizarDomicilio(jugador);
 
-                personaDto.id_persona = jugador.id_persona.Value;
+                personaDto.id_persona = (int)jugador.id_persona;
                 personaDto.nombre = jugador.nombre;
                 personaDto.apellido = jugador.apellido;
                 personaDto.nro_documento = jugador.nro_documento;
@@ -149,9 +152,9 @@ namespace RestServiceGolden.Controllers
                 personaDto.fecha_nacimiento = jugador.fecha_nacimiento;
                 personaDto.fecha_modificacion = DateTime.Now;
                 personaDto.id_foto = jugador.id_foto;
-                personaDto.id_tipo_documento = jugador.tipoDocumento.id_tipo_documento.Value;
-                personaDto.id_domicilio = jugador.domicilio.id_domicilio.Value;
-                personaDto.id_contacto = jugador.contacto.id_contacto.Value;
+                personaDto.id_tipo_documento = (int)jugador.tipoDocumento.id_tipo_documento;
+                personaDto.id_domicilio = (int)jugador.domicilio.id_domicilio;
+                personaDto.id_contacto = (int)jugador.contacto.id_contacto;
 
                 var result = db.personas.SingleOrDefault(x => x.id_persona == personaDto.id_persona);
 
@@ -183,13 +186,13 @@ namespace RestServiceGolden.Controllers
 
             try
             {
-                domicilio.id_domicilio = jugador.domicilio.id_domicilio.Value;
+                domicilio.id_domicilio = (int)jugador.domicilio.id_domicilio;
                 domicilio.calle = jugador.domicilio.calle;
                 domicilio.numeracion = jugador.domicilio.numeracion;
                 domicilio.piso = jugador.domicilio.piso;
                 domicilio.dpto = jugador.domicilio.dpto;
                 domicilio.torre = jugador.domicilio.torre;
-                domicilio.id_localidad = jugador.domicilio.localidad.id_localidad.Value;
+                domicilio.id_localidad = (int)jugador.domicilio.localidad.id_localidad;
                 domicilio.fecha_modificacion = DateTime.Now;
                 domicilio.observaciones = jugador.domicilio.observaciones;
                 domicilio.barrio = jugador.domicilio.barrio;
@@ -210,7 +213,8 @@ namespace RestServiceGolden.Controllers
                     r.barrio = domicilio.barrio;
                     db.SaveChanges();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex.InnerException);
             }
@@ -221,7 +225,7 @@ namespace RestServiceGolden.Controllers
             contactos c = new contactos();
             try
             {
-                c.id_contacto = jugador.contacto.id_contacto.Value;
+                c.id_contacto = (int)jugador.contacto.id_contacto;
                 c.telefono_fijo = jugador.contacto.telefono_fijo;
                 c.telefono_movil = jugador.contacto.telefono_movil;
                 c.email = jugador.contacto.email;
@@ -238,7 +242,8 @@ namespace RestServiceGolden.Controllers
                     r.fecha_modificacion = c.fecha_modificacion;
                     db.SaveChanges();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex.InnerException);
             }
@@ -249,8 +254,9 @@ namespace RestServiceGolden.Controllers
         public IHttpActionResult getByDoc(int doc)
         {
 
-            List<Persona> lsPersonas= new List<Persona>();
-                try { 
+            List<Persona> lsPersonas = new List<Persona>();
+            try
+            {
 
                 var ObjPersona = (from tPersonas in db.personas
                                   join tTiposDocumento in db.tipos_documento on tPersonas.id_tipo_documento equals tTiposDocumento.id_tipo_documento
@@ -262,49 +268,49 @@ namespace RestServiceGolden.Controllers
                                   where tPersonas.nro_documento == doc
                                   select new
                                   {
-                                   id_persona = tPersonas.id_persona,
-                                   nro_documento = tPersonas.nro_documento,
-                                   tipo_documento = tTiposDocumento.id_tipo_documento,
-                                   descr_documento = tTiposDocumento.descripcion,
+                                      id_persona = tPersonas.id_persona,
+                                      nro_documento = tPersonas.nro_documento,
+                                      tipo_documento = tTiposDocumento.id_tipo_documento,
+                                      descr_documento = tTiposDocumento.descripcion,
 
-                                   id_domicilio = tDomicilio.id_domicilio,
-                                   calle = tDomicilio.calle,
-                                   numeracion = tDomicilio.numeracion,
-                                   piso = tDomicilio.piso,
-                                   dpto = tDomicilio.dpto,
-                                   torre = tDomicilio.torre,
-                                   barrio = tDomicilio.barrio,
-                                   obs = tDomicilio.observaciones,
+                                      id_domicilio = tDomicilio.id_domicilio,
+                                      calle = tDomicilio.calle,
+                                      numeracion = tDomicilio.numeracion,
+                                      piso = tDomicilio.piso,
+                                      dpto = tDomicilio.dpto,
+                                      torre = tDomicilio.torre,
+                                      barrio = tDomicilio.barrio,
+                                      obs = tDomicilio.observaciones,
 
-                                   id_prov = tProvincias.id_provincia,
-                                   n_prov = tProvincias.n_provincia,
+                                      id_prov = tProvincias.id_provincia,
+                                      n_prov = tProvincias.n_provincia,
 
-                                   id_loc = tLocalidad.id_localidad,
-                                   n_loc = tLocalidad.n_localidad,
+                                      id_loc = tLocalidad.id_localidad,
+                                      n_loc = tLocalidad.n_localidad,
 
-                                   nombre = tPersonas.nombre,
-                                   apellido = tPersonas.apellido,
-                                   fecha_nacim = tPersonas.fecha_nacimiento,
-                                   ocupacion = tPersonas.ocupacion,
-                                   id_foto = tPersonas.id_foto,
+                                      nombre = tPersonas.nombre,
+                                      apellido = tPersonas.apellido,
+                                      fecha_nacim = tPersonas.fecha_nacimiento,
+                                      ocupacion = tPersonas.ocupacion,
+                                      id_foto = tPersonas.id_foto,
 
-                                   id_contacto = tContacto.id_contacto,
-                                   email = tContacto.email,
-                                   cel = tContacto.telefono_movil,
-                                   fijo = tContacto.telefono_fijo
-                               });
-            
+                                      id_contacto = tContacto.id_contacto,
+                                      email = tContacto.email,
+                                      cel = tContacto.telefono_movil,
+                                      fijo = tContacto.telefono_fijo
+                                  });
+
 
                 foreach (var p in ObjPersona)
                 {
                     Persona persona = new Persona();
-                   // Jugador jugador = new Jugador();
+                    // Jugador jugador = new Jugador();
                     TipoDocumento tipoDoc = new TipoDocumento();
                     Domicilio domicilio = new Domicilio();
                     Contacto contacto = new Contacto();
                     Provincia prov = new Provincia();
                     Localidad loc = new Localidad();
-                    List<Localidad> listaLoc = new List<Localidad>(); 
+                    List<Localidad> listaLoc = new List<Localidad>();
 
                     persona.id_persona = p.id_persona;
                     persona.nombre = p.nombre;
@@ -312,7 +318,7 @@ namespace RestServiceGolden.Controllers
                     persona.fecha_nacimiento = p.fecha_nacim;
                     persona.ocupacion = p.ocupacion;
                     persona.nro_documento = Convert.ToInt32(p.nro_documento);
-                    persona.id_foto = p.id_foto.Value;
+                    persona.id_foto = (int)p.id_foto;
 
                     persona.tipoDocumento = tipoDoc;
                     persona.tipoDocumento.id_tipo_documento = p.tipo_documento;
@@ -348,7 +354,8 @@ namespace RestServiceGolden.Controllers
                     lsPersonas.Add(persona);
                 }
                 return Ok(lsPersonas);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
             }
