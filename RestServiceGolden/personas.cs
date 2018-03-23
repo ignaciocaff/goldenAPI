@@ -43,12 +43,12 @@ namespace RestServiceGolden
         public virtual contactos contactos { get; set; }
         public virtual domicilios domicilios { get; set; }
         public virtual estados_civil estados_civil { get; set; }
+        public virtual files files { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<jugadores> jugadores { get; set; }
         public virtual nacionalidades nacionalidades { get; set; }
         public virtual tipos_documento tipos_documento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<veedores> veedores { get; set; }
-        public virtual files files { get; set; }
     }
 }
