@@ -232,6 +232,7 @@
     <Compile Include="Controllers\TipoTorneoController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\ZonasController.cs" />
     <Compile Include="domicilios.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -343,6 +344,7 @@
     <Compile Include="Models\Torneo.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Veedor.cs" />
+    <Compile Include="Models\Zona.cs" />
     <Compile Include="nacionalidades.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
