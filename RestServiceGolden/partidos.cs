@@ -23,8 +23,8 @@ namespace RestServiceGolden
         public int id_partido { get; set; }
         public Nullable<int> duracion { get; set; }
         public Nullable<int> id_fecha { get; set; }
-        public Nullable<System.TimeSpan> hora_inicio { get; set; }
-        public Nullable<System.TimeSpan> hora_fin { get; set; }
+        public string hora_inicio { get; set; }
+        public string hora_fin { get; set; }
         public Nullable<int> local { get; set; }
         public Nullable<int> visitante { get; set; }
         public Nullable<int> id_arbitro { get; set; }

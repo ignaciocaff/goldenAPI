@@ -22,7 +22,6 @@ namespace RestServiceGolden
             this.fixture = new HashSet<fixture>();
             this.fotos = new HashSet<fotos>();
             this.goleadores = new HashSet<goleadores>();
-            this.horarios_fijos = new HashSet<horarios_fijos>();
             this.noticias = new HashSet<noticias>();
             this.posiciones = new HashSet<posiciones>();
             this.posiciones_zona = new HashSet<posiciones_zona>();
@@ -53,8 +52,6 @@ namespace RestServiceGolden
         public virtual ICollection<fotos> fotos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<goleadores> goleadores { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<horarios_fijos> horarios_fijos { get; set; }
         public virtual modalidades modalidades { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<noticias> noticias { get; set; }
