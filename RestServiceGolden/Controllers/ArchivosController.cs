@@ -15,7 +15,6 @@ using RestServiceGolden.Models;
 
 namespace RestServiceGolden.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ArchivosController : ApiController
     {
         goldenEntities db = new goldenEntities();
