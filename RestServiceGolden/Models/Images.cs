@@ -8,11 +8,11 @@ namespace RestServiceGolden.Models
     public class Images
     {
         public int? Id { get; set; }
-        public string FileName { get; set; }
-        public string ImagePath { get; set; }
-        public string ThumbPath { get; set; }
-        public string ProjectId { get; set; }
-        public string SectionId { get; set; }
+        public String FileName { get; set; }
+        public String ImagePath { get; set; }
+        public String ThumbPath { get; set; }
+        public String ProjectId { get; set; }
+        public String SectionId { get; set; }
         public int FileSize { get; set; }
     }
 }

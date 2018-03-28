@@ -12,13 +12,18 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class horarios_fijos
+    public partial class turnos
     {
-        public int id_horario { get; set; }
-        public Nullable<int> id_turno { get; set; }
-        public string inicio { get; set; }
-        public string fin { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public turnos()
+        {
+            this.horarios_fijos = new HashSet<horarios_fijos>();
+        }
     
-        public virtual turnos turnos { get; set; }
+        public int id { get; set; }
+        public string descripcion { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<horarios_fijos> horarios_fijos { get; set; }
     }
 }

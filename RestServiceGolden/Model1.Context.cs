@@ -72,6 +72,7 @@ namespace RestServiceGolden
         public virtual DbSet<tipos_sanciones> tipos_sanciones { get; set; }
         public virtual DbSet<tipos_torneos> tipos_torneos { get; set; }
         public virtual DbSet<torneos> torneos { get; set; }
+        public virtual DbSet<turnos> turnos { get; set; }
         public virtual DbSet<usuarios> usuarios { get; set; }
         public virtual DbSet<veedores> veedores { get; set; }
         public virtual DbSet<zonas> zonas { get; set; }

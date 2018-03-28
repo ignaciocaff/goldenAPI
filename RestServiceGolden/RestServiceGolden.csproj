@@ -224,6 +224,7 @@
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\EquipoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\JugadorController.cs" />
     <Compile Include="Controllers\NoticiasController.cs" />
     <Compile Include="Controllers\ReglasController.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Controllers\TipoTorneoController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\ZonasController.cs" />
     <Compile Include="domicilios.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -343,8 +345,10 @@
     <Compile Include="Models\Modalidad.cs" />
     <Compile Include="Models\Permiso.cs" />
     <Compile Include="Models\Torneo.cs" />
+    <Compile Include="Models\Turno.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Veedor.cs" />
+    <Compile Include="Models\Zona.cs" />
     <Compile Include="nacionalidades.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -413,6 +417,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="torneos.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="turnos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="usuarios.cs">
