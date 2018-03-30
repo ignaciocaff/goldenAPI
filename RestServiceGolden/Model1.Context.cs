@@ -41,6 +41,7 @@ namespace RestServiceGolden
         public virtual DbSet<fechas> fechas { get; set; }
         public virtual DbSet<files> files { get; set; }
         public virtual DbSet<fixture> fixture { get; set; }
+        public virtual DbSet<fixture_zona> fixture_zona { get; set; }
         public virtual DbSet<fotos> fotos { get; set; }
         public virtual DbSet<goleadores> goleadores { get; set; }
         public virtual DbSet<goles> goles { get; set; }

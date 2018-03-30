@@ -18,6 +18,7 @@ namespace RestServiceGolden
         public tipos_fixture()
         {
             this.fixture = new HashSet<fixture>();
+            this.fixture_zona = new HashSet<fixture_zona>();
         }
     
         public int id_tipo { get; set; }
@@ -25,5 +26,7 @@ namespace RestServiceGolden
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<fixture> fixture { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<fixture_zona> fixture_zona { get; set; }
     }
 }

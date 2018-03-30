@@ -53,12 +53,16 @@ namespace RestServiceGolden.Controllers
                         {
                             Equipo equipo = new Equipo();
                             Torneo torneoEquipo = new Torneo();
-                            equipo.id_equipo = equipoZona.id_equipo;
-                            equipo.nombre = equipoZona.nombre;
-                            equipo.logo = (equipoZona.logo != null) ? (int)equipoZona.logo : 0;
-                            equipo.torneo = torneo;
-                            equipo.torneo.id_torneo = equipoZona.id_torneo;
-                            lsEquipos.Add(equipo);
+                            int? idZona = equipoZona.id_zona;
+                            if (idZona != null)
+                            {
+                                equipo.id_equipo = equipoZona.id_equipo;
+                                equipo.nombre = equipoZona.nombre;
+                                equipo.logo = (equipoZona.logo != null) ? (int)equipoZona.logo : 0;
+                                equipo.torneo = torneo;
+                                equipo.torneo.id_torneo = equipoZona.id_torneo;
+                                lsEquipos.Add(equipo);
+                            }
                         }
 
                         zona.lsEquipos = lsEquipos;
@@ -103,17 +107,57 @@ namespace RestServiceGolden.Controllers
                     id_zona = zonaDto.id_zona;
                     foreach (var equiposZona in lsEquipos)
                     {
-                        equipos_zona equiposZonaDto = new equipos_zona();
-                        equiposZonaDto.id_equipo = equiposZona.id_equipo;
+                        equipos_zona equiposZonaDto = db.equipos_zona.SingleOrDefault(x => x.id_equipo == equiposZona.id_equipo);
                         equiposZonaDto.id_zona = id_zona;
-                        equiposZonaDto.id_torneo = zona.torneo.id_torneo;
-                        db.equipos_zona.Add(equiposZonaDto);
                         db.SaveChanges();
                     }
+
+                    fixture_zona fixture_zona = new fixture_zona();
+                    fixture_zona.id_tipo = 1;
+                    fixture_zona.id_torneo = zona.torneo.id_torneo;
+                    fixture_zona.id_zona = id_zona;
+                    db.fixture_zona.Add(fixture_zona);
+                    db.SaveChanges();
 
                 }
                 return Ok();
 
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/zona/eliminar")]
+        public IHttpActionResult eliminar([FromBody]Zona zona)
+        {
+            List<Equipo> lsEquipos = new List<Equipo>();
+            try
+            {
+                foreach (var equiposZona in zona.lsEquipos)
+                {
+                    equipos_zona equiposZonaDto = db.equipos_zona.SingleOrDefault(x => x.id_equipo == equiposZona.id_equipo);
+                    equiposZonaDto.id_zona = null;
+                    db.SaveChanges();
+                }
+
+                fixture_zona fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == zona.id_zona);
+                db.fixture_zona.Attach(fixture_zona);
+                db.fixture_zona.Remove(fixture_zona);
+                db.SaveChanges();
+
+                zonas zonaDto = new zonas();
+                lsEquipos = zona.lsEquipos;
+                zonaDto.id_torneo = zona.torneo.id_torneo;
+                zonaDto.descripcion = zona.descripcion;
+                zonaDto.id_zona = (int)zona.id_zona;
+                db.zonas.Attach(zonaDto);
+                db.zonas.Remove(zonaDto);
+                db.SaveChanges();
+
+                return Ok();
             }
             catch (Exception e)
             {
@@ -129,16 +173,29 @@ namespace RestServiceGolden.Controllers
             List<Equipo> lsEquipos = new List<Equipo>();
             try
             {
+
                 foreach (Zona zona in lsZonas)
                 {
+                    var totalEquipos = db.equipos_zona.Where(x => x.id_zona == zona.id_zona).ToList();
                     lsEquipos = zona.lsEquipos;
+
+                    var result = totalEquipos.Where(p => !lsEquipos.Any(l => p.id_equipo == l.id_equipo)).ToList();
+
+                    foreach (var r in result)
+                    {
+                        equipos_zona equiposZonaDto = db.equipos_zona.SingleOrDefault(x => x.id_equipo == r.id_equipo);
+                        equiposZonaDto.id_zona = null;
+                        db.SaveChanges();
+                    }
+
+
                     foreach (var equiposZona in lsEquipos)
                     {
                         equipos_zona equiposZonaDto = db.equipos_zona.SingleOrDefault(x => x.id_equipo == equiposZona.id_equipo);
                         equiposZonaDto.id_zona = zona.id_zona;
                         db.SaveChanges();
-                    }
 
+                    }
                 }
                 return Ok();
 

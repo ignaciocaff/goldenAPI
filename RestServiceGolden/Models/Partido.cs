@@ -7,9 +7,19 @@ namespace RestServiceGolden.Models
 {
     public class Partido
     {
-        public String local { get; set; }
-        public String visitante { get; set; }
-        public String horario { get; set; }
-        public String cancha { get; set; }
+        public int id_partido { get; set; }
+        public String duracion { get; set; }
+        public Fecha fecha { get; set; }
+        public String inicio { get; set; }
+        public String fin { get; set; }
+        public Equipo local { get; set; }
+        public Equipo visitante { get; set; }
+        public Arbitro arbitro { get; set; }
+        public EstadoPartido estado { get; set; }
+        public Cancha cancha { get; set; }
+        public Veedor veedor { get; set; }
+        public Resultado resultado { get; set; }
+        public ResultadoZona resultado_zona { get; set; }
+        public HorarioFijo horario_fijo { get; set; }
     }
 }
