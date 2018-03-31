@@ -46,7 +46,7 @@ namespace RestServiceGolden.Controllers
                                            id_torneo = tEquipos.id_torneo,
                                            logo = tEquipos.logo,
                                            id_zona = tZonas.id_zona,
-                                       });
+                                       }).OrderBy(s => s.nombre);
 
 
                         foreach (var equipoZona in equipos)
