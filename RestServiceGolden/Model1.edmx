@@ -196,9 +196,10 @@
             <PropertyRef Name="id_horario" />
           </Key>
           <Property Name="id_horario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="id_turno" Type="int" />
+          <Property Name="turno" Type="varchar" MaxLength="45" />
           <Property Name="inicio" Type="varchar" MaxLength="50" />
           <Property Name="fin" Type="varchar" MaxLength="50" />
+          <Property Name="id_turno" Type="int" />
         </EntityType>
         <EntityType Name="jugadores">
           <Key>
@@ -281,6 +282,7 @@
           <Property Name="id_veedor" Type="int" />
           <Property Name="id_resultados_zona" Type="int" />
           <Property Name="id_resultado" Type="int" />
+          <Property Name="id_horario_fijo" Type="int" />
         </EntityType>
         <EntityType Name="perfiles">
           <Key>
@@ -845,7 +847,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_horario_turno">
+        <Association Name="fk_horario_fijo_partido">
+          <End Role="horarios_fijos" Type="Self.horarios_fijos" Multiplicity="0..1" />
+          <End Role="partidos" Type="Self.partidos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="horarios_fijos">
+              <PropertyRef Name="id_horario" />
+            </Principal>
+            <Dependent Role="partidos">
+              <PropertyRef Name="id_horario_fijo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_horario_turnos">
           <End Role="turnos" Type="Self.turnos" Multiplicity="0..1" />
           <End Role="horarios_fijos" Type="Self.horarios_fijos" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1609,7 +1623,11 @@
             <End Role="equipos" EntitySet="equipos" />
             <End Role="resultados_zona" EntitySet="resultados_zona" />
           </AssociationSet>
-          <AssociationSet Name="fk_horario_turno" Association="Self.fk_horario_turno">
+          <AssociationSet Name="fk_horario_fijo_partido" Association="Self.fk_horario_fijo_partido">
+            <End Role="horarios_fijos" EntitySet="horarios_fijos" />
+            <End Role="partidos" EntitySet="partidos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_horario_turnos" Association="Self.fk_horario_turnos">
             <End Role="turnos" EntitySet="turnos" />
             <End Role="horarios_fijos" EntitySet="horarios_fijos" />
           </AssociationSet>
@@ -2012,7 +2030,6 @@
           <NavigationProperty Name="equipos" Relationship="Self.fk_camiseta" FromRole="files" ToRole="equipos" />
           <NavigationProperty Name="equipos1" Relationship="Self.fk_logo" FromRole="files" ToRole="equipos" />
           <NavigationProperty Name="equipos2" Relationship="Self.fk_logo_camiseta" FromRole="files" ToRole="equipos" />
-          <NavigationProperty Name="personas" Relationship="Self.fk_id_foto" FromRole="files" ToRole="personas" />
           <NavigationProperty Name="noticias" Relationship="Self.fk_noticia_thumbnail" FromRole="files" ToRole="noticias" />
           <NavigationProperty Name="personas" Relationship="Self.fk_persona_id_foto" FromRole="files" ToRole="personas" />
         </EntityType>
@@ -2073,10 +2090,12 @@
             <PropertyRef Name="id_horario" />
           </Key>
           <Property Name="id_horario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_turno" Type="Int32" />
+          <Property Name="turno" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="inicio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="fin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="turnos" Relationship="Self.fk_horario_turno" FromRole="horarios_fijos" ToRole="turnos" />
+          <Property Name="id_turno" Type="Int32" />
+          <NavigationProperty Name="partidos" Relationship="Self.fk_horario_fijo_partido" FromRole="horarios_fijos" ToRole="partidos" />
+          <NavigationProperty Name="turnos" Relationship="Self.fk_horario_turnos" FromRole="horarios_fijos" ToRole="turnos" />
         </EntityType>
         <EntityType Name="jugadores">
           <Key>
@@ -2174,6 +2193,7 @@
           <Property Name="id_veedor" Type="Int32" />
           <Property Name="id_resultados_zona" Type="Int32" />
           <Property Name="id_resultado" Type="Int32" />
+          <Property Name="id_horario_fijo" Type="Int32" />
           <NavigationProperty Name="arbitros" Relationship="Self.fk_arbitro_partido" FromRole="partidos" ToRole="arbitros" />
           <NavigationProperty Name="canchas" Relationship="Self.fk_cancha_partido" FromRole="partidos" ToRole="canchas" />
           <NavigationProperty Name="equipos" Relationship="Self.fk_local_partido" FromRole="partidos" ToRole="equipos" />
@@ -2181,6 +2201,7 @@
           <NavigationProperty Name="estados_partidos" Relationship="Self.fk_estado_partido" FromRole="partidos" ToRole="estados_partidos" />
           <NavigationProperty Name="fechas" Relationship="Self.fk_fecha_partido" FromRole="partidos" ToRole="fechas" />
           <NavigationProperty Name="goles" Relationship="Self.fk_partido_gol" FromRole="partidos" ToRole="goles" />
+          <NavigationProperty Name="horarios_fijos" Relationship="Self.fk_horario_fijo_partido" FromRole="partidos" ToRole="horarios_fijos" />
           <NavigationProperty Name="resultados" Relationship="Self.fk_resultado_partido" FromRole="partidos" ToRole="resultados" />
           <NavigationProperty Name="resultados_zona" Relationship="Self.fk_resultado_partido_zona" FromRole="partidos" ToRole="resultados_zona" />
           <NavigationProperty Name="veedores" Relationship="Self.fk_veedor_partido" FromRole="partidos" ToRole="veedores" />
@@ -2440,7 +2461,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="horarios_fijos" Relationship="Self.fk_horario_turno" FromRole="turnos" ToRole="horarios_fijos" />
+          <NavigationProperty Name="horarios_fijos" Relationship="Self.fk_horario_turnos" FromRole="turnos" ToRole="horarios_fijos" />
         </EntityType>
         <EntityType Name="usuarios">
           <Key>
@@ -2980,18 +3001,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_id_foto">
-          <End Role="files" Type="Self.files" Multiplicity="0..1" />
-          <End Role="personas" Type="Self.personas" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="files">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="personas">
-              <PropertyRef Name="id_foto" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_noticia_thumbnail">
           <End Role="files" Type="Self.files" Multiplicity="0..1" />
           <End Role="noticias" Type="Self.noticias" Multiplicity="*" />
@@ -3100,7 +3109,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_horario_turno">
+        <Association Name="fk_horario_fijo_partido">
+          <End Role="horarios_fijos" Type="Self.horarios_fijos" Multiplicity="0..1" />
+          <End Role="partidos" Type="Self.partidos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="horarios_fijos">
+              <PropertyRef Name="id_horario" />
+            </Principal>
+            <Dependent Role="partidos">
+              <PropertyRef Name="id_horario_fijo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_horario_turnos">
           <End Role="turnos" Type="Self.turnos" Multiplicity="0..1" />
           <End Role="horarios_fijos" Type="Self.horarios_fijos" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3644,10 +3665,6 @@
             <End Role="fechas" EntitySet="fechas" />
             <End Role="noticias" EntitySet="noticias" />
           </AssociationSet>
-          <AssociationSet Name="fk_id_foto" Association="Self.fk_id_foto">
-            <End Role="files" EntitySet="files" />
-            <End Role="personas" EntitySet="personas" />
-          </AssociationSet>
           <AssociationSet Name="fk_noticia_thumbnail" Association="Self.fk_noticia_thumbnail">
             <End Role="files" EntitySet="files" />
             <End Role="noticias" EntitySet="noticias" />
@@ -3684,7 +3701,11 @@
             <End Role="partidos" EntitySet="partidos" />
             <End Role="goles" EntitySet="goles" />
           </AssociationSet>
-          <AssociationSet Name="fk_horario_turno" Association="Self.fk_horario_turno">
+          <AssociationSet Name="fk_horario_fijo_partido" Association="Self.fk_horario_fijo_partido">
+            <End Role="horarios_fijos" EntitySet="horarios_fijos" />
+            <End Role="partidos" EntitySet="partidos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_horario_turnos" Association="Self.fk_horario_turnos">
             <End Role="turnos" EntitySet="turnos" />
             <End Role="horarios_fijos" EntitySet="horarios_fijos" />
           </AssociationSet>
@@ -4008,9 +4029,10 @@
             <EntityTypeMapping TypeName="goldenModel.horarios_fijos">
               <MappingFragment StoreEntitySet="horarios_fijos">
                 <ScalarProperty Name="id_horario" ColumnName="id_horario" />
-                <ScalarProperty Name="id_turno" ColumnName="id_turno" />
+                <ScalarProperty Name="turno" ColumnName="turno" />
                 <ScalarProperty Name="inicio" ColumnName="inicio" />
                 <ScalarProperty Name="fin" ColumnName="fin" />
+                <ScalarProperty Name="id_turno" ColumnName="id_turno" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4100,6 +4122,7 @@
                 <ScalarProperty Name="id_veedor" ColumnName="id_veedor" />
                 <ScalarProperty Name="id_resultados_zona" ColumnName="id_resultados_zona" />
                 <ScalarProperty Name="id_resultado" ColumnName="id_resultado" />
+                <ScalarProperty Name="id_horario_fijo" ColumnName="id_horario_fijo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

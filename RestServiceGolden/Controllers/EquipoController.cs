@@ -208,5 +208,50 @@ namespace RestServiceGolden.Controllers
                 return BadRequest(e.ToString());
             }
         }
+
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/equipo/iJugadores/{id}")]
+        public IHttpActionResult GetiJugadoresByIdEquipo(int id)
+        {
+            try
+            {
+                var personas = (from tPersonas in db.personas
+                                join tJugador in db.jugadores on tPersonas.id_persona equals tJugador.id_persona
+                                join tFiles in db.files on tPersonas.id_foto equals tFiles.Id
+                                where tJugador.id_equipo == id
+                                select new
+                                {
+                                    nombre = tPersonas.nombre,
+                                    apellido = tPersonas.apellido,
+                                    id_persona = tJugador.id_jugador,
+                                    id_equipo = tJugador.id_equipo,
+                                    imagePath = tFiles.ImagePath,
+                                    rol = tJugador.rol,
+                                    nro_doc = tPersonas.nro_documento,
+
+                                }).OrderBy(s => s.apellido);
+
+                List<IJugador> lsJugadores = new List<IJugador>();
+                foreach (var p in personas)
+                {
+                    IJugador jugador = new IJugador();
+                    jugador.nombre = p.nombre;
+                    jugador.apellido = p.apellido;
+                    jugador.id_equipo = (int) p.id_equipo;
+                    jugador.id_persona = p.id_persona;
+                    jugador.nro_doc = Convert.ToInt32(p.nro_doc);
+                    jugador.imagePath = p.imagePath;
+                    jugador.rol = p.rol;
+
+                    lsJugadores.Add(jugador);
+                }
+                return Ok(lsJugadores);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
     }
 }

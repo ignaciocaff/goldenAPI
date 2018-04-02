@@ -201,5 +201,38 @@ namespace RestServiceGolden.Controllers
 
             return Ok(torneo);
         }
+
+
+        [ResponseType(typeof(IEquipo))]
+        [Route("api/torneo/equiposPorTorneo/{id}")]
+        public IHttpActionResult getEquiposPorTorneo(int id)
+        {
+            List<IEquipo> lsEquipos = new List<IEquipo>();
+
+            try
+            {
+                var equipos = db.equipos.OrderByDescending(x => x.nombre).Where(x => x.id_torneo == id);
+
+                foreach (var tEquipo in equipos)
+                {
+                    IEquipo equipo = new IEquipo();
+                    List<IJugador> lsJugadores = new List<IJugador>();
+
+                    equipo.id_equipo = tEquipo.id_equipo;
+                    equipo.nombre = tEquipo.nombre;
+                    equipo.lsJugadores = lsJugadores;
+
+                    lsEquipos.Add(equipo);
+                }
+                return Ok(lsEquipos);
+            }
+            catch (Exception e)
+            {
+                e.ToString();
+                Console.WriteLine(e.ToString());
+                return BadRequest(e.ToString());
+            }
+
+        }
     }
 }
