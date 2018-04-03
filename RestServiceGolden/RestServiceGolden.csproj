@@ -223,6 +223,7 @@
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\EquipoController.cs" />
+    <Compile Include="Controllers\FixtureController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\JugadorController.cs" />
@@ -234,7 +235,6 @@
     <Compile Include="Controllers\TorneoController.cs" />
     <Compile Include="Controllers\TipoTorneoController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\ZonasController.cs" />
     <Compile Include="domicilios.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -263,6 +263,9 @@
     <Compile Include="fixture.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="fixture_zona.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="fotos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -287,7 +290,6 @@
     <Compile Include="logs.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Managers\FixtureManager.cs" />
     <Compile Include="modalidades.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -312,6 +314,8 @@
     <Compile Include="Models\CategoriaNoticia.cs" />
     <Compile Include="Models\IEquipo.cs" />
     <Compile Include="Models\IJugador.cs" />
+    <Compile Include="Models\Fecha.cs" />
+    <Compile Include="Models\Fixture.cs" />
     <Compile Include="Models\Images.cs" />
     <Compile Include="Models\Club.cs" />
     <Compile Include="Models\Contacto.cs" />
@@ -336,6 +340,8 @@
     <Compile Include="Models\ReglaTorneo.cs" />
     <Compile Include="Models\Representante.cs" />
     <Compile Include="Models\Restriccion.cs" />
+    <Compile Include="Models\Resultado.cs" />
+    <Compile Include="Models\ResultadoZona.cs" />
     <Compile Include="Models\Sancion.cs" />
     <Compile Include="Models\SancionesTorneo.cs" />
     <Compile Include="Models\Sponsor.cs" />
@@ -508,6 +514,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Managers\" />
     <Folder Include="UploadedFiles\" />
   </ItemGroup>
   <ItemGroup>

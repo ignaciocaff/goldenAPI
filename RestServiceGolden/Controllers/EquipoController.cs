@@ -17,27 +17,44 @@ namespace RestServiceGolden.Controllers
         [Route("api/equipo/registrar")]
         public IHttpActionResult registrar([FromBody]Equipo equipo)
         {
-            equipos equipoDto = new equipos();
-            categorias categoria = new categorias();
-            clubes club = new clubes();
-
-            equipoDto.nombre = equipo.nombre;
-            equipoDto.descripcion = equipo.descripcion;
-            equipoDto.fecha_alta = DateTime.Now;
-            equipoDto.logo = equipo.logo;
-            equipoDto.camiseta = equipo.camiseta;
-            equipoDto.camisetalogo = equipo.camisetalogo;
-            equipoDto.id_club = equipo.club.id_club;
-            equipoDto.id_categoria_equipo = equipo.categoria.id_categoria;
-            equipoDto.id_torneo = equipo.torneo.id_torneo;
-
-            int equiposCheck = db.equipos.Where(x => x.nombre.ToUpper().Equals(equipoDto.nombre.ToUpper()) && x.id_categoria_equipo == equipoDto.id_categoria_equipo).Count();
-
-            if (equiposCheck == 0)
+            try
             {
-                db.equipos.Add(equipoDto);
-                db.SaveChanges();
-                return Ok();
+                int id_equipo;
+                equipos equipoDto = new equipos();
+                categorias categoria = new categorias();
+                clubes club = new clubes();
+
+                equipoDto.nombre = equipo.nombre;
+                equipoDto.descripcion = equipo.descripcion;
+                equipoDto.fecha_alta = DateTime.Now;
+                equipoDto.logo = equipo.logo;
+                equipoDto.camiseta = equipo.camiseta;
+                equipoDto.camisetalogo = equipo.camisetalogo;
+                equipoDto.id_club = equipo.club.id_club;
+                equipoDto.id_categoria_equipo = equipo.categoria.id_categoria;
+                equipoDto.id_torneo = equipo.torneo.id_torneo;
+
+                int equiposCheck = db.equipos.Where(x => x.nombre.ToUpper().Equals(equipoDto.nombre.ToUpper()) && x.id_categoria_equipo == equipoDto.id_categoria_equipo).Count();
+
+                if (equiposCheck == 0)
+                {
+                    db.equipos.Add(equipoDto);
+                    db.SaveChanges();
+                    id_equipo = equipoDto.id_equipo;
+
+                    equipos_zona equipo_zona = new equipos_zona();
+                    equipo_zona.id_equipo = id_equipo;
+                    equipo_zona.id_torneo = equipoDto.id_torneo;
+                    equipo_zona.id_zona = null;
+                    db.equipos_zona.Add(equipo_zona);
+                    db.SaveChanges();
+
+                    return Ok();
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
             }
 
             return BadRequest("Ya existe un equipo registrado para esta categoría con ese nombre.");
@@ -72,6 +89,130 @@ namespace RestServiceGolden.Controllers
             try
             {
                 var equipos = db.equipos.ToList();
+
+                foreach (var tEquipo in equipos)
+                {
+                    var torneoDb = db.torneos.Where(x => x.id_torneo == tEquipo.id_torneo).FirstOrDefault();
+                    var categoriaDb = db.categorias.Where(x => x.id_categoria == tEquipo.id_categoria_equipo).FirstOrDefault();
+                    Equipo equipo = new Equipo();
+                    Categoria categoria = new Categoria();
+                    Torneo torneo = new Torneo();
+                    Club club = new Club();
+                    equipo.id_equipo = tEquipo.id_equipo;
+                    equipo.nombre = tEquipo.nombre;
+                    equipo.descripcion = tEquipo.descripcion;
+                    equipo.fecha_alta = Convert.ToDateTime(tEquipo.fecha_alta);
+                    equipo.logo = (tEquipo.logo != null) ? tEquipo.logo.Value : 0;
+                    equipo.camiseta = (tEquipo.camiseta != null) ? tEquipo.camiseta.Value : 0;
+                    equipo.camisetalogo = (tEquipo.camisetalogo != null) ? tEquipo.camisetalogo.Value : 0;
+                    equipo.categoria = categoria;
+                    equipo.club = club;
+                    equipo.torneo = torneo;
+                    equipo.categoria.id_categoria = (int)tEquipo.id_categoria_equipo;
+                    equipo.club.id_club = tEquipo.id_club;
+                    equipo.torneo.id_torneo = tEquipo.id_torneo;
+                    equipo.torneo.nombre = (torneoDb != null) ? torneoDb.nombre : null;
+                    equipo.categoria.descripcion = categoriaDb.descripcion;
+                    lsEquipos.Add(equipo);
+                }
+                return Ok(lsEquipos);
+            }
+            catch (Exception e)
+            {
+                e.ToString();
+                Console.WriteLine(e.ToString());
+                return BadRequest(e.ToString());
+            }
+        }
+
+        [ResponseType(typeof(Equipo))]
+        [Route("api/equipo/equiposPorZona/{id_zona}")]
+        public IHttpActionResult GetJugadoresByZona(int id_zona)
+        {
+            List<Equipo> lsEquipos = new List<Equipo>();
+
+            try
+            {
+                var equipos = (from tEquipo in db.equipos
+                               join tEquipoZona in db.equipos_zona on tEquipo.id_equipo equals tEquipoZona.id_equipo
+                               where tEquipoZona.id_zona == id_zona
+                               select new
+                               {
+                                   id_torneo = tEquipo.id_torneo,
+                                   id_categoria_equipo = tEquipo.id_categoria_equipo,
+                                   id_equipo = tEquipo.id_equipo,
+                                   nombre = tEquipo.nombre,
+
+                                   descripcion = tEquipo.descripcion,
+                                   fecha_alta = tEquipo.fecha_alta,
+                                   logo = tEquipo.logo,
+                                   camiseta = tEquipo.camiseta,
+                                   camisetalogo = tEquipo.camisetalogo,
+                                   id_club = tEquipo.id_club
+                               }).ToList();
+
+
+                foreach (var tEquipo in equipos)
+                {
+                    var torneoDb = db.torneos.Where(x => x.id_torneo == tEquipo.id_torneo).FirstOrDefault();
+                    var categoriaDb = db.categorias.Where(x => x.id_categoria == tEquipo.id_categoria_equipo).FirstOrDefault();
+                    Equipo equipo = new Equipo();
+                    Categoria categoria = new Categoria();
+                    Torneo torneo = new Torneo();
+                    Club club = new Club();
+                    equipo.id_equipo = tEquipo.id_equipo;
+                    equipo.nombre = tEquipo.nombre;
+                    equipo.descripcion = tEquipo.descripcion;
+                    equipo.fecha_alta = Convert.ToDateTime(tEquipo.fecha_alta);
+                    equipo.logo = (tEquipo.logo != null) ? tEquipo.logo.Value : 0;
+                    equipo.camiseta = (tEquipo.camiseta != null) ? tEquipo.camiseta.Value : 0;
+                    equipo.camisetalogo = (tEquipo.camisetalogo != null) ? tEquipo.camisetalogo.Value : 0;
+                    equipo.categoria = categoria;
+                    equipo.club = club;
+                    equipo.torneo = torneo;
+                    equipo.categoria.id_categoria = (int)tEquipo.id_categoria_equipo;
+                    equipo.club.id_club = tEquipo.id_club;
+                    equipo.torneo.id_torneo = tEquipo.id_torneo;
+                    equipo.torneo.nombre = (torneoDb != null) ? torneoDb.nombre : null;
+                    equipo.categoria.descripcion = categoriaDb.descripcion;
+                    lsEquipos.Add(equipo);
+                }
+                return Ok(lsEquipos);
+            }
+            catch (Exception e)
+            {
+                e.ToString();
+                Console.WriteLine(e.ToString());
+                return BadRequest(e.ToString());
+            }
+        }
+
+        [ResponseType(typeof(Equipo))]
+        [Route("api/equipo/equiposSinZona")]
+        public IHttpActionResult GetEquiposSinZona()
+        {
+            List<Equipo> lsEquipos = new List<Equipo>();
+
+            try
+            {
+                var equipos = (from tEquipo in db.equipos
+                               join tEquipoZona in db.equipos_zona on tEquipo.id_equipo equals tEquipoZona.id_equipo
+                               where tEquipoZona.id_zona == null
+                               select new
+                               {
+                                   id_torneo = tEquipo.id_torneo,
+                                   id_categoria_equipo = tEquipo.id_categoria_equipo,
+                                   id_equipo = tEquipo.id_equipo,
+                                   nombre = tEquipo.nombre,
+
+                                   descripcion = tEquipo.descripcion,
+                                   fecha_alta = tEquipo.fecha_alta,
+                                   logo = tEquipo.logo,
+                                   camiseta = tEquipo.camiseta,
+                                   camisetalogo = tEquipo.camisetalogo,
+                                   id_club = tEquipo.id_club
+                               }).ToList();
+
 
                 foreach (var tEquipo in equipos)
                 {
