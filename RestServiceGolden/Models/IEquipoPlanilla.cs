@@ -5,7 +5,7 @@ using System.Web;
 
 namespace RestServiceGolden.Models
 {
-    public class IEquipo
+    public class IEquipoPlanilla
     {
         public int id_equipo { get; set; }
         public string nombre { get; set; }

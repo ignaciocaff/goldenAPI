@@ -203,11 +203,11 @@ namespace RestServiceGolden.Controllers
         }
 
 
-        [ResponseType(typeof(IEquipo))]
+        [ResponseType(typeof(IEquipoPlanilla))]
         [Route("api/torneo/equiposPorTorneo/{id}")]
         public IHttpActionResult getEquiposPorTorneo(int id)
         {
-            List<IEquipo> lsEquipos = new List<IEquipo>();
+            List<IEquipoPlanilla> lsEquipos = new List<IEquipoPlanilla>();
 
             try
             {
@@ -215,7 +215,7 @@ namespace RestServiceGolden.Controllers
 
                 foreach (var tEquipo in equipos)
                 {
-                    IEquipo equipo = new IEquipo();
+                    IEquipoPlanilla equipo = new IEquipoPlanilla();
                     List<IJugador> lsJugadores = new List<IJugador>();
 
                     equipo.id_equipo = tEquipo.id_equipo;
