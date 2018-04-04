@@ -9,6 +9,6 @@ namespace RestServiceGolden.Models
     {
         public int id_equipo { get; set; }
         public string nombre { get; set; }
-        public List<IJugador> lsJugadores{ get; set; }
+        public List<IJugador> lsJugadores { get; set; }
     }
 }

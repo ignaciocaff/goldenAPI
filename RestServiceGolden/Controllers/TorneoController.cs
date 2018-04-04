@@ -204,7 +204,7 @@ namespace RestServiceGolden.Controllers
 
 
         [ResponseType(typeof(IEquipoPlanilla))]
-        [Route("api/torneo/equiposPorTorneo/{id}")]
+        [Route("api/torneo/iequiposPorTorneo/{id}")]
         public IHttpActionResult getEquiposPorTorneo(int id)
         {
             List<IEquipoPlanilla> lsEquipos = new List<IEquipoPlanilla>();

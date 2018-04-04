@@ -14,5 +14,6 @@ namespace RestServiceGolden.Models
         public int nro_doc { get; set; }
         public String imagePath { get; set; }
         public String rol { get; set; }
+        public int edad { get; set; }
     }
 }

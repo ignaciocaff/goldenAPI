@@ -312,7 +312,7 @@
     <Compile Include="Models\Cancha.cs" />
     <Compile Include="Models\CategoriaEquipo.cs" />
     <Compile Include="Models\CategoriaNoticia.cs" />
-    <Compile Include="Models\IEquipo.cs" />
+    <Compile Include="Models\IEquipoPlanilla.cs" />
     <Compile Include="Models\IJugador.cs" />
     <Compile Include="Models\Fecha.cs" />
     <Compile Include="Models\Fixture.cs" />
