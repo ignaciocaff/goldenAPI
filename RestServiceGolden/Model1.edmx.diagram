@@ -140,6 +140,8 @@
         <AssociationConnector Association="goldenModel.fk_tipo_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_zonas_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_fecha_zona_fixture" />
+        <EntityTypeShape EntityType="goldenModel.reglamentos" Width="1.5" PointX="3.75" PointY="52.5" />
+        <AssociationConnector Association="goldenModel.fk_reglamento_id_torneo" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -30,6 +30,7 @@ namespace RestServiceGolden
             this.sanciones_torneo = new HashSet<sanciones_torneo>();
             this.sponsors = new HashSet<sponsors>();
             this.zonas = new HashSet<zonas>();
+            this.reglamentos = new HashSet<reglamentos>();
         }
     
         public int id_torneo { get; set; }
@@ -72,5 +73,7 @@ namespace RestServiceGolden
         public virtual tipos_torneos tipos_torneos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<zonas> zonas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<reglamentos> reglamentos { get; set; }
     }
 }

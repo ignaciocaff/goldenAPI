@@ -365,6 +365,14 @@
           <Property Name="fecha_modificacion" Type="datetime" Precision="0" />
           <Property Name="fecha_baja" Type="datetime" Precision="0" />
         </EntityType>
+        <EntityType Name="reglamentos">
+          <Key>
+            <PropertyRef Name="id_reglamento" />
+          </Key>
+          <Property Name="id_reglamento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="mediumtext" />
+          <Property Name="id_torneo" Type="int" />
+        </EntityType>
         <EntityType Name="reglas_torneo">
           <Key>
             <PropertyRef Name="id_regla" />
@@ -1265,6 +1273,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_reglamento_id_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="reglamentos" Type="Self.reglamentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="reglamentos">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_reglas_torneo">
           <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
           <End Role="reglas_torneo" Type="Self.reglas_torneo" Multiplicity="*" />
@@ -1552,6 +1572,7 @@
           <EntitySet Name="posiciones" EntityType="Self.posiciones" Schema="golden" store:Type="Tables" />
           <EntitySet Name="posiciones_zona" EntityType="Self.posiciones_zona" Schema="golden" store:Type="Tables" />
           <EntitySet Name="provincias" EntityType="Self.provincias" Schema="golden" store:Type="Tables" />
+          <EntitySet Name="reglamentos" EntityType="Self.reglamentos" Schema="golden" store:Type="Tables" />
           <EntitySet Name="reglas_torneo" EntityType="Self.reglas_torneo" Schema="golden" store:Type="Tables" />
           <EntitySet Name="representante_equipo" EntityType="Self.representante_equipo" Schema="golden" store:Type="Tables" />
           <EntitySet Name="restricciones" EntityType="Self.restricciones" Schema="golden" store:Type="Tables" />
@@ -1817,6 +1838,10 @@
           <AssociationSet Name="fk_regla_torneo" Association="Self.fk_regla_torneo">
             <End Role="reglas_torneo" EntitySet="reglas_torneo" />
             <End Role="torneos" EntitySet="torneos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_reglamento_id_torneo" Association="Self.fk_reglamento_id_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="reglamentos" EntitySet="reglamentos" />
           </AssociationSet>
           <AssociationSet Name="fk_reglas_torneo" Association="Self.fk_reglas_torneo">
             <End Role="torneos" EntitySet="torneos" />
@@ -2545,6 +2570,7 @@
           <NavigationProperty Name="sponsors" Relationship="Self.fk_sponsor_torneo" FromRole="torneos" ToRole="sponsors" />
           <NavigationProperty Name="tipos_torneos" Relationship="Self.fk_tipo_torneo" FromRole="torneos" ToRole="tipos_torneos" />
           <NavigationProperty Name="zonas" Relationship="Self.fk_zonas_torneo" FromRole="torneos" ToRole="zonas" />
+          <NavigationProperty Name="reglamentos" Relationship="goldenModel.fk_reglamento_id_torneo" FromRole="torneos" ToRole="reglamentos" />
         </EntityType>
         <EntityType Name="turnos">
           <Key>
@@ -3958,6 +3984,11 @@
             <End Role="fixture_zona" EntitySet="fixture_zona" />
             <End Role="fechas" EntitySet="fechas" />
           </AssociationSet>
+          <EntitySet Name="reglamentos" EntityType="goldenModel.reglamentos" />
+          <AssociationSet Name="fk_reglamento_id_torneo" Association="goldenModel.fk_reglamento_id_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="reglamentos" EntitySet="reglamentos" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="fk_fecha_zona_fixture">
           <End Type="goldenModel.fixture_zona" Role="fixture_zona" Multiplicity="0..1" />
@@ -3968,6 +3999,27 @@
             </Principal>
             <Dependent Role="fechas">
               <PropertyRef Name="id_fixture_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="reglamentos">
+          <Key>
+            <PropertyRef Name="id_reglamento" />
+          </Key>
+          <Property Name="id_reglamento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="16777215" FixedLength="false" Unicode="false" />
+          <Property Name="id_torneo" Type="Int32" />
+          <NavigationProperty Name="torneos" Relationship="goldenModel.fk_reglamento_id_torneo" FromRole="reglamentos" ToRole="torneos" />
+        </EntityType>
+        <Association Name="fk_reglamento_id_torneo">
+          <End Type="goldenModel.torneos" Role="torneos" Multiplicity="0..1" />
+          <End Type="goldenModel.reglamentos" Role="reglamentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="reglamentos">
+              <PropertyRef Name="id_torneo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4542,6 +4594,15 @@
                 <ScalarProperty Name="id_zona" ColumnName="id_zona" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
                 <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reglamentos">
+            <EntityTypeMapping TypeName="goldenModel.reglamentos">
+              <MappingFragment StoreEntitySet="reglamentos">
+                <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="id_reglamento" ColumnName="id_reglamento" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
