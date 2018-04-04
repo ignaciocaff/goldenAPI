@@ -312,6 +312,7 @@
     <Compile Include="Models\CategoriaNoticia.cs" />
     <Compile Include="Models\Fecha.cs" />
     <Compile Include="Models\Fixture.cs" />
+    <Compile Include="Models\IEquipo.cs" />
     <Compile Include="Models\Images.cs" />
     <Compile Include="Models\Club.cs" />
     <Compile Include="Models\Contacto.cs" />
@@ -323,6 +324,7 @@
     <Compile Include="Models\Gol.cs" />
     <Compile Include="Models\Goleador.cs" />
     <Compile Include="Models\HorarioFijo.cs" />
+    <Compile Include="Models\IPartido.cs" />
     <Compile Include="Models\Jugador.cs" />
     <Compile Include="Models\Localidad.cs" />
     <Compile Include="Models\Noticia.cs" />

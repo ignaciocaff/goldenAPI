@@ -21,7 +21,7 @@ namespace RestServiceGolden.Controllers
             List<Zona> lsZonas = new List<Zona>();
             try
             {
-                var zonas = db.zonas.ToList();
+                var zonas = db.zonas.ToList().OrderBy(z => z.descripcion);
 
                 foreach (var tZona in zonas)
                 {

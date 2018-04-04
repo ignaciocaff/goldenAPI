@@ -7,7 +7,7 @@ namespace RestServiceGolden.Models
 {
     public class Partido
     {
-        public int id_partido { get; set; }
+        public int? id_partido { get; set; }
         public String duracion { get; set; }
         public Fecha fecha { get; set; }
         public String inicio { get; set; }
