@@ -9,7 +9,6 @@ using System.Web.Http.Description;
 
 namespace RestServiceGolden.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class TorneoController : ApiController
     {
         goldenEntities db = new goldenEntities();
@@ -201,6 +200,39 @@ namespace RestServiceGolden.Controllers
             torneo.descripcion = torneos.descripcion;
 
             return Ok(torneo);
+        }
+
+
+        [ResponseType(typeof(IEquipoPlanilla))]
+        [Route("api/torneo/iequiposPorTorneo/{id}")]
+        public IHttpActionResult getEquiposPorTorneo(int id)
+        {
+            List<IEquipoPlanilla> lsEquipos = new List<IEquipoPlanilla>();
+
+            try
+            {
+                var equipos = db.equipos.OrderByDescending(x => x.nombre).Where(x => x.id_torneo == id);
+
+                foreach (var tEquipo in equipos)
+                {
+                    IEquipoPlanilla equipo = new IEquipoPlanilla();
+                    List<IJugador> lsJugadores = new List<IJugador>();
+
+                    equipo.id_equipo = tEquipo.id_equipo;
+                    equipo.nombre = tEquipo.nombre;
+                    equipo.lsJugadores = lsJugadores;
+
+                    lsEquipos.Add(equipo);
+                }
+                return Ok(lsEquipos);
+            }
+            catch (Exception e)
+            {
+                e.ToString();
+                Console.WriteLine(e.ToString());
+                return BadRequest(e.ToString());
+            }
+
         }
     }
 }

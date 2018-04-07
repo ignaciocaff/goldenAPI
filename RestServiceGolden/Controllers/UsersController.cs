@@ -8,7 +8,6 @@ using RestServiceGolden.Models;
 
 namespace RestServiceGolden.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UsersController : ApiController
     {
         private static String representante = "REPRESENTANTE";

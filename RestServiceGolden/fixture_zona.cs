@@ -25,10 +25,10 @@ namespace RestServiceGolden
         public Nullable<int> id_tipo { get; set; }
         public Nullable<int> id_zona { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<fechas> fechas { get; set; }
         public virtual torneos torneos { get; set; }
         public virtual tipos_fixture tipos_fixture { get; set; }
         public virtual zonas zonas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<fechas> fechas { get; set; }
     }
 }

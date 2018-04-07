@@ -9,7 +9,6 @@ using System.Web.Http.Description;
 
 namespace RestServiceGolden.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class JugadorController : ApiController
     {
         goldenEntities db = new goldenEntities();
@@ -22,7 +21,8 @@ namespace RestServiceGolden.Controllers
             jugadores jugadorDto = new jugadores();
             equipos equipo = new equipos();
 
-            if (jugador.rol.Equals("jugador"))
+            //Si el id_jugador es distinto de null, entonces estoy haciendo un update y no es necesario verificar el limite.
+            if (jugador.rol.Equals("jugador") && jugador.id_jugador != null)
             {
                 if (!verificarLimiteEquipo((int)jugador.equipo.id_equipo))
                 {
@@ -40,14 +40,20 @@ namespace RestServiceGolden.Controllers
                 actualizarPersona(jugador);
             }
 
-            jugadorDto.numero = jugador.numero;
-            jugadorDto.fecha_alta = DateTime.Now;
-            jugadorDto.id_equipo = jugador.equipo.id_equipo;
-            jugadorDto.rol = jugador.rol;
+            if(jugador.id_jugador == null) { 
+                jugadorDto.numero = jugador.numero;
+                jugadorDto.fecha_alta = DateTime.Now;
+                jugadorDto.id_equipo = jugador.equipo.id_equipo;
+                jugadorDto.rol = jugador.rol;
 
-            db.jugadores.Add(jugadorDto);
-            db.SaveChanges();
-            return Ok();
+                db.jugadores.Add(jugadorDto);
+                db.SaveChanges();
+                return Ok();
+            }
+            else {
+                actualizarJugador(jugador);
+                return Ok();
+            }
         }
 
 
@@ -250,11 +256,10 @@ namespace RestServiceGolden.Controllers
         }
 
         [ResponseType(typeof(Persona))]
-        [Route("api/jugador/{doc}")]
-        public IHttpActionResult getByDoc(int doc)
+        [Route("api/persona/{doc}")]
+        public Jugador getByDoc(int doc)
         {
-
-            List<Persona> lsPersonas = new List<Persona>();
+            Jugador per = new Jugador();
             try
             {
 
@@ -264,7 +269,7 @@ namespace RestServiceGolden.Controllers
                                   join tContacto in db.contactos on tPersonas.id_contacto equals tContacto.id_contacto
                                   join tLocalidad in db.localidades on tDomicilio.id_localidad equals tLocalidad.id_localidad
                                   join tProvincias in db.provincias on tLocalidad.id_provincia equals tProvincias.id_provincia
-                                  //join tJugador in db.jugadores on tPersonas.id_persona equals tJugador.id_persona
+                                 // join tJugador in db.jugadores on tPersonas.id_persona equals tJugador.id_persona
                                   where tPersonas.nro_documento == doc
                                   select new
                                   {
@@ -303,8 +308,7 @@ namespace RestServiceGolden.Controllers
 
                 foreach (var p in ObjPersona)
                 {
-                    Persona persona = new Persona();
-                    // Jugador jugador = new Jugador();
+                    Jugador jugador = new Jugador();
                     TipoDocumento tipoDoc = new TipoDocumento();
                     Domicilio domicilio = new Domicilio();
                     Contacto contacto = new Contacto();
@@ -312,58 +316,113 @@ namespace RestServiceGolden.Controllers
                     Localidad loc = new Localidad();
                     List<Localidad> listaLoc = new List<Localidad>();
 
-                    persona.id_persona = p.id_persona;
-                    persona.nombre = p.nombre;
-                    persona.apellido = p.apellido;
-                    persona.fecha_nacimiento = p.fecha_nacim;
-                    persona.ocupacion = p.ocupacion;
-                    persona.nro_documento = Convert.ToInt32(p.nro_documento);
-                    persona.id_foto = (int)p.id_foto;
+                    jugador.id_persona = p.id_persona;
+                    jugador.nombre = p.nombre;
+                    jugador.apellido = p.apellido;
+                    jugador.fecha_nacimiento = p.fecha_nacim;
+                    jugador.ocupacion = p.ocupacion;
+                    jugador.nro_documento = Convert.ToInt32(p.nro_documento);
+                    jugador.id_foto = (int)p.id_foto;
 
-                    persona.tipoDocumento = tipoDoc;
-                    persona.tipoDocumento.id_tipo_documento = p.tipo_documento;
-                    persona.tipoDocumento.descripcion = p.descr_documento;
+                    jugador.tipoDocumento = tipoDoc;
+                    jugador.tipoDocumento.id_tipo_documento = p.tipo_documento;
+                    jugador.tipoDocumento.descripcion = p.descr_documento;
 
-                    persona.domicilio = domicilio;
-                    persona.domicilio.id_domicilio = p.id_domicilio;
-                    persona.domicilio.calle = p.calle;
-                    persona.domicilio.numeracion = p.numeracion;
-                    persona.domicilio.piso = p.piso;
-                    persona.domicilio.dpto = p.dpto;
-                    persona.domicilio.torre = p.torre;
-                    persona.domicilio.barrio = p.barrio;
-                    persona.domicilio.observaciones = p.obs;
+                    jugador.domicilio = domicilio;
+                    jugador.domicilio.id_domicilio = p.id_domicilio;
+                    jugador.domicilio.calle = p.calle;
+                    jugador.domicilio.numeracion = p.numeracion;
+                    jugador.domicilio.piso = p.piso;
+                    jugador.domicilio.dpto = p.dpto;
+                    jugador.domicilio.torre = p.torre;
+                    jugador.domicilio.barrio = p.barrio;
+                    jugador.domicilio.observaciones = p.obs;
 
-                    persona.domicilio.localidad = loc;
-                    persona.domicilio.localidad.id_localidad = p.id_loc;
-                    persona.domicilio.localidad.n_localidad = p.n_loc;
+                    jugador.domicilio.localidad = loc;
+                    jugador.domicilio.localidad.id_localidad = p.id_loc;
+                    jugador.domicilio.localidad.n_localidad = p.n_loc;
 
-                    persona.domicilio.localidad.provincia = prov;
-                    persona.domicilio.localidad.provincia.id_provincia = p.id_prov;
-                    persona.domicilio.localidad.provincia.n_provincia = p.n_prov;
+                    jugador.domicilio.localidad.provincia = prov;
+                    jugador.domicilio.localidad.provincia.id_provincia = p.id_prov;
+                    jugador.domicilio.localidad.provincia.n_provincia = p.n_prov;
 
                     listaLoc.Add(new Localidad(p.id_loc, p.n_loc, new Provincia(p.id_prov, p.n_prov)));
-                    persona.domicilio.localidad.provincia.lsLocalidades = listaLoc;
+                    jugador.domicilio.localidad.provincia.lsLocalidades = listaLoc;
 
-                    persona.contacto = contacto;
-                    persona.contacto.id_contacto = p.id_contacto;
-                    persona.contacto.email = p.email;
-                    persona.contacto.telefono_fijo = p.fijo;
-                    persona.contacto.telefono_movil = p.cel;
+                    jugador.contacto = contacto;
+                    jugador.contacto.id_contacto = p.id_contacto;
+                    jugador.contacto.email = p.email;
+                    jugador.contacto.telefono_fijo = p.fijo;
+                    jugador.contacto.telefono_movil = p.cel;
 
-                    lsPersonas.Add(persona);
+                    return jugador;
                 }
-                return Ok(lsPersonas);
+                return per;
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.ToString());
+                return per;
             }
         }
         public Boolean verificarLimiteEquipo(int id)
         {
             var cantidadJugadores = db.jugadores.Count(x => x.id_equipo == id && x.rol != "jugador");
             return (cantidadJugadores <= 25);
+        }
+
+        [ResponseType(typeof(Jugador))]
+        [Route("api/jugador/obtenerJugador")]
+        public IHttpActionResult obtenerJugador([FromBody]Jugador jugador)
+        {
+            try
+            {
+                Jugador jug = new Jugador();
+                jug = getByDoc(jugador.nro_documento);
+                var j = db.jugadores.Where(x => x.id_equipo == jugador.equipo.id_equipo && x.id_persona == jug.id_persona).FirstOrDefault();
+
+                if(j != null)
+                {
+                    jug.rol = j.rol;
+                    jug.id_jugador = j.id_jugador;
+                                        
+                }
+                return Ok(jug);      
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
+
+        public void actualizarJugador(Jugador jugador)
+        {
+            jugadores j = new jugadores();
+            try
+            {
+                j.id_jugador = (int)jugador.id_jugador;
+                j.fecha_alta = jugador.fecha_alta;
+                j.numero = jugador.numero;
+                j.id_persona = jugador.id_persona;
+                j.rol = jugador.rol;
+                j.id_equipo = jugador.equipo.id_equipo;
+
+                var r = db.jugadores.SingleOrDefault(x => x.id_jugador == jugador.id_jugador);
+
+                if (r != null)
+                {
+                    r.id_jugador = j.id_jugador;
+                    r.fecha_alta = j.fecha_alta;
+                    r.numero = j.numero;
+                    r.id_persona = j.id_persona;
+                    r.rol = j.rol;
+                    r.id_equipo = j.id_equipo;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
         }
     }
 }

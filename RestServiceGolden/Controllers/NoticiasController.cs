@@ -9,7 +9,6 @@ using System.Web.Http.Description;
 
 namespace RestServiceGolden.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class NoticiasController : ApiController
     {
         goldenEntities db = new goldenEntities();
@@ -122,7 +121,12 @@ namespace RestServiceGolden.Controllers
                 noticia.descripcion = noticias.descripcion;
                 noticia.fecha = Convert.ToDateTime(noticias.fecha);
                 noticia.torneo.id_torneo = noticias.id_torneo;
-                noticia.torneo.nombre = noticias.torneos.nombre;
+                if(noticias.id_torneo != null) { 
+                    noticia.torneo.nombre = noticias.torneos.nombre;
+                } else
+                {
+                    noticia.torneo.nombre = null;
+                }
                 noticia.club.id_club = noticias.id_club;
                 noticia.categoriaNoticia.id_categoria_noticia = noticias.id_categoria_noticia;
                 noticia.categoriaNoticia.descripcion = noticias.categorias_noticias.descripcion;
