@@ -17,30 +17,37 @@ namespace RestServiceGolden.Controllers
         [Route("api/noticia/registrar")]
         public IHttpActionResult registrar([FromBody]Noticia noticia)
         {
-            noticias noticiaDto = new noticias();
-            torneos torneo = new torneos();
-            categorias_noticias categoriaNoticia = new categorias_noticias();
-            clubes club = new clubes();
+            try
+            {
+                noticias noticiaDto = new noticias();
+                torneos torneo = new torneos();
+                categorias_noticias categoriaNoticia = new categorias_noticias();
+                clubes club = new clubes();
 
-            noticiaDto.titulo = noticia.titulo;
-            noticiaDto.descripcion = noticia.descripcion;
-            noticiaDto.fecha = DateTime.Now;
-            noticiaDto.id_torneo = noticia.torneo.id_torneo;
-            noticiaDto.id_club = noticia.club.id_club;
-            noticiaDto.id_categoria_noticia = noticia.categoriaNoticia.id_categoria_noticia;
-            noticiaDto.tags = noticia.tags;
-            noticiaDto.id_thumbnail = noticia.id_thumbnail;
+                noticiaDto.titulo = noticia.titulo;
+                noticiaDto.descripcion = noticia.descripcion;
+                noticiaDto.fecha = DateTime.Now;
+                noticiaDto.id_torneo = noticia.torneo.id_torneo;
+                noticiaDto.id_club = noticia.club.id_club;
+                noticiaDto.id_categoria_noticia = noticia.categoriaNoticia.id_categoria_noticia;
+                noticiaDto.tags = noticia.tags;
+                noticiaDto.id_thumbnail = noticia.id_thumbnail;
 
-            db.noticias.Add(noticiaDto);
-            db.SaveChanges();
-            return Ok();
+                db.noticias.Add(noticiaDto);
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
         }
 
         [ResponseType(typeof(Noticia))]
         [Route("api/noticia/principales/{id}")]
         public IHttpActionResult getPrincipales(int id)
         {
-            List<Noticia> lsNoticiasPrincipales= new List<Noticia>();
+            List<Noticia> lsNoticiasPrincipales = new List<Noticia>();
 
             var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_categoria_noticia == 1 && (x.id_torneo == id || x.id_torneo == null)).Take(2);
 
@@ -104,7 +111,8 @@ namespace RestServiceGolden.Controllers
         [Route("api/noticia/{id}")]
         public IHttpActionResult getById(int id)
         {
-            try { 
+            try
+            {
                 var noticias = db.noticias.Where(x => x.id_noticia == id).FirstOrDefault();
                 var cat_not = db.categorias_noticias.Where(x => x.id_categoria_noticia == noticias.categorias_noticias.id_categoria_noticia).First();
 
@@ -121,9 +129,11 @@ namespace RestServiceGolden.Controllers
                 noticia.descripcion = noticias.descripcion;
                 noticia.fecha = Convert.ToDateTime(noticias.fecha);
                 noticia.torneo.id_torneo = noticias.id_torneo;
-                if(noticias.id_torneo != null) { 
+                if (noticias.id_torneo != null)
+                {
                     noticia.torneo.nombre = noticias.torneos.nombre;
-                } else
+                }
+                else
                 {
                     noticia.torneo.nombre = null;
                 }
@@ -135,7 +145,8 @@ namespace RestServiceGolden.Controllers
 
                 return Ok(noticia);
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
             }
@@ -145,13 +156,13 @@ namespace RestServiceGolden.Controllers
         [Route("api/noticias/categorias")]
         public IHttpActionResult GetAll()
         {
-            List<CategoriaNoticia> lsCategoriasNoticias= new List<CategoriaNoticia>();
+            List<CategoriaNoticia> lsCategoriasNoticias = new List<CategoriaNoticia>();
 
             var categoriasnoticias = db.categorias_noticias.ToList();
 
             foreach (var cn in categoriasnoticias)
             {
-                CategoriaNoticia categoria= new CategoriaNoticia();
+                CategoriaNoticia categoria = new CategoriaNoticia();
                 categoria.id_categoria_noticia = cn.id_categoria_noticia;
                 categoria.descripcion = cn.descripcion;
                 lsCategoriasNoticias.Add(categoria);
@@ -159,13 +170,14 @@ namespace RestServiceGolden.Controllers
             return Ok(lsCategoriasNoticias);
         }
 
-    [Route("api/noticia/update")]
-        public IHttpActionResult update([FromBody]Noticia noticia) {
-
-        noticias noticiaDto = new noticias();
-
-        try
+        [Route("api/noticia/update")]
+        public IHttpActionResult update([FromBody]Noticia noticia)
         {
+
+            noticias noticiaDto = new noticias();
+
+            try
+            {
                 noticiaDto.id_noticia = noticia.id_noticia.Value;
                 noticiaDto.titulo = noticia.titulo;
                 noticiaDto.descripcion = noticia.descripcion;
@@ -178,7 +190,7 @@ namespace RestServiceGolden.Controllers
 
                 var result = db.noticias.SingleOrDefault(n => n.id_noticia == noticiaDto.id_noticia);
 
-                if(result != null)
+                if (result != null)
                 {
                     result.id_noticia = noticiaDto.id_noticia;
                     result.titulo = noticiaDto.titulo;
@@ -191,7 +203,8 @@ namespace RestServiceGolden.Controllers
                     db.SaveChanges();
                 }
                 return Ok();
-        } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
             }
