@@ -780,6 +780,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_fecha_zona_fixture">
+          <End Role="fixture_zona" Type="Self.fixture_zona" Multiplicity="0..1" />
+          <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fixture_zona">
+              <PropertyRef Name="id_fixture" />
+            </Principal>
+            <Dependent Role="fechas">
+              <PropertyRef Name="id_fixture_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_fixture_tipo">
           <End Role="tipos_fixture" Type="Self.tipos_fixture" Multiplicity="0..1" />
           <End Role="fixture" Type="Self.fixture" Multiplicity="*" />
@@ -1674,6 +1686,10 @@
             <End Role="fechas" EntitySet="fechas" />
             <End Role="partidos" EntitySet="partidos" />
           </AssociationSet>
+          <AssociationSet Name="fk_fecha_zona_fixture" Association="Self.fk_fecha_zona_fixture">
+            <End Role="fixture_zona" EntitySet="fixture_zona" />
+            <End Role="fechas" EntitySet="fechas" />
+          </AssociationSet>
           <AssociationSet Name="fk_fixture_tipo" Association="Self.fk_fixture_tipo">
             <End Role="tipos_fixture" EntitySet="tipos_fixture" />
             <End Role="fixture" EntitySet="fixture" />
@@ -2114,6 +2130,7 @@
           <NavigationProperty Name="fixture" Relationship="Self.fk_fecha_fixture" FromRole="fechas" ToRole="fixture" />
           <NavigationProperty Name="fixture_zona" Relationship="Self.fk_fecha_fixture_zona" FromRole="fechas" ToRole="fixture_zona" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_fecha_partido" FromRole="fechas" ToRole="partidos" />
+          <NavigationProperty Name="fixture_zona1" Relationship="Self.fk_fecha_zona_fixture" FromRole="fechas" ToRole="fixture_zona" />
           <NavigationProperty Name="fotos" Relationship="Self.fk_foto_fecha" FromRole="fechas" ToRole="fotos" />
           <NavigationProperty Name="noticias" Relationship="Self.fk_noticia_fecha" FromRole="fechas" ToRole="noticias" />
         </EntityType>
@@ -2154,6 +2171,7 @@
           <Property Name="id_tipo" Type="Int32" />
           <Property Name="id_zona" Type="Int32" />
           <NavigationProperty Name="fechas" Relationship="Self.fk_fecha_fixture_zona" FromRole="fixture_zona" ToRole="fechas" />
+          <NavigationProperty Name="fechas1" Relationship="Self.fk_fecha_zona_fixture" FromRole="fixture_zona" ToRole="fechas" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_fixtureZ_torneo" FromRole="fixture_zona" ToRole="torneos" />
           <NavigationProperty Name="tipos_fixture" Relationship="Self.fk_tipo_fixtureZ" FromRole="fixture_zona" ToRole="tipos_fixture" />
           <NavigationProperty Name="zonas" Relationship="Self.fk_zona_fixture" FromRole="fixture_zona" ToRole="zonas" />
@@ -3115,6 +3133,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_fecha_zona_fixture">
+          <End Role="fixture_zona" Type="Self.fixture_zona" Multiplicity="0..1" />
+          <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fixture_zona">
+              <PropertyRef Name="id_fixture" />
+            </Principal>
+            <Dependent Role="fechas">
+              <PropertyRef Name="id_fixture_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_foto_fecha">
           <End Role="fechas" Type="Self.fechas" Multiplicity="0..1" />
           <End Role="fotos" Type="Self.fotos" Multiplicity="*" />
@@ -3848,6 +3878,10 @@
           <AssociationSet Name="fk_fecha_partido" Association="Self.fk_fecha_partido">
             <End Role="fechas" EntitySet="fechas" />
             <End Role="partidos" EntitySet="partidos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_fecha_zona_fixture" Association="Self.fk_fecha_zona_fixture">
+            <End Role="fixture_zona" EntitySet="fixture_zona" />
+            <End Role="fechas" EntitySet="fechas" />
           </AssociationSet>
           <AssociationSet Name="fk_foto_fecha" Association="Self.fk_foto_fecha">
             <End Role="fechas" EntitySet="fechas" />
