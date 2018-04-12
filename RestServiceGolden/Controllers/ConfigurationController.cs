@@ -92,6 +92,5 @@ namespace RestServiceGolden.Controllers
                 return BadRequest(e.ToString());
             }
         }
-
     }
 }

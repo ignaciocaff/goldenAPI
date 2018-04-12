@@ -20,7 +20,7 @@ namespace RestServiceGolden.Controllers
             personas persona = new personas();
             jugadores jugadorDto = new jugadores();
             equipos equipo = new equipos();
-
+            try { 
             //Si el id_jugador es distinto de null, entonces estoy haciendo un update y no es necesario verificar el limite.
             if (jugador.rol.Equals("jugador") && jugador.id_jugador != null)
             {
@@ -54,25 +54,29 @@ namespace RestServiceGolden.Controllers
                 actualizarJugador(jugador);
                 return Ok();
             }
+        } catch(Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
 
         public int registrarDomicilio(Jugador jugador)
         {
-            domicilios domicilio = new domicilios();
-
-            domicilio.calle = jugador.domicilio.calle;
-            domicilio.numeracion = jugador.domicilio.numeracion;
-            domicilio.piso = jugador.domicilio.piso;
-            domicilio.dpto = jugador.domicilio.dpto;
-            domicilio.torre = jugador.domicilio.torre;
-            domicilio.id_localidad = jugador.domicilio.localidad.id_localidad;
-            domicilio.barrio = jugador.domicilio.barrio;
-            domicilio.observaciones = jugador.domicilio.observaciones;
-            domicilio.fecha_alta = DateTime.Now;
-
             try
             {
+                domicilios domicilio = new domicilios();
+
+                domicilio.calle = jugador.domicilio.calle;
+                domicilio.numeracion = jugador.domicilio.numeracion;
+                domicilio.piso = jugador.domicilio.piso;
+                domicilio.dpto = jugador.domicilio.dpto;
+                domicilio.torre = jugador.domicilio.torre;
+                domicilio.id_localidad = jugador.domicilio.provincia.lsLocalidades[0].id_localidad;
+                domicilio.barrio = jugador.domicilio.barrio;
+                domicilio.observaciones = jugador.domicilio.observaciones;
+                domicilio.fecha_alta = DateTime.Now;
+
                 db.domicilios.Add(domicilio);
                 db.SaveChanges();
 
@@ -87,15 +91,15 @@ namespace RestServiceGolden.Controllers
 
         public int registrarContacto(Jugador jugador)
         {
-            contactos contacto = new contactos();
-
-            contacto.telefono_fijo = jugador.contacto.telefono_fijo;
-            contacto.telefono_movil = jugador.contacto.telefono_movil;
-            contacto.email = jugador.contacto.email;
-            contacto.fecha_alta = DateTime.Now;
-
             try
             {
+                contactos contacto = new contactos();
+
+                contacto.telefono_fijo = jugador.contacto.telefono_fijo;
+                contacto.telefono_movil = jugador.contacto.telefono_movil;
+                contacto.email = jugador.contacto.email;
+                contacto.fecha_alta = DateTime.Now;
+
                 db.contactos.Add(contacto);
                 db.SaveChanges();
 
@@ -110,25 +114,26 @@ namespace RestServiceGolden.Controllers
 
         public int registrarPersona(Jugador jugador)
         {
-            personas persona = new personas();
-
-            if (jugador.Equals(null))
-                return 0;
-
-            persona.id_domicilio = registrarDomicilio(jugador);
-            persona.id_contacto = registrarContacto(jugador);
-
-            persona.nombre = jugador.nombre;
-            persona.apellido = jugador.apellido;
-            persona.fecha_nacimiento = jugador.fecha_nacimiento;
-            persona.nro_documento = jugador.nro_documento;
-            persona.id_tipo_documento = (int)jugador.tipoDocumento.id_tipo_documento;
-            persona.id_foto = jugador.id_foto;
-            persona.ocupacion = jugador.ocupacion;
-            persona.fecha_alta = DateTime.Now;
-
             try
             {
+                personas persona = new personas();
+
+                if (jugador.Equals(null))
+                    return 0;
+
+                persona.id_domicilio = registrarDomicilio(jugador);
+                persona.id_contacto = registrarContacto(jugador);
+
+                persona.nombre = jugador.nombre;
+                persona.apellido = jugador.apellido;
+                persona.fecha_nacimiento = jugador.fecha_nacimiento;
+                persona.nro_documento = jugador.nro_documento;
+                persona.id_tipo_documento = (int)jugador.tipoDocumento.id_tipo_documento;
+                persona.id_foto = jugador.id_foto;
+                persona.ocupacion = jugador.ocupacion;
+                persona.fecha_alta = DateTime.Now;
+
+
 
                 db.personas.Add(persona);
                 db.SaveChanges();
@@ -198,7 +203,7 @@ namespace RestServiceGolden.Controllers
                 domicilio.piso = jugador.domicilio.piso;
                 domicilio.dpto = jugador.domicilio.dpto;
                 domicilio.torre = jugador.domicilio.torre;
-                domicilio.id_localidad = (int)jugador.domicilio.localidad.id_localidad;
+                domicilio.id_localidad = (int)jugador.domicilio.provincia.lsLocalidades[0].id_localidad;
                 domicilio.fecha_modificacion = DateTime.Now;
                 domicilio.observaciones = jugador.domicilio.observaciones;
                 domicilio.barrio = jugador.domicilio.barrio;
@@ -338,16 +343,12 @@ namespace RestServiceGolden.Controllers
                     jugador.domicilio.barrio = p.barrio;
                     jugador.domicilio.observaciones = p.obs;
 
-                    jugador.domicilio.localidad = loc;
-                    jugador.domicilio.localidad.id_localidad = p.id_loc;
-                    jugador.domicilio.localidad.n_localidad = p.n_loc;
+                    jugador.domicilio.provincia = prov;
+                    jugador.domicilio.provincia.id_provincia = p.id_prov;
+                    jugador.domicilio.provincia.n_provincia = p.n_prov;
 
-                    jugador.domicilio.localidad.provincia = prov;
-                    jugador.domicilio.localidad.provincia.id_provincia = p.id_prov;
-                    jugador.domicilio.localidad.provincia.n_provincia = p.n_prov;
-
-                    listaLoc.Add(new Localidad(p.id_loc, p.n_loc, new Provincia(p.id_prov, p.n_prov)));
-                    jugador.domicilio.localidad.provincia.lsLocalidades = listaLoc;
+                    listaLoc.Add(new Localidad(p.id_loc, p.n_loc));
+                    jugador.domicilio.provincia.lsLocalidades = listaLoc;
 
                     jugador.contacto = contacto;
                     jugador.contacto.id_contacto = p.id_contacto;
