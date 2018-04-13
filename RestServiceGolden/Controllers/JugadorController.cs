@@ -20,41 +20,64 @@ namespace RestServiceGolden.Controllers
             personas persona = new personas();
             jugadores jugadorDto = new jugadores();
             equipos equipo = new equipos();
-            try { 
-            //Si el id_jugador es distinto de null, entonces estoy haciendo un update y no es necesario verificar el limite.
-            if (jugador.rol.Equals("jugador") && jugador.id_jugador != null)
+            try
             {
-                if (!verificarLimiteEquipo((int)jugador.equipo.id_equipo))
+                //Si el id_jugador es distinto de null, entonces estoy haciendo un update y no es necesario verificar el limite.
+                if (jugador.id_jugador == null)
                 {
-                    return BadRequest("La cantidad de jugadores no puede ser superior a 25");
+                    if (jugador.rol.Equals("jugador"))
+                    {
+                        string respuesta = verificarLimiteEquipo(jugador);
+
+                        if (!respuesta.Equals(""))
+                        {
+                            return BadRequest(respuesta);
+                        }
+                    }
+                    if (jugador.rol.Equals("director_tecnico"))
+                    {
+                        if (verificarDT((int)jugador.equipo.id_equipo))
+                        {
+                            return BadRequest("El equipo ya tiene un director técnico asociado.");
+                        }
+                    }
+                    if (jugador.rol.Equals("representante"))
+                    {
+                        if (verificarRepresentante((int)jugador.equipo.id_equipo))
+                        {
+                            return BadRequest("El equipo ya tiene un representante asociado");
+                        }
+                    }
+                }
+
+                if (jugador.id_persona == null)
+                {
+                    jugadorDto.id_persona = registrarPersona(jugador);
+                }
+                else
+                {
+                    jugadorDto.id_persona = jugador.id_persona;
+                    actualizarPersona(jugador);
+                }
+
+                if (jugador.id_jugador == null)
+                {
+                    jugadorDto.numero = jugador.numero;
+                    jugadorDto.fecha_alta = DateTime.Now;
+                    jugadorDto.id_equipo = jugador.equipo.id_equipo;
+                    jugadorDto.rol = jugador.rol;
+
+                    db.jugadores.Add(jugadorDto);
+                    db.SaveChanges();
+                    return Ok();
+                }
+                else
+                {
+                    actualizarJugador(jugador);
+                    return Ok();
                 }
             }
-
-            if (jugador.id_persona == null)
-            {
-                jugadorDto.id_persona = registrarPersona(jugador);
-            }
-            else
-            {
-                jugadorDto.id_persona = jugador.id_persona;
-                actualizarPersona(jugador);
-            }
-
-            if(jugador.id_jugador == null) { 
-                jugadorDto.numero = jugador.numero;
-                jugadorDto.fecha_alta = DateTime.Now;
-                jugadorDto.id_equipo = jugador.equipo.id_equipo;
-                jugadorDto.rol = jugador.rol;
-
-                db.jugadores.Add(jugadorDto);
-                db.SaveChanges();
-                return Ok();
-            }
-            else {
-                actualizarJugador(jugador);
-                return Ok();
-            }
-        } catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
             }
@@ -274,7 +297,7 @@ namespace RestServiceGolden.Controllers
                                   join tContacto in db.contactos on tPersonas.id_contacto equals tContacto.id_contacto
                                   join tLocalidad in db.localidades on tDomicilio.id_localidad equals tLocalidad.id_localidad
                                   join tProvincias in db.provincias on tLocalidad.id_provincia equals tProvincias.id_provincia
-                                 // join tJugador in db.jugadores on tPersonas.id_persona equals tJugador.id_persona
+                                  // join tJugador in db.jugadores on tPersonas.id_persona equals tJugador.id_persona
                                   where tPersonas.nro_documento == doc
                                   select new
                                   {
@@ -365,11 +388,6 @@ namespace RestServiceGolden.Controllers
                 return per;
             }
         }
-        public Boolean verificarLimiteEquipo(int id)
-        {
-            var cantidadJugadores = db.jugadores.Count(x => x.id_equipo == id && x.rol != "jugador");
-            return (cantidadJugadores <= 25);
-        }
 
         [ResponseType(typeof(Jugador))]
         [Route("api/jugador/obtenerJugador")]
@@ -381,13 +399,13 @@ namespace RestServiceGolden.Controllers
                 jug = getByDoc(jugador.nro_documento);
                 var j = db.jugadores.Where(x => x.id_equipo == jugador.equipo.id_equipo && x.id_persona == jug.id_persona).FirstOrDefault();
 
-                if(j != null)
+                if (j != null)
                 {
                     jug.rol = j.rol;
                     jug.id_jugador = j.id_jugador;
-                                        
+
                 }
-                return Ok(jug);      
+                return Ok(jug);
             }
             catch (Exception ex)
             {
@@ -423,6 +441,171 @@ namespace RestServiceGolden.Controllers
             catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex.InnerException);
+            }
+        }
+
+        public String verificarLimiteEquipo(Jugador jugador)
+        {
+            try
+            {
+                var juga = db.jugadores.Where(x => x.id_persona == jugador.id_persona && x.id_equipo == jugador.equipo.id_equipo).FirstOrDefault();
+
+                if (juga != null)
+                {
+                    return "El jugador ya fue registrado previamente en este equipo.";
+                }
+
+                var cantidadJugadores = db.jugadores.Count(x => x.id_equipo == jugador.equipo.id_equipo && x.rol.Equals("jugador"));
+
+                if (cantidadJugadores == 25)
+                {
+                    return "La cantidad de jugadores no puede ser superior a 25.";
+                }
+
+                if (jugador.equipo.categoria.descripcion.Equals("Libre"))
+                {
+                    return "";
+                }
+
+                if (jugador.equipo.categoria.descripcion.Equals("+30"))
+                {
+                    if (jugador.edad >= 30)
+                    {
+                        return "";
+                    }
+                    else
+                    {
+                        if (verificarCupos30((int)jugador.equipo.id_equipo))
+                        {
+                            return "";
+                        }
+                        else
+                        {
+                            return "No hay mas cupos en este equipo para jugadores menores de 30 años.";
+                        }
+                    }
+                }
+
+                if (jugador.equipo.categoria.descripcion.Equals("+35"))
+                {
+                    if (jugador.edad < 30)
+                    {
+                        return "El jugador debe tener al menos 30 años para formar parte de este equipo.";
+                    }
+                    else
+                    {
+                        if (jugador.edad >= 35)
+                        {
+                            return "";
+                        }
+                        else
+                        {
+                            if (verificarCupos35((int)jugador.equipo.id_equipo))
+                            {
+                                return "";
+                            }
+                            else
+                            {
+                                return "No hay mas cupos en este equipo para jugadores menores de 35 años.";
+                            }
+                        }
+                    }
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return (ex.ToString());
+            }
+        }
+
+        public Boolean verificarCupos30(int id_equipo)
+        {
+            try
+            {
+                var jugadores = db.jugadores.Where(x => x.id_equipo == id_equipo).ToList();
+                int cantidad = 0;
+                DateTime fecha = DateTime.Now;
+
+                foreach (var j in jugadores)
+                {
+                    var persona = db.personas.Where(x => x.id_persona == j.id_persona).FirstOrDefault();
+                    var edad = fecha.Year - persona.fecha_nacimiento.Year;
+
+                    if (fecha.Month < persona.fecha_nacimiento.Month ||
+                        (fecha.Month == persona.fecha_nacimiento.Month && fecha.Day < persona.fecha_nacimiento.Day))
+                    {
+                        edad--;
+                    }
+
+                    if (edad < 30)
+                    {
+                        cantidad++;
+                    }
+                }
+                return (cantidad < 6);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public Boolean verificarCupos35(int id_equipo)
+        {
+            try
+            {
+                var jugadores = db.jugadores.Where(x => x.id_equipo == id_equipo).ToList();
+                int cantidad = 0;
+                DateTime fecha = DateTime.Now;
+
+                foreach (var j in jugadores)
+                {
+                    var persona = db.personas.Where(x => x.id_persona == j.id_persona).FirstOrDefault();
+                    var edad = fecha.Year - persona.fecha_nacimiento.Year;
+
+                    if (fecha.Month < persona.fecha_nacimiento.Month ||
+                        (fecha.Month == persona.fecha_nacimiento.Month && fecha.Day < persona.fecha_nacimiento.Day))
+                    {
+                        edad--;
+                    }
+
+                    if (edad < 35)
+                    {
+                        cantidad++;
+                    }
+                }
+                return (cantidad < 8);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public Boolean verificarDT(int id_equipo)
+        {
+            try
+            {
+                var jugadores = db.jugadores.Where(x => x.id_equipo == id_equipo && x.rol.Equals("director_tecnico")).FirstOrDefault();
+                return (jugadores != null);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public Boolean verificarRepresentante(int id_equipo)
+        {
+            try
+            {
+                var jugadores = db.jugadores.Where(x => x.id_equipo == id_equipo && x.rol.Equals("representante")).FirstOrDefault();
+                return (jugadores != null);
+            }
+            catch
+            {
+                return false;
             }
         }
     }

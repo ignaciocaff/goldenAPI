@@ -133,7 +133,7 @@ namespace RestServiceGolden.Controllers
             {
                 var verif = db.localidades.Where(x => x.n_localidad == loc.n_localidad && x.id_provincia == id_prov).FirstOrDefault();
 
-                if (verif != null)
+                if (verif == null)
                 {
                     localidades localidad = new localidades();
                     localidad.n_localidad = loc.n_localidad;
