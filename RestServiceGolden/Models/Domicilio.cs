@@ -13,7 +13,7 @@ namespace RestServiceGolden.Models
         public int? piso { get; set; }
         public string dpto { get; set; }
         public int? torre { get; set; }
-        public Localidad localidad { get; set; }
+        public Provincia provincia{ get; set; }
         public string barrio { get; set; }
         public string observaciones { get; set; }
     }
