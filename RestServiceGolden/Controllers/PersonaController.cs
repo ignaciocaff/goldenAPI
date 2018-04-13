@@ -10,7 +10,7 @@ using System.Web.Http.Description;
 namespace RestServiceGolden.Controllers
 {
 
-    public class PersonaController: ApiController
+    public class PersonaController : ApiController
     {
         goldenEntities db = new goldenEntities();
 
@@ -18,10 +18,11 @@ namespace RestServiceGolden.Controllers
         [Route("api/personas/tiposdoc")]
         public IHttpActionResult GetTiposDocumento()
         {
-            List<TipoDocumento> lsTiposDocumento= new List<TipoDocumento>();
+            try { 
+            List<TipoDocumento> lsTiposDocumento = new List<TipoDocumento>();
 
-            var tiposDocumentos = db.tipos_documento.ToList();
-            
+            var tiposDocumentos = db.tipos_documento.ToList().OrderBy(s => s.descripcion);
+
             foreach (var td in tiposDocumentos)
             {
                 TipoDocumento tipoDocumento = new TipoDocumento();
@@ -31,52 +32,72 @@ namespace RestServiceGolden.Controllers
             }
             return Ok(lsTiposDocumento);
         }
+                        
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
 
         [ResponseType(typeof(Provincia))]
         [Route("api/domicilio/provincias")]
         public IHttpActionResult getProvincias()
         {
-            List<Provincia> lsProvincias = new List<Provincia>();
-            var provincias = db.provincias.ToList();
-
-            foreach (var p in provincias)
+            try
             {
-                Provincia provincia = new Provincia();
-                List<Localidad> lsLocalidades = new List<Localidad>();
+                List<Provincia> lsProvincias = new List<Provincia>();
+                var provincias = db.provincias.ToList().OrderBy(s => s.n_provincia);
 
-                var localidades = db.localidades.Where(x => x.id_provincia == p.id_provincia);
-
-                provincia.id_provincia = p.id_provincia;
-                provincia.n_provincia = p.n_provincia;
-                
-                foreach (var l in localidades)
+                foreach (var p in provincias)
                 {
-                    Localidad loc = new Localidad();
-                    loc.id_localidad = l.id_localidad;
-                    loc.n_localidad = l.n_localidad;
-                    lsLocalidades.Add(loc);
+                    Provincia provincia = new Provincia();
+                    List<Localidad> lsLocalidades = new List<Localidad>();
+
+                    var localidades = db.localidades.Where(x => x.id_provincia == p.id_provincia).OrderBy(s => s.n_localidad);
+
+                    provincia.id_provincia = p.id_provincia;
+                    provincia.n_provincia = p.n_provincia;
+
+                    foreach (var l in localidades)
+                    {
+                        Localidad loc = new Localidad();
+                        loc.id_localidad = l.id_localidad;
+                        loc.n_localidad = l.n_localidad;
+                        lsLocalidades.Add(loc);
+                    }
+                    provincia.lsLocalidades = lsLocalidades;
+                    lsProvincias.Add(provincia);
                 }
-                provincia.lsLocalidades = lsLocalidades;
-                lsProvincias.Add(provincia);
+                return Ok(lsProvincias);
             }
-            return Ok(lsProvincias);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         [ResponseType(typeof(Localidad))]
         [Route("api/domicilio/localidades")]
         public IHttpActionResult getLocalidades()
         {
-            List<Localidad> lsLocalidades = new List<Localidad>();
-            var localidades = db.localidades.ToList();
-
-            foreach (var l in localidades)
+            try
             {
-                Localidad localidad = new Localidad();
-                localidad.id_localidad = l.id_localidad;
-                localidad.n_localidad = l.n_localidad;
-                lsLocalidades.Add(localidad);
+                List<Localidad> lsLocalidades = new List<Localidad>();
+                var localidades = db.localidades.ToList().OrderBy(s => s.n_localidad);
+
+                foreach (var l in localidades)
+                {
+                    Localidad localidad = new Localidad();
+                    localidad.id_localidad = l.id_localidad;
+                    localidad.n_localidad = l.n_localidad;
+                    lsLocalidades.Add(localidad);
+                }
+                return Ok(lsLocalidades);
             }
-            return Ok(lsLocalidades);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
 
@@ -84,17 +105,53 @@ namespace RestServiceGolden.Controllers
         [Route("api/domicilio/localidades/{id}")]
         public IHttpActionResult getLocalidadesPorProvincia(int id)
         {
-            List<Localidad> lsLocalidades = new List<Localidad>();
-            var localidades = db.localidades.Where(x => x.id_provincia == id).ToList();
-
-            foreach (var l in localidades)
+            try
             {
-                Localidad localidad = new Localidad();
-                localidad.id_localidad = l.id_localidad;
-                localidad.n_localidad = l.n_localidad;
-                lsLocalidades.Add(localidad);
+                List<Localidad> lsLocalidades = new List<Localidad>();
+                var localidades = db.localidades.Where(x => x.id_provincia == id).ToList().OrderBy(s => s.n_localidad);
+
+                foreach (var l in localidades)
+                {
+                    Localidad localidad = new Localidad();
+                    localidad.id_localidad = l.id_localidad;
+                    localidad.n_localidad = l.n_localidad;
+                    lsLocalidades.Add(localidad);
+                }
+                return Ok(lsLocalidades);
             }
-            return Ok(lsLocalidades);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+
+            }
+        }
+
+        [Route("api/provincia/localidad/{id_prov}")]
+        public IHttpActionResult agregarLocalidad(int id_prov, [FromBody]Localidad loc)
+        {
+            try
+            {
+                var verif = db.localidades.Where(x => x.n_localidad == loc.n_localidad && x.id_provincia == id_prov).FirstOrDefault();
+
+                if (verif == null)
+                {
+                    localidades localidad = new localidades();
+                    localidad.n_localidad = loc.n_localidad;
+                    localidad.fecha_alta = DateTime.Now;
+                    localidad.id_provincia = id_prov;
+                    db.localidades.Add(localidad);
+                    db.SaveChanges();
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Ya existe una localidad con ese nombre para esa provincia.");
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
         }
     }
 }

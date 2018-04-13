@@ -48,63 +48,76 @@ namespace RestServiceGolden.Controllers
         public IHttpActionResult getPrincipales(int id)
         {
             List<Noticia> lsNoticiasPrincipales = new List<Noticia>();
-
-            var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_categoria_noticia == 1 && (x.id_torneo == id || x.id_torneo == null)).Take(2);
-
-            foreach (var n in noticias)
+            try
             {
-                Noticia noticia = new Noticia();
-                Torneo torneo = new Torneo();
-                Club club = new Club();
-                CategoriaNoticia categoriaNoticia = new CategoriaNoticia();
-                noticia.torneo = torneo;
-                noticia.club = club;
-                noticia.categoriaNoticia = categoriaNoticia;
+                var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_categoria_noticia == 1 && (x.id_torneo == id || x.id_torneo == null)).Take(2);
 
-                noticia.id_noticia = n.id_noticia;
-                noticia.titulo = n.titulo;
-                noticia.descripcion = n.descripcion;
-                noticia.fecha = Convert.ToDateTime(n.fecha);
-                noticia.torneo.id_torneo = n.id_torneo;
-                noticia.club.id_club = n.id_club;
-                noticia.categoriaNoticia.id_categoria_noticia = n.id_categoria_noticia;
-                noticia.tags = n.tags;
-                noticia.id_thumbnail = n.id_thumbnail.Value;
-                lsNoticiasPrincipales.Add(noticia);
+                foreach (var n in noticias)
+                {
+                    Noticia noticia = new Noticia();
+                    Torneo torneo = new Torneo();
+                    Club club = new Club();
+                    CategoriaNoticia categoriaNoticia = new CategoriaNoticia();
+                    noticia.torneo = torneo;
+                    noticia.club = club;
+                    noticia.categoriaNoticia = categoriaNoticia;
+
+                    noticia.id_noticia = n.id_noticia;
+                    noticia.titulo = n.titulo;
+                    noticia.descripcion = n.descripcion;
+                    noticia.fecha = Convert.ToDateTime(n.fecha);
+                    noticia.torneo.id_torneo = n.id_torneo;
+                    noticia.club.id_club = n.id_club;
+                    noticia.categoriaNoticia.id_categoria_noticia = n.id_categoria_noticia;
+                    noticia.tags = n.tags;
+                    noticia.id_thumbnail = n.id_thumbnail.Value;
+                    lsNoticiasPrincipales.Add(noticia);
+                }
+                return Ok(lsNoticiasPrincipales);
             }
-            return Ok(lsNoticiasPrincipales);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         [ResponseType(typeof(Noticia))]
         [Route("api/noticia/secundarias/{id}")]
         public IHttpActionResult getSecundarias(int id)
         {
-            List<Noticia> lsNoticiasSecundarias = new List<Noticia>();
-
-            var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_categoria_noticia == 2 && (x.id_torneo == id || x.id_torneo == null)).Take(3);
-
-            foreach (var n in noticias)
+            try
             {
-                Noticia noticia = new Noticia();
-                Torneo torneo = new Torneo();
-                Club club = new Club();
-                CategoriaNoticia categoriaNoticia = new CategoriaNoticia();
-                noticia.torneo = torneo;
-                noticia.club = club;
-                noticia.categoriaNoticia = categoriaNoticia;
+                List<Noticia> lsNoticiasSecundarias = new List<Noticia>();
 
-                noticia.id_noticia = n.id_noticia;
-                noticia.titulo = n.titulo;
-                noticia.descripcion = n.descripcion;
-                noticia.fecha = Convert.ToDateTime(n.fecha);
-                noticia.torneo.id_torneo = n.id_torneo;
-                noticia.club.id_club = n.id_club;
-                noticia.categoriaNoticia.id_categoria_noticia = n.id_categoria_noticia;
-                noticia.tags = n.tags;
-                noticia.id_thumbnail = n.id_thumbnail.Value;
-                lsNoticiasSecundarias.Add(noticia);
+                var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_categoria_noticia == 2 && (x.id_torneo == id || x.id_torneo == null)).Take(3);
+
+                foreach (var n in noticias)
+                {
+                    Noticia noticia = new Noticia();
+                    Torneo torneo = new Torneo();
+                    Club club = new Club();
+                    CategoriaNoticia categoriaNoticia = new CategoriaNoticia();
+                    noticia.torneo = torneo;
+                    noticia.club = club;
+                    noticia.categoriaNoticia = categoriaNoticia;
+
+                    noticia.id_noticia = n.id_noticia;
+                    noticia.titulo = n.titulo;
+                    noticia.descripcion = n.descripcion;
+                    noticia.fecha = Convert.ToDateTime(n.fecha);
+                    noticia.torneo.id_torneo = n.id_torneo;
+                    noticia.club.id_club = n.id_club;
+                    noticia.categoriaNoticia.id_categoria_noticia = n.id_categoria_noticia;
+                    noticia.tags = n.tags;
+                    noticia.id_thumbnail = n.id_thumbnail.Value;
+                    lsNoticiasSecundarias.Add(noticia);
+                }
+                return Ok(lsNoticiasSecundarias);
             }
-            return Ok(lsNoticiasSecundarias);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         [ResponseType(typeof(Noticia))]
@@ -158,16 +171,23 @@ namespace RestServiceGolden.Controllers
         {
             List<CategoriaNoticia> lsCategoriasNoticias = new List<CategoriaNoticia>();
 
-            var categoriasnoticias = db.categorias_noticias.ToList();
-
-            foreach (var cn in categoriasnoticias)
+            try
             {
-                CategoriaNoticia categoria = new CategoriaNoticia();
-                categoria.id_categoria_noticia = cn.id_categoria_noticia;
-                categoria.descripcion = cn.descripcion;
-                lsCategoriasNoticias.Add(categoria);
+                var categoriasnoticias = db.categorias_noticias.ToList();
+
+                foreach (var cn in categoriasnoticias)
+                {
+                    CategoriaNoticia categoria = new CategoriaNoticia();
+                    categoria.id_categoria_noticia = cn.id_categoria_noticia;
+                    categoria.descripcion = cn.descripcion;
+                    lsCategoriasNoticias.Add(categoria);
+                }
+                return Ok(lsCategoriasNoticias);
             }
-            return Ok(lsCategoriasNoticias);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         [Route("api/noticia/update")]
