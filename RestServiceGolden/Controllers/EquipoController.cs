@@ -371,7 +371,8 @@ namespace RestServiceGolden.Controllers
                                     imagePath = tFiles.ImagePath,
                                     rol = tJugador.rol,
                                     nro_doc = tPersonas.nro_documento,
-                                    fecha_nacimiento = tPersonas.fecha_nacimiento
+                                    fecha_nacimiento = tPersonas.fecha_nacimiento,
+                                    id_jugador = tJugador.id_jugador
 
                                 }).OrderBy(s => s.apellido);
 
@@ -386,6 +387,7 @@ namespace RestServiceGolden.Controllers
                     jugador.nro_doc = Convert.ToInt32(p.nro_doc);
                     jugador.imagePath = p.imagePath;
                     jugador.rol = p.rol;
+                    jugador.id_jugador = p.id_jugador;
 
                     jugador.edad = fecha.Year - p.fecha_nacimiento.Year;
 

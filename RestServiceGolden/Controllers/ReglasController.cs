@@ -18,6 +18,7 @@ namespace RestServiceGolden.Controllers
         public IHttpActionResult GetAll()
         {
             List<Regla> lsReglas = new List<Regla>();
+            try { 
 
             var reglas = db.reglas_torneo.ToList();
 
@@ -30,6 +31,10 @@ namespace RestServiceGolden.Controllers
             }
 
             return Ok(lsReglas);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         [ResponseType(typeof(IHttpActionResult))]

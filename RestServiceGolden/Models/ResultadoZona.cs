@@ -8,8 +8,8 @@ namespace RestServiceGolden.Models
     public class ResultadoZona
     {
         public int id_resultado { get; set; }
-        public Equipo local { get; set; }
-        public Equipo visitante { get; set; }
+        public Equipo ganador { get; set; }
+        public Equipo perdedor { get; set; }
         public int empate { get; set; }
     }
 }

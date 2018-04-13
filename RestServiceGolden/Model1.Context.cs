@@ -59,6 +59,7 @@ namespace RestServiceGolden
         public virtual DbSet<posiciones> posiciones { get; set; }
         public virtual DbSet<posiciones_zona> posiciones_zona { get; set; }
         public virtual DbSet<provincias> provincias { get; set; }
+        public virtual DbSet<reglamentos> reglamentos { get; set; }
         public virtual DbSet<reglas_torneo> reglas_torneo { get; set; }
         public virtual DbSet<representante_equipo> representante_equipo { get; set; }
         public virtual DbSet<restricciones> restricciones { get; set; }
@@ -77,6 +78,5 @@ namespace RestServiceGolden
         public virtual DbSet<usuarios> usuarios { get; set; }
         public virtual DbSet<veedores> veedores { get; set; }
         public virtual DbSet<zonas> zonas { get; set; }
-        public virtual DbSet<reglamentos> reglamentos { get; set; }
     }
 }
