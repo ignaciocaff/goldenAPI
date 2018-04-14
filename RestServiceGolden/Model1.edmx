@@ -328,6 +328,7 @@
           <Property Name="fecha_baja" Type="datetime" Precision="0" />
           <Property Name="ocupacion" Type="varchar" MaxLength="45" />
           <Property Name="id_foto" Type="int" />
+          <Property Name="rol" Type="varchar" MaxLength="45" />
         </EntityType>
         <EntityType Name="posiciones">
           <Key>
@@ -2375,6 +2376,7 @@
           <Property Name="fecha_baja" Type="DateTime" />
           <Property Name="ocupacion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="id_foto" Type="Int32" />
+          <Property Name="rol" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="arbitros" Relationship="Self.fk_arbitro_persona" FromRole="personas" ToRole="arbitros" />
           <NavigationProperty Name="contactos" Relationship="Self.fk_persona_contacto" FromRole="personas" ToRole="contactos" />
           <NavigationProperty Name="domicilios" Relationship="Self.fk_persona_domicilio" FromRole="personas" ToRole="domicilios" />
@@ -4414,6 +4416,7 @@
                 <ScalarProperty Name="fecha_baja" ColumnName="fecha_baja" />
                 <ScalarProperty Name="ocupacion" ColumnName="ocupacion" />
                 <ScalarProperty Name="id_foto" ColumnName="id_foto" />
+                <ScalarProperty Name="rol" ColumnName="rol" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
