@@ -142,6 +142,13 @@
         <AssociationConnector Association="goldenModel.fk_sponsor_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_tipo_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_zonas_torneo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="goldenModel.sanciones_equipo" Width="1.5" PointX="11.25" PointY="47.5" />
+        <AssociationConnector Association="goldenModel.fk_sanciones_equipo_equipo" />
+        <AssociationConnector Association="goldenModel.fk_sanciones_equipo_torneo" />
+        <AssociationConnector Association="goldenModel.fk_sanciones_equipo_zona" />
+        <EntityTypeShape EntityType="goldenModel.fases" Width="1.5" PointX="10.375" PointY="8.875" />
+        <AssociationConnector Association="goldenModel.fk_fase_torneo" />
+        <AssociationConnector Association="goldenModel.fk_torneo_fase" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

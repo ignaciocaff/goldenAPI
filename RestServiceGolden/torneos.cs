@@ -31,6 +31,7 @@ namespace RestServiceGolden
             this.sanciones_torneo = new HashSet<sanciones_torneo>();
             this.sponsors = new HashSet<sponsors>();
             this.zonas = new HashSet<zonas>();
+            this.sanciones_equipo = new HashSet<sanciones_equipo>();
         }
     
         public int id_torneo { get; set; }
@@ -42,6 +43,7 @@ namespace RestServiceGolden
         public Nullable<int> id_categoria { get; set; }
         public Nullable<int> id_regla { get; set; }
         public Nullable<int> id_modalidad { get; set; }
+        public Nullable<int> id_fase { get; set; }
     
         public virtual categorias categorias { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -75,5 +77,8 @@ namespace RestServiceGolden
         public virtual tipos_torneos tipos_torneos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<zonas> zonas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sanciones_equipo> sanciones_equipo { get; set; }
+        public virtual fases fases { get; set; }
     }
 }

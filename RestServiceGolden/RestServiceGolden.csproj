@@ -254,6 +254,9 @@
     <Compile Include="estado_fecha.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="fases.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="fechas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -337,7 +340,7 @@
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Persona.cs" />
     <Compile Include="Models\Posiciones.cs" />
-    <Compile Include="Models\PosicionesZones.cs" />
+    <Compile Include="Models\PosicionesZonas.cs" />
     <Compile Include="Models\Provincia.cs" />
     <Compile Include="Models\Regla.cs" />
     <Compile Include="Models\Reglamento.cs" />
@@ -347,6 +350,7 @@
     <Compile Include="Models\Resultado.cs" />
     <Compile Include="Models\ResultadoZona.cs" />
     <Compile Include="Models\Sancion.cs" />
+    <Compile Include="Models\SancionEquipo.cs" />
     <Compile Include="Models\SancionesTorneo.cs" />
     <Compile Include="Models\Sponsor.cs" />
     <Compile Include="Models\TipoCancha.cs" />
@@ -408,6 +412,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sanciones.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sanciones_equipo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sanciones_torneo.cs">
