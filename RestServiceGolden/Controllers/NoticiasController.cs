@@ -229,5 +229,44 @@ namespace RestServiceGolden.Controllers
                 return BadRequest(ex.ToString());
             }
         }
+
+        [ResponseType(typeof(Noticia))]
+        [Route("api/noticia/historicas/{id}")]
+        public IHttpActionResult getHistoricas(int id)
+        {
+            try
+            {
+                List<Noticia> lsNoticiasHistoricas = new List<Noticia>();
+
+                var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_torneo == id || x.id_torneo == null).Take(11);
+
+                foreach (var n in noticias)
+                {
+                    Noticia noticia = new Noticia();
+                    Torneo torneo = new Torneo();
+                    Club club = new Club();
+                    CategoriaNoticia categoriaNoticia = new CategoriaNoticia();
+                    noticia.torneo = torneo;
+                    noticia.club = club;
+                    noticia.categoriaNoticia = categoriaNoticia;
+
+                    noticia.id_noticia = n.id_noticia;
+                    noticia.titulo = n.titulo;
+                    noticia.descripcion = n.descripcion;
+                    noticia.fecha = Convert.ToDateTime(n.fecha);
+                    noticia.torneo.id_torneo = n.id_torneo;
+                    noticia.club.id_club = n.id_club;
+                    noticia.categoriaNoticia.id_categoria_noticia = n.id_categoria_noticia;
+                    noticia.tags = n.tags;
+                    noticia.id_thumbnail = n.id_thumbnail.Value;
+                    lsNoticiasHistoricas.Add(noticia);
+                }
+                return Ok(lsNoticiasHistoricas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
     }
 }

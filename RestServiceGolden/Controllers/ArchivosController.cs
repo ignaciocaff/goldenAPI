@@ -61,7 +61,12 @@ namespace RestServiceGolden.Controllers
             // save thumb
             SaveToFolder(img, new Size(160, 160), file.ThumbPath);
             // save image of size max 600 x 600
-            SaveToFolder(img, new Size(650, 650), file.ImagePath);
+            if (file.SectionId.Equals("NOTICIAS")) {
+                SaveToFolder(img, new Size((int)img.PhysicalDimension.Width, (int)img.PhysicalDimension.Height), file.ImagePath);
+            }
+            else { 
+                SaveToFolder(img, new Size(650, 650), file.ImagePath);
+            }
             // Save  to database
             return await Save(file);
         }
