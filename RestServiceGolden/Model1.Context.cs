@@ -38,6 +38,7 @@ namespace RestServiceGolden
         public virtual DbSet<estado_fecha> estado_fecha { get; set; }
         public virtual DbSet<estados_civil> estados_civil { get; set; }
         public virtual DbSet<estados_partidos> estados_partidos { get; set; }
+        public virtual DbSet<fases> fases { get; set; }
         public virtual DbSet<fechas> fechas { get; set; }
         public virtual DbSet<files> files { get; set; }
         public virtual DbSet<fixture> fixture { get; set; }

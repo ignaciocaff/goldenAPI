@@ -232,6 +232,7 @@
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ModalidadesController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
+    <Compile Include="Controllers\SancionesController.cs" />
     <Compile Include="Controllers\TorneoController.cs" />
     <Compile Include="Controllers\TipoTorneoController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -252,6 +253,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="estado_fecha.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fases.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="fechas.cs">
@@ -312,6 +316,7 @@
     <Compile Include="Models\Cancha.cs" />
     <Compile Include="Models\CategoriaEquipo.cs" />
     <Compile Include="Models\CategoriaNoticia.cs" />
+    <Compile Include="Models\Fase.cs" />
     <Compile Include="Models\IEquipoPlanilla.cs" />
     <Compile Include="Models\IJugador.cs" />
     <Compile Include="Models\Fecha.cs" />

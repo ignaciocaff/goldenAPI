@@ -18,6 +18,7 @@ namespace RestServiceGolden
         public partidos()
         {
             this.goles = new HashSet<goles>();
+            this.sanciones = new HashSet<sanciones>();
         }
     
         public int id_partido { get; set; }
@@ -44,6 +45,8 @@ namespace RestServiceGolden
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<goles> goles { get; set; }
         public virtual horarios_fijos horarios_fijos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sanciones> sanciones { get; set; }
         public virtual resultados resultados { get; set; }
         public virtual resultados_zona resultados_zona { get; set; }
         public virtual veedores veedores { get; set; }

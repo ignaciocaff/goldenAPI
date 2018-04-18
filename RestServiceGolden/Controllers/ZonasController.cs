@@ -22,10 +22,10 @@ namespace RestServiceGolden.Controllers
             try
             {
                 var zonas = db.zonas.ToList().OrderBy(z => z.descripcion);
-
+                var torneoIdFase = db.torneos.Where(x => x.id_torneo == id).FirstOrDefault();
                 foreach (var tZona in zonas)
                 {
-                    if (tZona.id_torneo == id)
+                    if (torneoIdFase != null && tZona.id_torneo == id && tZona.id_fase == torneoIdFase.id_fase)
                     {
                         Zona zona = new Zona();
                         Torneo torneo = new Torneo();
@@ -89,10 +89,10 @@ namespace RestServiceGolden.Controllers
             {
                 foreach (Zona z in lsZonas)
                 {
-                    int zonaCheck = db.zonas.Where(x => x.descripcion == z.descripcion && x.id_torneo == z.torneo.id_torneo).Count();
+                    int zonaCheck = db.zonas.Where(x => x.descripcion == z.descripcion && x.id_torneo == z.torneo.id_torneo && x.id_fase == z.torneo.fase.id_fase).Count();
                     if (zonaCheck != 0)
                     {
-                        return BadRequest("Alguna de las zonas con ese nombre ya ha sido creada para ese torneo");
+                        return BadRequest("Alguna de las zonas con ese nombre ya ha sido creada para ese torneo, para esta fase");
                     }
                 }
 
@@ -101,6 +101,7 @@ namespace RestServiceGolden.Controllers
                     zonas zonaDto = new zonas();
                     lsEquipos = zona.lsEquipos;
                     zonaDto.id_torneo = zona.torneo.id_torneo;
+                    zonaDto.id_fase = zona.torneo.fase.id_fase;
                     zonaDto.descripcion = zona.descripcion;
                     db.zonas.Add(zonaDto);
                     db.SaveChanges();
@@ -108,8 +109,22 @@ namespace RestServiceGolden.Controllers
                     foreach (var equiposZona in lsEquipos)
                     {
                         equipos_zona equiposZonaDto = db.equipos_zona.SingleOrDefault(x => x.id_equipo == equiposZona.id_equipo);
-                        equiposZonaDto.id_zona = id_zona;
-                        db.SaveChanges();
+                        if (equiposZonaDto != null)
+                        {
+                            equiposZonaDto.id_zona = id_zona;
+                            db.SaveChanges();
+
+                        }
+                        else
+                        {
+                            equipos_zona equipoZonaInsert = new equipos_zona();
+                            equipoZonaInsert.id_equipo = equiposZona.id_equipo;
+                            equipoZonaInsert.id_zona = id_zona;
+                            equipoZonaInsert.id_torneo = zona.torneo.id_torneo;
+                            db.equipos_zona.Add(equipoZonaInsert);
+                            db.SaveChanges();
+                        }
+
                     }
 
                     fixture_zona fixture_zona = new fixture_zona();

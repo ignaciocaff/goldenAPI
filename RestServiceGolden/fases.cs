@@ -12,28 +12,21 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class zonas
+    public partial class fases
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public zonas()
+        public fases()
         {
-            this.equipos_zona = new HashSet<equipos_zona>();
-            this.fixture_zona = new HashSet<fixture_zona>();
-            this.posiciones_zona = new HashSet<posiciones_zona>();
+            this.zonas = new HashSet<zonas>();
+            this.torneos = new HashSet<torneos>();
         }
     
-        public int id_zona { get; set; }
+        public int id_fase { get; set; }
         public string descripcion { get; set; }
-        public Nullable<int> id_torneo { get; set; }
-        public Nullable<int> id_fase { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<equipos_zona> equipos_zona { get; set; }
-        public virtual fases fases { get; set; }
+        public virtual ICollection<zonas> zonas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<fixture_zona> fixture_zona { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<posiciones_zona> posiciones_zona { get; set; }
-        public virtual torneos torneos { get; set; }
+        public virtual ICollection<torneos> torneos { get; set; }
     }
 }

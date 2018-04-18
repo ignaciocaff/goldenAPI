@@ -195,49 +195,56 @@ namespace RestServiceGolden.Controllers
 
             try
             {
-                var equipos = (from tEquipo in db.equipos
-                               join tEquipoZona in db.equipos_zona on tEquipo.id_equipo equals tEquipoZona.id_equipo
-                               where tEquipoZona.id_zona == null
-                               select new
-                               {
-                                   id_torneo = tEquipo.id_torneo,
-                                   id_categoria_equipo = tEquipo.id_categoria_equipo,
-                                   id_equipo = tEquipo.id_equipo,
-                                   nombre = tEquipo.nombre,
+                var equiposGrla = db.equipos.ToList();
+                var equipos = new List<equipos>();
 
-                                   descripcion = tEquipo.descripcion,
-                                   fecha_alta = tEquipo.fecha_alta,
-                                   logo = tEquipo.logo,
-                                   camiseta = tEquipo.camiseta,
-                                   camisetalogo = tEquipo.camisetalogo,
-                                   id_club = tEquipo.id_club
-                               }).ToList();
-
-
-                foreach (var tEquipo in equipos)
+                foreach (var eGrla in equiposGrla)
                 {
-                    var torneoDb = db.torneos.Where(x => x.id_torneo == tEquipo.id_torneo).FirstOrDefault();
-                    var categoriaDb = db.categorias.Where(x => x.id_categoria == tEquipo.id_categoria_equipo).FirstOrDefault();
-                    Equipo equipo = new Equipo();
-                    Categoria categoria = new Categoria();
-                    Torneo torneo = new Torneo();
-                    Club club = new Club();
-                    equipo.id_equipo = tEquipo.id_equipo;
-                    equipo.nombre = tEquipo.nombre;
-                    equipo.descripcion = tEquipo.descripcion;
-                    equipo.fecha_alta = Convert.ToDateTime(tEquipo.fecha_alta);
-                    equipo.logo = (tEquipo.logo != null) ? tEquipo.logo.Value : 0;
-                    equipo.camiseta = (tEquipo.camiseta != null) ? tEquipo.camiseta.Value : 0;
-                    equipo.camisetalogo = (tEquipo.camisetalogo != null) ? tEquipo.camisetalogo.Value : 0;
-                    equipo.categoria = categoria;
-                    equipo.club = club;
-                    equipo.torneo = torneo;
-                    equipo.categoria.id_categoria = (int)tEquipo.id_categoria_equipo;
-                    equipo.club.id_club = tEquipo.id_club;
-                    equipo.torneo.id_torneo = tEquipo.id_torneo;
-                    equipo.torneo.nombre = (torneoDb != null) ? torneoDb.nombre : null;
-                    equipo.categoria.descripcion = categoriaDb.descripcion;
-                    lsEquipos.Add(equipo);
+                    var eZona = db.equipos_zona.Where(x => x.id_equipo == eGrla.id_equipo).FirstOrDefault();
+                    if (eZona != null)
+                    {
+                        if (eZona.id_zona == null)
+                        {
+                            equipos.Add(eGrla);
+                        }
+                    }
+                    else
+                    {
+                        equipos.Add(eGrla);
+                    }
+                }
+
+                if (equipos.Count != 0)
+                {
+                    foreach (var tEquipo in equipos)
+                    {
+                        var torneoDb = db.torneos.Where(x => x.id_torneo == tEquipo.id_torneo).FirstOrDefault();
+                        var categoriaDb = db.categorias.Where(x => x.id_categoria == tEquipo.id_categoria_equipo).FirstOrDefault();
+                        Equipo equipo = new Equipo();
+                        Categoria categoria = new Categoria();
+                        Torneo torneo = new Torneo();
+                        Club club = new Club();
+                        equipo.id_equipo = tEquipo.id_equipo;
+                        equipo.nombre = tEquipo.nombre;
+                        equipo.descripcion = tEquipo.descripcion;
+                        equipo.fecha_alta = Convert.ToDateTime(tEquipo.fecha_alta);
+                        equipo.logo = (tEquipo.logo != null) ? tEquipo.logo.Value : 0;
+                        equipo.camiseta = (tEquipo.camiseta != null) ? tEquipo.camiseta.Value : 0;
+                        equipo.camisetalogo = (tEquipo.camisetalogo != null) ? tEquipo.camisetalogo.Value : 0;
+                        equipo.categoria = categoria;
+                        equipo.club = club;
+                        equipo.torneo = torneo;
+                        equipo.categoria.id_categoria = (int)tEquipo.id_categoria_equipo;
+                        equipo.club.id_club = tEquipo.id_club;
+                        equipo.torneo.id_torneo = tEquipo.id_torneo;
+                        equipo.torneo.nombre = (torneoDb != null) ? torneoDb.nombre : null;
+                        equipo.categoria.descripcion = categoriaDb.descripcion;
+                        lsEquipos.Add(equipo);
+                    }
+                }
+                else
+                {
+
                 }
                 return Ok(lsEquipos);
             }
@@ -382,7 +389,7 @@ namespace RestServiceGolden.Controllers
                     IJugador jugador = new IJugador();
                     jugador.nombre = p.nombre;
                     jugador.apellido = p.apellido;
-                    jugador.id_equipo = (int) p.id_equipo;
+                    jugador.id_equipo = (int)p.id_equipo;
                     jugador.id_persona = p.id_persona;
                     jugador.nro_doc = Convert.ToInt32(p.nro_doc);
                     jugador.imagePath = p.imagePath;
@@ -392,7 +399,7 @@ namespace RestServiceGolden.Controllers
                     jugador.edad = fecha.Year - p.fecha_nacimiento.Year;
 
                     if (fecha.Month < p.fecha_nacimiento.Month ||
-                        (fecha.Month  == p.fecha_nacimiento.Month && fecha.Day < p.fecha_nacimiento.Day))
+                        (fecha.Month == p.fecha_nacimiento.Month && fecha.Day < p.fecha_nacimiento.Day))
                     {
                         jugador.edad--;
                     }

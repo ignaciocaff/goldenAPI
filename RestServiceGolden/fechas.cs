@@ -18,7 +18,9 @@ namespace RestServiceGolden
         public fechas()
         {
             this.partidos = new HashSet<partidos>();
+            this.sanciones = new HashSet<sanciones>();
             this.fotos = new HashSet<fotos>();
+            this.sanciones1 = new HashSet<sanciones>();
             this.noticias = new HashSet<noticias>();
         }
     
@@ -35,7 +37,11 @@ namespace RestServiceGolden
         public virtual ICollection<partidos> partidos { get; set; }
         public virtual fixture_zona fixture_zona1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sanciones> sanciones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<fotos> fotos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sanciones> sanciones1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<noticias> noticias { get; set; }
     }

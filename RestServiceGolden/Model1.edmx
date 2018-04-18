@@ -131,6 +131,13 @@
           <Property Name="id_estado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="45" />
         </EntityType>
+        <EntityType Name="fases">
+          <Key>
+            <PropertyRef Name="id_fase" />
+          </Key>
+          <Property Name="id_fase" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="45" />
+        </EntityType>
         <EntityType Name="fechas">
           <Key>
             <PropertyRef Name="id_fecha" />
@@ -420,8 +427,11 @@
           </Key>
           <Property Name="id_sancion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_jugador" Type="int" />
-          <Property Name="minuto" Type="time" Precision="0" />
           <Property Name="id_tipo" Type="int" />
+          <Property Name="fecha_inicio" Type="int" />
+          <Property Name="fecha_fin" Type="int" />
+          <Property Name="id_partido" Type="int" />
+          <Property Name="detalle" Type="varchar" MaxLength="300" />
         </EntityType>
         <EntityType Name="sanciones_torneo">
           <Key>
@@ -472,7 +482,6 @@
           </Key>
           <Property Name="id_tipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="45" />
-          <Property Name="id_restriccion" Type="int" />
         </EntityType>
         <EntityType Name="tipos_torneos">
           <Key>
@@ -494,6 +503,7 @@
           <Property Name="id_categoria" Type="int" />
           <Property Name="id_regla" Type="int" />
           <Property Name="id_modalidad" Type="int" />
+          <Property Name="id_fase" Type="int" />
         </EntityType>
         <EntityType Name="turnos">
           <Key>
@@ -528,6 +538,7 @@
           <Property Name="id_zona" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="45" />
           <Property Name="id_torneo" Type="int" />
+          <Property Name="id_fase" Type="int" />
         </EntityType>
         <Association Name="fk_arbitro_partido">
           <End Role="arbitros" Type="Self.arbitros" Multiplicity="0..1" />
@@ -745,6 +756,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_fase_torneo">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="zonas" Type="Self.zonas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="zonas">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_fecha_fixture">
           <End Role="fixture" Type="Self.fixture" Multiplicity="0..1" />
           <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
@@ -790,6 +813,18 @@
             </Principal>
             <Dependent Role="fechas">
               <PropertyRef Name="id_fixture_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_fin_fecha">
+          <End Role="fechas" Type="Self.fechas" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fechas">
+              <PropertyRef Name="id_fecha" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="fecha_fin" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -946,6 +981,18 @@
             </Principal>
             <Dependent Role="equipos">
               <PropertyRef Name="logo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_inicio_fecha">
+          <End Role="fechas" Type="Self.fechas" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fechas">
+              <PropertyRef Name="id_fecha" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="fecha_inicio" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1126,6 +1173,18 @@
             </Principal>
             <Dependent Role="noticias">
               <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_partido">
+          <End Role="partidos" Type="Self.partidos" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="partidos">
+              <PropertyRef Name="id_partido" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_partido" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1393,18 +1452,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_tipo_restriccion">
-          <End Role="restricciones" Type="Self.restricciones" Multiplicity="0..1" />
-          <End Role="tipos_sanciones" Type="Self.tipos_sanciones" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="restricciones">
-              <PropertyRef Name="id_restriccion" />
-            </Principal>
-            <Dependent Role="tipos_sanciones">
-              <PropertyRef Name="id_restriccion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_tipo_sancion">
           <End Role="tipos_sanciones" Type="Self.tipos_sanciones" Multiplicity="0..1" />
           <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
@@ -1426,6 +1473,18 @@
             </Principal>
             <Dependent Role="torneos">
               <PropertyRef Name="id_tipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_torneo_fase">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="torneos" Type="Self.torneos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="torneos">
+              <PropertyRef Name="id_fase" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1563,6 +1622,7 @@
           <EntitySet Name="estado_fecha" EntityType="Self.estado_fecha" Schema="golden" store:Type="Tables" />
           <EntitySet Name="estados_civil" EntityType="Self.estados_civil" Schema="golden" store:Type="Tables" />
           <EntitySet Name="estados_partidos" EntityType="Self.estados_partidos" Schema="golden" store:Type="Tables" />
+          <EntitySet Name="fases" EntityType="Self.fases" Schema="golden" store:Type="Tables" />
           <EntitySet Name="fechas" EntityType="Self.fechas" Schema="golden" store:Type="Tables" />
           <EntitySet Name="files" EntityType="Self.files" Schema="golden" store:Type="Tables" />
           <EntitySet Name="fixture" EntityType="Self.fixture" Schema="golden" store:Type="Tables" />
@@ -1675,6 +1735,10 @@
             <End Role="estados_partidos" EntitySet="estados_partidos" />
             <End Role="partidos" EntitySet="partidos" />
           </AssociationSet>
+          <AssociationSet Name="fk_fase_torneo" Association="Self.fk_fase_torneo">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="zonas" EntitySet="zonas" />
+          </AssociationSet>
           <AssociationSet Name="fk_fecha_fixture" Association="Self.fk_fecha_fixture">
             <End Role="fixture" EntitySet="fixture" />
             <End Role="fechas" EntitySet="fechas" />
@@ -1690,6 +1754,10 @@
           <AssociationSet Name="fk_fecha_zona_fixture" Association="Self.fk_fecha_zona_fixture">
             <End Role="fixture_zona" EntitySet="fixture_zona" />
             <End Role="fechas" EntitySet="fechas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_fin_fecha" Association="Self.fk_fin_fecha">
+            <End Role="fechas" EntitySet="fechas" />
+            <End Role="sanciones" EntitySet="sanciones" />
           </AssociationSet>
           <AssociationSet Name="fk_fixture_tipo" Association="Self.fk_fixture_tipo">
             <End Role="tipos_fixture" EntitySet="tipos_fixture" />
@@ -1742,6 +1810,10 @@
           <AssociationSet Name="fk_img_equipo" Association="Self.fk_img_equipo">
             <End Role="files" EntitySet="files" />
             <End Role="equipos" EntitySet="equipos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_inicio_fecha" Association="Self.fk_inicio_fecha">
+            <End Role="fechas" EntitySet="fechas" />
+            <End Role="sanciones" EntitySet="sanciones" />
           </AssociationSet>
           <AssociationSet Name="fk_jugador_equipo" Association="Self.fk_jugador_equipo">
             <End Role="equipos" EntitySet="equipos" />
@@ -1802,6 +1874,10 @@
           <AssociationSet Name="fk_noticia_torneo" Association="Self.fk_noticia_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="noticias" EntitySet="noticias" />
+          </AssociationSet>
+          <AssociationSet Name="fk_partido" Association="Self.fk_partido">
+            <End Role="partidos" EntitySet="partidos" />
+            <End Role="sanciones" EntitySet="sanciones" />
           </AssociationSet>
           <AssociationSet Name="fk_partido_gol" Association="Self.fk_partido_gol">
             <End Role="partidos" EntitySet="partidos" />
@@ -1891,16 +1967,16 @@
             <End Role="tipos_fixture" EntitySet="tipos_fixture" />
             <End Role="fixture_zona" EntitySet="fixture_zona" />
           </AssociationSet>
-          <AssociationSet Name="fk_tipo_restriccion" Association="Self.fk_tipo_restriccion">
-            <End Role="restricciones" EntitySet="restricciones" />
-            <End Role="tipos_sanciones" EntitySet="tipos_sanciones" />
-          </AssociationSet>
           <AssociationSet Name="fk_tipo_sancion" Association="Self.fk_tipo_sancion">
             <End Role="tipos_sanciones" EntitySet="tipos_sanciones" />
             <End Role="sanciones" EntitySet="sanciones" />
           </AssociationSet>
           <AssociationSet Name="fk_tipo_torneo" Association="Self.fk_tipo_torneo">
             <End Role="tipos_torneos" EntitySet="tipos_torneos" />
+            <End Role="torneos" EntitySet="torneos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_torneo_fase" Association="Self.fk_torneo_fase">
+            <End Role="fases" EntitySet="fases" />
             <End Role="torneos" EntitySet="torneos" />
           </AssociationSet>
           <AssociationSet Name="fk_torneo_goleador" Association="Self.fk_torneo_goleador">
@@ -2118,6 +2194,15 @@
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_estado_partido" FromRole="estados_partidos" ToRole="partidos" />
         </EntityType>
+        <EntityType Name="fases">
+          <Key>
+            <PropertyRef Name="id_fase" />
+          </Key>
+          <Property Name="id_fase" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="zonas" Relationship="Self.fk_fase_torneo" FromRole="fases" ToRole="zonas" />
+          <NavigationProperty Name="torneos" Relationship="Self.fk_torneo_fase" FromRole="fases" ToRole="torneos" />
+        </EntityType>
         <EntityType Name="fechas">
           <Key>
             <PropertyRef Name="id_fecha" />
@@ -2132,7 +2217,9 @@
           <NavigationProperty Name="fixture_zona" Relationship="Self.fk_fecha_fixture_zona" FromRole="fechas" ToRole="fixture_zona" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_fecha_partido" FromRole="fechas" ToRole="partidos" />
           <NavigationProperty Name="fixture_zona1" Relationship="Self.fk_fecha_zona_fixture" FromRole="fechas" ToRole="fixture_zona" />
+          <NavigationProperty Name="sanciones" Relationship="Self.fk_fin_fecha" FromRole="fechas" ToRole="sanciones" />
           <NavigationProperty Name="fotos" Relationship="Self.fk_foto_fecha" FromRole="fechas" ToRole="fotos" />
+          <NavigationProperty Name="sanciones1" Relationship="Self.fk_inicio_fecha" FromRole="fechas" ToRole="sanciones" />
           <NavigationProperty Name="noticias" Relationship="Self.fk_noticia_fecha" FromRole="fechas" ToRole="noticias" />
         </EntityType>
         <EntityType Name="files">
@@ -2334,6 +2421,7 @@
           <NavigationProperty Name="fechas" Relationship="Self.fk_fecha_partido" FromRole="partidos" ToRole="fechas" />
           <NavigationProperty Name="goles" Relationship="Self.fk_partido_gol" FromRole="partidos" ToRole="goles" />
           <NavigationProperty Name="horarios_fijos" Relationship="Self.fk_horario_fijo_partido" FromRole="partidos" ToRole="horarios_fijos" />
+          <NavigationProperty Name="sanciones" Relationship="Self.fk_partido" FromRole="partidos" ToRole="sanciones" />
           <NavigationProperty Name="resultados" Relationship="Self.fk_resultado_partido" FromRole="partidos" ToRole="resultados" />
           <NavigationProperty Name="resultados_zona" Relationship="Self.fk_resultado_partido_zona" FromRole="partidos" ToRole="resultados_zona" />
           <NavigationProperty Name="veedores" Relationship="Self.fk_veedor_partido" FromRole="partidos" ToRole="veedores" />
@@ -2462,7 +2550,6 @@
           </Key>
           <Property Name="id_restriccion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="tipos_sanciones" Relationship="Self.fk_tipo_restriccion" FromRole="restricciones" ToRole="tipos_sanciones" />
         </EntityType>
         <EntityType Name="resultados">
           <Key>
@@ -2494,9 +2581,15 @@
           </Key>
           <Property Name="id_sancion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_jugador" Type="Int32" />
-          <Property Name="minuto" Type="Time" />
           <Property Name="id_tipo" Type="Int32" />
+          <Property Name="fecha_inicio" Type="Int32" />
+          <Property Name="fecha_fin" Type="Int32" />
+          <Property Name="id_partido" Type="Int32" />
+          <Property Name="detalle" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="fechas" Relationship="Self.fk_fin_fecha" FromRole="sanciones" ToRole="fechas" />
+          <NavigationProperty Name="fechas1" Relationship="Self.fk_inicio_fecha" FromRole="sanciones" ToRole="fechas" />
           <NavigationProperty Name="jugadores" Relationship="Self.fk_jugador_sancion" FromRole="sanciones" ToRole="jugadores" />
+          <NavigationProperty Name="partidos" Relationship="Self.fk_partido" FromRole="sanciones" ToRole="partidos" />
           <NavigationProperty Name="tipos_sanciones" Relationship="Self.fk_tipo_sancion" FromRole="sanciones" ToRole="tipos_sanciones" />
         </EntityType>
         <EntityType Name="sanciones_torneo">
@@ -2556,8 +2649,6 @@
           </Key>
           <Property Name="id_tipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="id_restriccion" Type="Int32" />
-          <NavigationProperty Name="restricciones" Relationship="Self.fk_tipo_restriccion" FromRole="tipos_sanciones" ToRole="restricciones" />
           <NavigationProperty Name="sanciones" Relationship="Self.fk_tipo_sancion" FromRole="tipos_sanciones" ToRole="sanciones" />
         </EntityType>
         <EntityType Name="tipos_torneos">
@@ -2581,9 +2672,11 @@
           <Property Name="id_categoria" Type="Int32" />
           <Property Name="id_regla" Type="Int32" />
           <Property Name="id_modalidad" Type="Int32" />
+          <Property Name="id_fase" Type="Int32" />
           <NavigationProperty Name="categorias" Relationship="Self.fk_categoria_torneo" FromRole="torneos" ToRole="categorias" />
           <NavigationProperty Name="equipos" Relationship="Self.fk_equipo_torneo" FromRole="torneos" ToRole="equipos" />
           <NavigationProperty Name="equipos_zona" Relationship="Self.fk_torneo_zona" FromRole="torneos" ToRole="equipos_zona" />
+          <NavigationProperty Name="fases" Relationship="Self.fk_torneo_fase" FromRole="torneos" ToRole="fases" />
           <NavigationProperty Name="fixture" Relationship="Self.fk_fixture_torneo" FromRole="torneos" ToRole="fixture" />
           <NavigationProperty Name="fixture_zona" Relationship="Self.fk_fixtureZ_torneo" FromRole="torneos" ToRole="fixture_zona" />
           <NavigationProperty Name="fotos" Relationship="Self.fk_foto_torneo" FromRole="torneos" ToRole="fotos" />
@@ -2638,7 +2731,9 @@
           <Property Name="id_zona" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="id_torneo" Type="Int32" />
+          <Property Name="id_fase" Type="Int32" />
           <NavigationProperty Name="equipos_zona" Relationship="Self.fk_zona_zonas" FromRole="zonas" ToRole="equipos_zona" />
+          <NavigationProperty Name="fases" Relationship="Self.fk_fase_torneo" FromRole="zonas" ToRole="fases" />
           <NavigationProperty Name="fixture_zona" Relationship="Self.fk_zona_fixture" FromRole="zonas" ToRole="fixture_zona" />
           <NavigationProperty Name="posiciones_zona" Relationship="Self.fk_posicion_zona" FromRole="zonas" ToRole="posiciones_zona" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_zonas_torneo" FromRole="zonas" ToRole="torneos" />
@@ -3099,6 +3194,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_fase_torneo">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="zonas" Type="Self.zonas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="zonas">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_torneo_fase">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="torneos" Type="Self.torneos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="torneos">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_fecha_fixture">
           <End Role="fixture" Type="Self.fixture" Multiplicity="0..1" />
           <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
@@ -3147,6 +3266,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_fin_fecha">
+          <End Role="fechas" Type="Self.fechas" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fechas">
+              <PropertyRef Name="id_fecha" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="fecha_fin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_foto_fecha">
           <End Role="fechas" Type="Self.fechas" Multiplicity="0..1" />
           <End Role="fotos" Type="Self.fotos" Multiplicity="*" />
@@ -3156,6 +3287,18 @@
             </Principal>
             <Dependent Role="fotos">
               <PropertyRef Name="id_fecha" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_inicio_fecha">
+          <End Role="fechas" Type="Self.fechas" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fechas">
+              <PropertyRef Name="id_fecha" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="fecha_inicio" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3423,6 +3566,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_partido">
+          <End Role="partidos" Type="Self.partidos" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="partidos">
+              <PropertyRef Name="id_partido" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_partido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_resultado_partido">
           <End Role="resultados" Type="Self.resultados" Multiplicity="0..1" />
           <End Role="partidos" Type="Self.partidos" Multiplicity="*" />
@@ -3591,18 +3746,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_tipo_restriccion">
-          <End Role="restricciones" Type="Self.restricciones" Multiplicity="0..1" />
-          <End Role="tipos_sanciones" Type="Self.tipos_sanciones" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="restricciones">
-              <PropertyRef Name="id_restriccion" />
-            </Principal>
-            <Dependent Role="tipos_sanciones">
-              <PropertyRef Name="id_restriccion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_tipo_sancion">
           <End Role="tipos_sanciones" Type="Self.tipos_sanciones" Multiplicity="0..1" />
           <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
@@ -3677,6 +3820,7 @@
           <EntitySet Name="estado_fecha" EntityType="Self.estado_fecha" />
           <EntitySet Name="estados_civil" EntityType="Self.estados_civil" />
           <EntitySet Name="estados_partidos" EntityType="Self.estados_partidos" />
+          <EntitySet Name="fases" EntityType="Self.fases" />
           <EntitySet Name="fechas" EntityType="Self.fechas" />
           <EntitySet Name="files" EntityType="Self.files" />
           <EntitySet Name="fixture" EntityType="Self.fixture" />
@@ -3869,6 +4013,14 @@
             <End Role="estados_partidos" EntitySet="estados_partidos" />
             <End Role="partidos" EntitySet="partidos" />
           </AssociationSet>
+          <AssociationSet Name="fk_fase_torneo" Association="Self.fk_fase_torneo">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="zonas" EntitySet="zonas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_torneo_fase" Association="Self.fk_torneo_fase">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="torneos" EntitySet="torneos" />
+          </AssociationSet>
           <AssociationSet Name="fk_fecha_fixture" Association="Self.fk_fecha_fixture">
             <End Role="fixture" EntitySet="fixture" />
             <End Role="fechas" EntitySet="fechas" />
@@ -3885,9 +4037,17 @@
             <End Role="fixture_zona" EntitySet="fixture_zona" />
             <End Role="fechas" EntitySet="fechas" />
           </AssociationSet>
+          <AssociationSet Name="fk_fin_fecha" Association="Self.fk_fin_fecha">
+            <End Role="fechas" EntitySet="fechas" />
+            <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
           <AssociationSet Name="fk_foto_fecha" Association="Self.fk_foto_fecha">
             <End Role="fechas" EntitySet="fechas" />
             <End Role="fotos" EntitySet="fotos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_inicio_fecha" Association="Self.fk_inicio_fecha">
+            <End Role="fechas" EntitySet="fechas" />
+            <End Role="sanciones" EntitySet="sanciones" />
           </AssociationSet>
           <AssociationSet Name="fk_noticia_fecha" Association="Self.fk_noticia_fecha">
             <End Role="fechas" EntitySet="fechas" />
@@ -3977,6 +4137,10 @@
             <End Role="torneos" EntitySet="torneos" />
             <End Role="noticias" EntitySet="noticias" />
           </AssociationSet>
+          <AssociationSet Name="fk_partido" Association="Self.fk_partido">
+            <End Role="partidos" EntitySet="partidos" />
+            <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
           <AssociationSet Name="fk_resultado_partido" Association="Self.fk_resultado_partido">
             <End Role="resultados" EntitySet="resultados" />
             <End Role="partidos" EntitySet="partidos" />
@@ -4032,10 +4196,6 @@
           <AssociationSet Name="fk_representante_usuario" Association="Self.fk_representante_usuario">
             <End Role="usuarios" EntitySet="usuarios" />
             <End Role="representante_equipo" EntitySet="representante_equipo" />
-          </AssociationSet>
-          <AssociationSet Name="fk_tipo_restriccion" Association="Self.fk_tipo_restriccion">
-            <End Role="restricciones" EntitySet="restricciones" />
-            <End Role="tipos_sanciones" EntitySet="tipos_sanciones" />
           </AssociationSet>
           <AssociationSet Name="fk_tipo_sancion" Association="Self.fk_tipo_sancion">
             <End Role="tipos_sanciones" EntitySet="tipos_sanciones" />
@@ -4199,6 +4359,14 @@
             <EntityTypeMapping TypeName="goldenModel.estados_partidos">
               <MappingFragment StoreEntitySet="estados_partidos">
                 <ScalarProperty Name="id_estado" ColumnName="id_estado" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fases">
+            <EntityTypeMapping TypeName="goldenModel.fases">
+              <MappingFragment StoreEntitySet="fases">
+                <ScalarProperty Name="id_fase" ColumnName="id_fase" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4518,8 +4686,11 @@
               <MappingFragment StoreEntitySet="sanciones">
                 <ScalarProperty Name="id_sancion" ColumnName="id_sancion" />
                 <ScalarProperty Name="id_jugador" ColumnName="id_jugador" />
-                <ScalarProperty Name="minuto" ColumnName="minuto" />
                 <ScalarProperty Name="id_tipo" ColumnName="id_tipo" />
+                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
+                <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
+                <ScalarProperty Name="id_partido" ColumnName="id_partido" />
+                <ScalarProperty Name="detalle" ColumnName="detalle" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4576,7 +4747,6 @@
               <MappingFragment StoreEntitySet="tipos_sanciones">
                 <ScalarProperty Name="id_tipo" ColumnName="id_tipo" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
-                <ScalarProperty Name="id_restriccion" ColumnName="id_restriccion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4600,6 +4770,7 @@
                 <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
                 <ScalarProperty Name="id_regla" ColumnName="id_regla" />
                 <ScalarProperty Name="id_modalidad" ColumnName="id_modalidad" />
+                <ScalarProperty Name="id_fase" ColumnName="id_fase" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4638,6 +4809,7 @@
                 <ScalarProperty Name="id_zona" ColumnName="id_zona" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
                 <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
+                <ScalarProperty Name="id_fase" ColumnName="id_fase" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
