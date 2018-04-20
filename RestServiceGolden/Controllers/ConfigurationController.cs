@@ -209,8 +209,8 @@ namespace RestServiceGolden.Controllers
             }
         }
 
-        [Route("api/sancion_equipo/delete/{id}")]
-        public IHttpActionResult deleteSancionEquipo(int id_sancion)
+        [Route("api/sancion_equipo/borrar/{id}")]
+        public IHttpActionResult borrarSancionEquipo(int id_sancion)
         {
             try
             {
