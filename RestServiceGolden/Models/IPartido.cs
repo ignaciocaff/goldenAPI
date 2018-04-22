@@ -12,7 +12,7 @@ namespace RestServiceGolden.Models
         public List<IEquipo> visitante { get; set; }
         public Cancha cancha { get; set; }
         public HorarioFijo horario { get; set; }
-        public DateTime fecha { get; set; }
+        public Fecha fecha { get; set; }
         public int? id_fixture { get; set; }
     }
 }

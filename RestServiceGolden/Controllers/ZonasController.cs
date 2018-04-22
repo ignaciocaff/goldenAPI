@@ -77,7 +77,27 @@ namespace RestServiceGolden.Controllers
             }
         }
 
-
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/zona/tienePlayoff/{id_torneo}")]
+        public IHttpActionResult getTienePlayOff(int id_torneo)
+        {
+            try
+            {
+                var lsZonas = db.zonas.Where(x => x.id_torneo == id_torneo).ToList();
+                foreach (var zona in lsZonas)
+                {
+                    if (zona.id_fase == 3)
+                    {
+                        return Ok(true);
+                    }
+                }
+                return Ok(false);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
         [ResponseType(typeof(IHttpActionResult))]
         [Route("api/zona/registrar")]
         public IHttpActionResult registrar([FromBody]List<Zona> lsZonas)
@@ -155,16 +175,66 @@ namespace RestServiceGolden.Controllers
                 {
                     equipos_zona equiposZonaDto = db.equipos_zona.SingleOrDefault(x => x.id_equipo == equiposZona.id_equipo);
                     equiposZonaDto.id_zona = null;
-                    db.SaveChanges();
                 }
 
                 fixture_zona fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == zona.id_zona);
+                int id_fixture_zona = fixture_zona.id_fixture;
+
+                var fechas = db.fechas.Where(x => x.id_fixture_zona == id_fixture_zona).ToList();
+
+                foreach (var fecha in fechas)
+                {
+                    db.fechas.Attach(fecha);
+                    db.fechas.Remove(fecha);
+
+                    var partidos = db.partidos.Where(x => x.id_fecha == fecha.id_fecha).ToList();
+
+                    foreach (var partido in partidos)
+                    {
+                        var resultado = db.resultados.SingleOrDefault(x => x.id_resultado == partido.id_resultado);
+                        var resultado_zona = db.resultados_zona.SingleOrDefault(x => x.id_resultado == partido.id_resultados_zona);
+
+                        if (resultado != null)
+                        {
+                            db.resultados.Attach(resultado);
+                            db.resultados.Remove(resultado);
+                        }
+
+                        if (resultado_zona != null)
+                        {
+                            db.resultados_zona.Attach(resultado_zona);
+                            db.resultados_zona.Remove(resultado_zona);
+                        }
+                        db.partidos.Attach(partido);
+                        db.partidos.Remove(partido);
+                    }
+
+                }
+
                 db.fixture_zona.Attach(fixture_zona);
                 db.fixture_zona.Remove(fixture_zona);
-                db.SaveChanges();
 
                 zonas zonaDto = new zonas();
                 lsEquipos = zona.lsEquipos;
+
+                foreach (var equipo in lsEquipos)
+                {
+                    var posicion = db.posiciones.Where(x => x.id_equipo == equipo.id_equipo && x.id_torneo == equipo.torneo.id_torneo).FirstOrDefault();
+                    var posicion_zona = db.posiciones_zona.Where(x => x.id_equipo == equipo.id_equipo && x.id_torneo == equipo.torneo.id_torneo).FirstOrDefault();
+
+                    if (posicion != null)
+                    {
+                        db.posiciones.Attach(posicion);
+                        db.posiciones.Remove(posicion);
+                    }
+
+                    if (posicion_zona != null)
+                    {
+                        db.posiciones_zona.Attach(posicion_zona);
+                        db.posiciones_zona.Remove(posicion_zona);
+                    }
+                }
+
                 zonaDto.id_torneo = zona.torneo.id_torneo;
                 zonaDto.descripcion = zona.descripcion;
                 zonaDto.id_zona = (int)zona.id_zona;

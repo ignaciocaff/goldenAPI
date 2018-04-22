@@ -228,6 +228,7 @@
     <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\JugadorController.cs" />
     <Compile Include="Controllers\NoticiasController.cs" />
+    <Compile Include="Controllers\PartidosController.cs" />
     <Compile Include="Controllers\ReglasController.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ModalidadesController.cs" />
@@ -253,6 +254,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="estado_fecha.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="etapa_playoff.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="fases.cs">
@@ -286,6 +290,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="jugadores.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="llaves.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="localidades.cs">
@@ -335,6 +342,7 @@
     <Compile Include="Models\HorarioFijo.cs" />
     <Compile Include="Models\IPartido.cs" />
     <Compile Include="Models\Jugador.cs" />
+    <Compile Include="Models\Llave.cs" />
     <Compile Include="Models\Localidad.cs" />
     <Compile Include="Models\Noticia.cs" />
     <Compile Include="Models\Partido.cs" />
@@ -382,6 +390,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="personas.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="playoff.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="posiciones.cs">

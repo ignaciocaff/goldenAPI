@@ -35,6 +35,7 @@ namespace RestServiceGolden
         public Nullable<int> id_resultados_zona { get; set; }
         public Nullable<int> id_resultado { get; set; }
         public Nullable<int> id_horario_fijo { get; set; }
+        public Nullable<sbyte> esInterzonal { get; set; }
     
         public virtual arbitros arbitros { get; set; }
         public virtual canchas canchas { get; set; }

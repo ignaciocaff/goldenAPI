@@ -18,6 +18,8 @@ namespace RestServiceGolden
         public fases()
         {
             this.zonas = new HashSet<zonas>();
+            this.fechas = new HashSet<fechas>();
+            this.sanciones = new HashSet<sanciones>();
             this.torneos = new HashSet<torneos>();
         }
     
@@ -26,6 +28,10 @@ namespace RestServiceGolden
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<zonas> zonas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<fechas> fechas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sanciones> sanciones { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<torneos> torneos { get; set; }
     }

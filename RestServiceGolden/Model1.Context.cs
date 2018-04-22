@@ -38,6 +38,7 @@ namespace RestServiceGolden
         public virtual DbSet<estado_fecha> estado_fecha { get; set; }
         public virtual DbSet<estados_civil> estados_civil { get; set; }
         public virtual DbSet<estados_partidos> estados_partidos { get; set; }
+        public virtual DbSet<etapa_playoff> etapa_playoff { get; set; }
         public virtual DbSet<fases> fases { get; set; }
         public virtual DbSet<fechas> fechas { get; set; }
         public virtual DbSet<files> files { get; set; }
@@ -48,6 +49,7 @@ namespace RestServiceGolden
         public virtual DbSet<goles> goles { get; set; }
         public virtual DbSet<horarios_fijos> horarios_fijos { get; set; }
         public virtual DbSet<jugadores> jugadores { get; set; }
+        public virtual DbSet<llaves> llaves { get; set; }
         public virtual DbSet<localidades> localidades { get; set; }
         public virtual DbSet<logs> logs { get; set; }
         public virtual DbSet<modalidades> modalidades { get; set; }
@@ -57,6 +59,7 @@ namespace RestServiceGolden
         public virtual DbSet<perfiles> perfiles { get; set; }
         public virtual DbSet<permisos> permisos { get; set; }
         public virtual DbSet<personas> personas { get; set; }
+        public virtual DbSet<playoff> playoff { get; set; }
         public virtual DbSet<posiciones> posiciones { get; set; }
         public virtual DbSet<posiciones_zona> posiciones_zona { get; set; }
         public virtual DbSet<provincias> provincias { get; set; }

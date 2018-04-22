@@ -131,6 +131,13 @@
           <Property Name="id_estado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="45" />
         </EntityType>
+        <EntityType Name="etapa_playoff">
+          <Key>
+            <PropertyRef Name="id_etapa" />
+          </Key>
+          <Property Name="id_etapa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="45" />
+        </EntityType>
         <EntityType Name="fases">
           <Key>
             <PropertyRef Name="id_fase" />
@@ -147,6 +154,7 @@
           <Property Name="id_estado" Type="int" />
           <Property Name="id_fixture" Type="int" />
           <Property Name="id_fixture_zona" Type="int" />
+          <Property Name="id_fase" Type="int" />
         </EntityType>
         <EntityType Name="files">
           <Key>
@@ -207,6 +215,7 @@
           <Property Name="id_jugador" Type="int" />
           <Property Name="id_partido" Type="int" />
           <Property Name="id_equipo" Type="int" />
+          <Property Name="id_torneo" Type="int" />
         </EntityType>
         <EntityType Name="horarios_fijos">
           <Key>
@@ -227,6 +236,13 @@
           <Property Name="id_persona" Type="int" />
           <Property Name="id_equipo" Type="int" />
           <Property Name="rol" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="llaves">
+          <Key>
+            <PropertyRef Name="id_llave" />
+          </Key>
+          <Property Name="id_llave" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="45" />
         </EntityType>
         <EntityType Name="localidades">
           <Key>
@@ -299,6 +315,7 @@
           <Property Name="id_resultados_zona" Type="int" />
           <Property Name="id_resultado" Type="int" />
           <Property Name="id_horario_fijo" Type="int" />
+          <Property Name="esInterzonal" Type="tinyint" />
         </EntityType>
         <EntityType Name="perfiles">
           <Key>
@@ -335,7 +352,18 @@
           <Property Name="fecha_baja" Type="datetime" Precision="0" />
           <Property Name="ocupacion" Type="varchar" MaxLength="45" />
           <Property Name="id_foto" Type="int" />
-          <Property Name="rol" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="playoff">
+          <Key>
+            <PropertyRef Name="id_playoff" />
+          </Key>
+          <Property Name="id_playoff" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="llave" Type="int" />
+          <Property Name="local" Type="int" />
+          <Property Name="visitante" Type="int" />
+          <Property Name="ganador" Type="int" />
+          <Property Name="id_etapa" Type="int" />
+          <Property Name="id_torneo" Type="int" />
         </EntityType>
         <EntityType Name="posiciones">
           <Key>
@@ -420,6 +448,7 @@
           <Property Name="id_ganador" Type="int" />
           <Property Name="id_perdedor" Type="int" />
           <Property Name="empate" Type="tinyint" />
+          <Property Name="id_zona" Type="int" />
         </EntityType>
         <EntityType Name="sanciones">
           <Key>
@@ -432,6 +461,9 @@
           <Property Name="fecha_fin" Type="int" />
           <Property Name="id_partido" Type="int" />
           <Property Name="detalle" Type="varchar" MaxLength="300" />
+          <Property Name="id_zona" Type="int" />
+          <Property Name="id_fase" Type="int" />
+          <Property Name="id_torneo" Type="int" />
         </EntityType>
         <EntityType Name="sanciones_torneo">
           <Key>
@@ -684,6 +716,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_equipo_ganador">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="ganador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_equipo_gol">
           <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
           <End Role="goles" Type="Self.goles" Multiplicity="*" />
@@ -708,6 +752,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_equipo_local">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="local" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_equipo_torneo">
           <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
           <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
@@ -717,6 +773,18 @@
             </Principal>
             <Dependent Role="equipos">
               <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_visitante">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="visitante" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -764,6 +832,18 @@
               <PropertyRef Name="id_fase" />
             </Principal>
             <Dependent Role="zonas">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_fecha_fecha_interzonal">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="fechas">
               <PropertyRef Name="id_fase" />
             </Dependent>
           </ReferentialConstraint>
@@ -1080,6 +1160,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_llave_playoff">
+          <End Role="llaves" Type="Self.llaves" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="llaves">
+              <PropertyRef Name="id_llave" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="llave" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_local_partido">
           <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
           <End Role="partidos" Type="Self.partidos" Multiplicity="*" />
@@ -1296,6 +1388,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_playoff_etapa">
+          <End Role="etapa_playoff" Type="Self.etapa_playoff" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="etapa_playoff">
+              <PropertyRef Name="id_etapa" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="id_etapa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_playoff_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_posicion_equipo">
           <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
           <End Role="posiciones" Type="Self.posiciones" Multiplicity="*" />
@@ -1416,6 +1532,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_resultado_zona">
+          <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
+          <End Role="resultados_zona" Type="Self.resultados_zona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zonas">
+              <PropertyRef Name="id_zona" />
+            </Principal>
+            <Dependent Role="resultados_zona">
+              <PropertyRef Name="id_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sancion_fase">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sancion_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_sponsor_club">
           <End Role="clubes" Type="Self.clubes" Multiplicity="0..1" />
           <End Role="sponsors" Type="Self.sponsors" Multiplicity="*" />
@@ -1485,6 +1637,18 @@
             </Principal>
             <Dependent Role="torneos">
               <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_torneo_gol">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="goles" Type="Self.goles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="goles">
+              <PropertyRef Name="id_torneo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1584,6 +1748,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_zona_sancion">
+          <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zonas">
+              <PropertyRef Name="id_zona" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_zona_zonas">
           <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
           <End Role="equipos_zona" Type="Self.equipos_zona" Multiplicity="*" />
@@ -1622,6 +1798,7 @@
           <EntitySet Name="estado_fecha" EntityType="Self.estado_fecha" Schema="golden" store:Type="Tables" />
           <EntitySet Name="estados_civil" EntityType="Self.estados_civil" Schema="golden" store:Type="Tables" />
           <EntitySet Name="estados_partidos" EntityType="Self.estados_partidos" Schema="golden" store:Type="Tables" />
+          <EntitySet Name="etapa_playoff" EntityType="Self.etapa_playoff" Schema="golden" store:Type="Tables" />
           <EntitySet Name="fases" EntityType="Self.fases" Schema="golden" store:Type="Tables" />
           <EntitySet Name="fechas" EntityType="Self.fechas" Schema="golden" store:Type="Tables" />
           <EntitySet Name="files" EntityType="Self.files" Schema="golden" store:Type="Tables" />
@@ -1632,6 +1809,7 @@
           <EntitySet Name="goles" EntityType="Self.goles" Schema="golden" store:Type="Tables" />
           <EntitySet Name="horarios_fijos" EntityType="Self.horarios_fijos" Schema="golden" store:Type="Tables" />
           <EntitySet Name="jugadores" EntityType="Self.jugadores" Schema="golden" store:Type="Tables" />
+          <EntitySet Name="llaves" EntityType="Self.llaves" Schema="golden" store:Type="Tables" />
           <EntitySet Name="localidades" EntityType="Self.localidades" Schema="golden" store:Type="Tables" />
           <EntitySet Name="logs" EntityType="Self.logs" Schema="golden" store:Type="Tables" />
           <EntitySet Name="modalidades" EntityType="Self.modalidades" Schema="golden" store:Type="Tables" />
@@ -1641,6 +1819,7 @@
           <EntitySet Name="perfiles" EntityType="Self.perfiles" Schema="golden" store:Type="Tables" />
           <EntitySet Name="permisos" EntityType="Self.permisos" Schema="golden" store:Type="Tables" />
           <EntitySet Name="personas" EntityType="Self.personas" Schema="golden" store:Type="Tables" />
+          <EntitySet Name="playoff" EntityType="Self.playoff" Schema="golden" store:Type="Tables" />
           <EntitySet Name="posiciones" EntityType="Self.posiciones" Schema="golden" store:Type="Tables" />
           <EntitySet Name="posiciones_zona" EntityType="Self.posiciones_zona" Schema="golden" store:Type="Tables" />
           <EntitySet Name="provincias" EntityType="Self.provincias" Schema="golden" store:Type="Tables" />
@@ -1711,6 +1890,10 @@
             <End Role="clubes" EntitySet="clubes" />
             <End Role="equipos" EntitySet="equipos" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_ganador" Association="Self.fk_equipo_ganador">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_gol" Association="Self.fk_equipo_gol">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="goles" EntitySet="goles" />
@@ -1719,9 +1902,17 @@
             <End Role="equipos" EntitySet="equipos" />
             <End Role="goleadores" EntitySet="goleadores" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_local" Association="Self.fk_equipo_local">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_torneo" Association="Self.fk_equipo_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="equipos" EntitySet="equipos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipo_visitante" Association="Self.fk_equipo_visitante">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
           </AssociationSet>
           <AssociationSet Name="fk_equipo_zona" Association="Self.fk_equipo_zona">
             <End Role="equipos" EntitySet="equipos" />
@@ -1738,6 +1929,10 @@
           <AssociationSet Name="fk_fase_torneo" Association="Self.fk_fase_torneo">
             <End Role="fases" EntitySet="fases" />
             <End Role="zonas" EntitySet="zonas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_fecha_fecha_interzonal" Association="Self.fk_fecha_fecha_interzonal">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="fechas" EntitySet="fechas" />
           </AssociationSet>
           <AssociationSet Name="fk_fecha_fixture" Association="Self.fk_fecha_fixture">
             <End Role="fixture" EntitySet="fixture" />
@@ -1843,6 +2038,10 @@
             <End Role="torneos" EntitySet="torneos" />
             <End Role="sanciones_torneo" EntitySet="sanciones_torneo" />
           </AssociationSet>
+          <AssociationSet Name="fk_llave_playoff" Association="Self.fk_llave_playoff">
+            <End Role="llaves" EntitySet="llaves" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_local_partido" Association="Self.fk_local_partido">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="partidos" EntitySet="partidos" />
@@ -1915,6 +2114,14 @@
             <End Role="tipos_documento" EntitySet="tipos_documento" />
             <End Role="personas" EntitySet="personas" />
           </AssociationSet>
+          <AssociationSet Name="fk_playoff_etapa" Association="Self.fk_playoff_etapa">
+            <End Role="etapa_playoff" EntitySet="etapa_playoff" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
+          <AssociationSet Name="fk_playoff_torneo" Association="Self.fk_playoff_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_posicion_equipo" Association="Self.fk_posicion_equipo">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="posiciones" EntitySet="posiciones" />
@@ -1955,6 +2162,18 @@
             <End Role="resultados_zona" EntitySet="resultados_zona" />
             <End Role="partidos" EntitySet="partidos" />
           </AssociationSet>
+          <AssociationSet Name="fk_resultado_zona" Association="Self.fk_resultado_zona">
+            <End Role="zonas" EntitySet="zonas" />
+            <End Role="resultados_zona" EntitySet="resultados_zona" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sancion_fase" Association="Self.fk_sancion_fase">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sancion_torneo" Association="Self.fk_sancion_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
           <AssociationSet Name="fk_sponsor_club" Association="Self.fk_sponsor_club">
             <End Role="clubes" EntitySet="clubes" />
             <End Role="sponsors" EntitySet="sponsors" />
@@ -1978,6 +2197,10 @@
           <AssociationSet Name="fk_torneo_fase" Association="Self.fk_torneo_fase">
             <End Role="fases" EntitySet="fases" />
             <End Role="torneos" EntitySet="torneos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_torneo_gol" Association="Self.fk_torneo_gol">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="goles" EntitySet="goles" />
           </AssociationSet>
           <AssociationSet Name="fk_torneo_goleador" Association="Self.fk_torneo_goleador">
             <End Role="torneos" EntitySet="torneos" />
@@ -2010,6 +2233,10 @@
           <AssociationSet Name="fk_zona_fixture" Association="Self.fk_zona_fixture">
             <End Role="zonas" EntitySet="zonas" />
             <End Role="fixture_zona" EntitySet="fixture_zona" />
+          </AssociationSet>
+          <AssociationSet Name="fk_zona_sancion" Association="Self.fk_zona_sancion">
+            <End Role="zonas" EntitySet="zonas" />
+            <End Role="sanciones" EntitySet="sanciones" />
           </AssociationSet>
           <AssociationSet Name="fk_zona_zonas" Association="Self.fk_zona_zonas">
             <End Role="zonas" EntitySet="zonas" />
@@ -2138,9 +2365,12 @@
           <NavigationProperty Name="categorias" Relationship="Self.fk_categoria_equipo" FromRole="equipos" ToRole="categorias" />
           <NavigationProperty Name="clubes" Relationship="Self.fk_equipo_club" FromRole="equipos" ToRole="clubes" />
           <NavigationProperty Name="files" Relationship="Self.fk_camiseta" FromRole="equipos" ToRole="files" />
+          <NavigationProperty Name="playoff" Relationship="Self.fk_equipo_ganador" FromRole="equipos" ToRole="playoff" />
           <NavigationProperty Name="goles" Relationship="Self.fk_equipo_gol" FromRole="equipos" ToRole="goles" />
           <NavigationProperty Name="goleadores" Relationship="Self.fk_equipo_goleador" FromRole="equipos" ToRole="goleadores" />
+          <NavigationProperty Name="playoff1" Relationship="Self.fk_equipo_local" FromRole="equipos" ToRole="playoff" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_equipo_torneo" FromRole="equipos" ToRole="torneos" />
+          <NavigationProperty Name="playoff2" Relationship="Self.fk_equipo_visitante" FromRole="equipos" ToRole="playoff" />
           <NavigationProperty Name="equipos_zona" Relationship="Self.fk_equipo_zona" FromRole="equipos" ToRole="equipos_zona" />
           <NavigationProperty Name="fotos" Relationship="Self.fk_foto_equipo" FromRole="equipos" ToRole="fotos" />
           <NavigationProperty Name="resultados" Relationship="Self.fk_ganador_equipo" FromRole="equipos" ToRole="resultados" />
@@ -2194,6 +2424,14 @@
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_estado_partido" FromRole="estados_partidos" ToRole="partidos" />
         </EntityType>
+        <EntityType Name="etapa_playoff">
+          <Key>
+            <PropertyRef Name="id_etapa" />
+          </Key>
+          <Property Name="id_etapa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="playoff" Relationship="Self.fk_playoff_etapa" FromRole="etapa_playoff" ToRole="playoff" />
+        </EntityType>
         <EntityType Name="fases">
           <Key>
             <PropertyRef Name="id_fase" />
@@ -2201,6 +2439,8 @@
           <Property Name="id_fase" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="zonas" Relationship="Self.fk_fase_torneo" FromRole="fases" ToRole="zonas" />
+          <NavigationProperty Name="fechas" Relationship="Self.fk_fecha_fecha_interzonal" FromRole="fases" ToRole="fechas" />
+          <NavigationProperty Name="sanciones" Relationship="Self.fk_sancion_fase" FromRole="fases" ToRole="sanciones" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_torneo_fase" FromRole="fases" ToRole="torneos" />
         </EntityType>
         <EntityType Name="fechas">
@@ -2212,7 +2452,9 @@
           <Property Name="id_estado" Type="Int32" />
           <Property Name="id_fixture" Type="Int32" />
           <Property Name="id_fixture_zona" Type="Int32" />
+          <Property Name="id_fase" Type="Int32" />
           <NavigationProperty Name="estado_fecha" Relationship="Self.fk_estado_fecha" FromRole="fechas" ToRole="estado_fecha" />
+          <NavigationProperty Name="fases" Relationship="Self.fk_fecha_fecha_interzonal" FromRole="fechas" ToRole="fases" />
           <NavigationProperty Name="fixture" Relationship="Self.fk_fecha_fixture" FromRole="fechas" ToRole="fixture" />
           <NavigationProperty Name="fixture_zona" Relationship="Self.fk_fecha_fixture_zona" FromRole="fechas" ToRole="fixture_zona" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_fecha_partido" FromRole="fechas" ToRole="partidos" />
@@ -2301,9 +2543,11 @@
           <Property Name="id_jugador" Type="Int32" />
           <Property Name="id_partido" Type="Int32" />
           <Property Name="id_equipo" Type="Int32" />
+          <Property Name="id_torneo" Type="Int32" />
           <NavigationProperty Name="equipos" Relationship="Self.fk_equipo_gol" FromRole="goles" ToRole="equipos" />
           <NavigationProperty Name="jugadores" Relationship="Self.fk_jugador_gol" FromRole="goles" ToRole="jugadores" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_partido_gol" FromRole="goles" ToRole="partidos" />
+          <NavigationProperty Name="torneos" Relationship="Self.fk_torneo_gol" FromRole="goles" ToRole="torneos" />
         </EntityType>
         <EntityType Name="horarios_fijos">
           <Key>
@@ -2332,6 +2576,14 @@
           <NavigationProperty Name="personas" Relationship="Self.fk_jugador_persona" FromRole="jugadores" ToRole="personas" />
           <NavigationProperty Name="sanciones" Relationship="Self.fk_jugador_sancion" FromRole="jugadores" ToRole="sanciones" />
           <NavigationProperty Name="sanciones_torneo" Relationship="Self.fk_jugador_sanciones" FromRole="jugadores" ToRole="sanciones_torneo" />
+        </EntityType>
+        <EntityType Name="llaves">
+          <Key>
+            <PropertyRef Name="id_llave" />
+          </Key>
+          <Property Name="id_llave" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="playoff" Relationship="Self.fk_llave_playoff" FromRole="llaves" ToRole="playoff" />
         </EntityType>
         <EntityType Name="localidades">
           <Key>
@@ -2413,6 +2665,7 @@
           <Property Name="id_resultados_zona" Type="Int32" />
           <Property Name="id_resultado" Type="Int32" />
           <Property Name="id_horario_fijo" Type="Int32" />
+          <Property Name="esInterzonal" Type="SByte" />
           <NavigationProperty Name="arbitros" Relationship="Self.fk_arbitro_partido" FromRole="partidos" ToRole="arbitros" />
           <NavigationProperty Name="canchas" Relationship="Self.fk_cancha_partido" FromRole="partidos" ToRole="canchas" />
           <NavigationProperty Name="equipos" Relationship="Self.fk_local_partido" FromRole="partidos" ToRole="equipos" />
@@ -2464,7 +2717,6 @@
           <Property Name="fecha_baja" Type="DateTime" />
           <Property Name="ocupacion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="id_foto" Type="Int32" />
-          <Property Name="rol" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="arbitros" Relationship="Self.fk_arbitro_persona" FromRole="personas" ToRole="arbitros" />
           <NavigationProperty Name="contactos" Relationship="Self.fk_persona_contacto" FromRole="personas" ToRole="contactos" />
           <NavigationProperty Name="domicilios" Relationship="Self.fk_persona_domicilio" FromRole="personas" ToRole="domicilios" />
@@ -2474,6 +2726,24 @@
           <NavigationProperty Name="nacionalidades" Relationship="Self.fk_persona_nacionalidad" FromRole="personas" ToRole="nacionalidades" />
           <NavigationProperty Name="tipos_documento" Relationship="Self.fk_persona_tipo_doc" FromRole="personas" ToRole="tipos_documento" />
           <NavigationProperty Name="veedores" Relationship="Self.fk_veedor_persona" FromRole="personas" ToRole="veedores" />
+        </EntityType>
+        <EntityType Name="playoff">
+          <Key>
+            <PropertyRef Name="id_playoff" />
+          </Key>
+          <Property Name="id_playoff" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="llave" Type="Int32" />
+          <Property Name="local" Type="Int32" />
+          <Property Name="visitante" Type="Int32" />
+          <Property Name="ganador" Type="Int32" />
+          <Property Name="id_etapa" Type="Int32" />
+          <Property Name="id_torneo" Type="Int32" />
+          <NavigationProperty Name="equipos" Relationship="Self.fk_equipo_ganador" FromRole="playoff" ToRole="equipos" />
+          <NavigationProperty Name="equipos1" Relationship="Self.fk_equipo_local" FromRole="playoff" ToRole="equipos" />
+          <NavigationProperty Name="equipos2" Relationship="Self.fk_equipo_visitante" FromRole="playoff" ToRole="equipos" />
+          <NavigationProperty Name="etapa_playoff" Relationship="Self.fk_playoff_etapa" FromRole="playoff" ToRole="etapa_playoff" />
+          <NavigationProperty Name="llaves" Relationship="Self.fk_llave_playoff" FromRole="playoff" ToRole="llaves" />
+          <NavigationProperty Name="torneos" Relationship="Self.fk_playoff_torneo" FromRole="playoff" ToRole="torneos" />
         </EntityType>
         <EntityType Name="posiciones">
           <Key>
@@ -2571,9 +2841,11 @@
           <Property Name="id_ganador" Type="Int32" />
           <Property Name="id_perdedor" Type="Int32" />
           <Property Name="empate" Type="SByte" />
+          <Property Name="id_zona" Type="Int32" />
           <NavigationProperty Name="equipos" Relationship="Self.fk_ganador_equipo_zona" FromRole="resultados_zona" ToRole="equipos" />
           <NavigationProperty Name="equipos1" Relationship="Self.fk_perdedor_equipo_zona" FromRole="resultados_zona" ToRole="equipos" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_resultado_partido_zona" FromRole="resultados_zona" ToRole="partidos" />
+          <NavigationProperty Name="zonas" Relationship="Self.fk_resultado_zona" FromRole="resultados_zona" ToRole="zonas" />
         </EntityType>
         <EntityType Name="sanciones">
           <Key>
@@ -2586,11 +2858,17 @@
           <Property Name="fecha_fin" Type="Int32" />
           <Property Name="id_partido" Type="Int32" />
           <Property Name="detalle" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="id_zona" Type="Int32" />
+          <Property Name="id_fase" Type="Int32" />
+          <Property Name="id_torneo" Type="Int32" />
+          <NavigationProperty Name="fases" Relationship="Self.fk_sancion_fase" FromRole="sanciones" ToRole="fases" />
           <NavigationProperty Name="fechas" Relationship="Self.fk_fin_fecha" FromRole="sanciones" ToRole="fechas" />
           <NavigationProperty Name="fechas1" Relationship="Self.fk_inicio_fecha" FromRole="sanciones" ToRole="fechas" />
           <NavigationProperty Name="jugadores" Relationship="Self.fk_jugador_sancion" FromRole="sanciones" ToRole="jugadores" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_partido" FromRole="sanciones" ToRole="partidos" />
+          <NavigationProperty Name="torneos" Relationship="Self.fk_sancion_torneo" FromRole="sanciones" ToRole="torneos" />
           <NavigationProperty Name="tipos_sanciones" Relationship="Self.fk_tipo_sancion" FromRole="sanciones" ToRole="tipos_sanciones" />
+          <NavigationProperty Name="zonas" Relationship="Self.fk_zona_sancion" FromRole="sanciones" ToRole="zonas" />
         </EntityType>
         <EntityType Name="sanciones_torneo">
           <Key>
@@ -2681,13 +2959,16 @@
           <NavigationProperty Name="fixture_zona" Relationship="Self.fk_fixtureZ_torneo" FromRole="torneos" ToRole="fixture_zona" />
           <NavigationProperty Name="fotos" Relationship="Self.fk_foto_torneo" FromRole="torneos" ToRole="fotos" />
           <NavigationProperty Name="goleadores" Relationship="Self.fk_torneo_goleador" FromRole="torneos" ToRole="goleadores" />
+          <NavigationProperty Name="goles" Relationship="Self.fk_torneo_gol" FromRole="torneos" ToRole="goles" />
           <NavigationProperty Name="modalidades" Relationship="Self.fk_modalidad_torneo" FromRole="torneos" ToRole="modalidades" />
           <NavigationProperty Name="noticias" Relationship="Self.fk_noticia_torneo" FromRole="torneos" ToRole="noticias" />
+          <NavigationProperty Name="playoff" Relationship="Self.fk_playoff_torneo" FromRole="torneos" ToRole="playoff" />
           <NavigationProperty Name="posiciones" Relationship="Self.fk_posicion_torneo" FromRole="torneos" ToRole="posiciones" />
           <NavigationProperty Name="posiciones_zona" Relationship="Self.fk_torneo_posicion_zona" FromRole="torneos" ToRole="posiciones_zona" />
           <NavigationProperty Name="reglamentos" Relationship="Self.fk_reglamento_id_torneo" FromRole="torneos" ToRole="reglamentos" />
           <NavigationProperty Name="reglas_torneo" Relationship="Self.fk_regla_torneo" FromRole="torneos" ToRole="reglas_torneo" />
           <NavigationProperty Name="reglas_torneo1" Relationship="Self.fk_reglas_torneo" FromRole="torneos" ToRole="reglas_torneo" />
+          <NavigationProperty Name="sanciones" Relationship="Self.fk_sancion_torneo" FromRole="torneos" ToRole="sanciones" />
           <NavigationProperty Name="sanciones_torneo" Relationship="Self.fk_jugador_sanciones_torneo" FromRole="torneos" ToRole="sanciones_torneo" />
           <NavigationProperty Name="sponsors" Relationship="Self.fk_sponsor_torneo" FromRole="torneos" ToRole="sponsors" />
           <NavigationProperty Name="tipos_torneos" Relationship="Self.fk_tipo_torneo" FromRole="torneos" ToRole="tipos_torneos" />
@@ -2736,6 +3017,8 @@
           <NavigationProperty Name="fases" Relationship="Self.fk_fase_torneo" FromRole="zonas" ToRole="fases" />
           <NavigationProperty Name="fixture_zona" Relationship="Self.fk_zona_fixture" FromRole="zonas" ToRole="fixture_zona" />
           <NavigationProperty Name="posiciones_zona" Relationship="Self.fk_posicion_zona" FromRole="zonas" ToRole="posiciones_zona" />
+          <NavigationProperty Name="resultados_zona" Relationship="Self.fk_resultado_zona" FromRole="zonas" ToRole="resultados_zona" />
+          <NavigationProperty Name="sanciones" Relationship="Self.fk_zona_sancion" FromRole="zonas" ToRole="sanciones" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_zonas_torneo" FromRole="zonas" ToRole="torneos" />
         </EntityType>
         <Association Name="fk_arbitro_partido">
@@ -2942,6 +3225,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_equipo_ganador">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="ganador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_equipo_gol">
           <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
           <End Role="goles" Type="Self.goles" Multiplicity="*" />
@@ -2966,6 +3261,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_equipo_local">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="local" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_equipo_torneo">
           <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
           <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
@@ -2975,6 +3282,18 @@
             </Principal>
             <Dependent Role="equipos">
               <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_visitante">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="visitante" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3194,6 +3513,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_playoff_etapa">
+          <End Role="etapa_playoff" Type="Self.etapa_playoff" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="etapa_playoff">
+              <PropertyRef Name="id_etapa" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="id_etapa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_fase_torneo">
           <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
           <End Role="zonas" Type="Self.zonas" Multiplicity="*" />
@@ -3202,6 +3533,30 @@
               <PropertyRef Name="id_fase" />
             </Principal>
             <Dependent Role="zonas">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_fecha_fecha_interzonal">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="fechas">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sancion_fase">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="sanciones">
               <PropertyRef Name="id_fase" />
             </Dependent>
           </ReferentialConstraint>
@@ -3458,6 +3813,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_torneo_gol">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="goles" Type="Self.goles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="goles">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_horario_fijo_partido">
           <End Role="horarios_fijos" Type="Self.horarios_fijos" Multiplicity="0..1" />
           <End Role="partidos" Type="Self.partidos" Multiplicity="*" />
@@ -3515,6 +3882,18 @@
             </Principal>
             <Dependent Role="sanciones_torneo">
               <PropertyRef Name="id_jugador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_llave_playoff">
+          <End Role="llaves" Type="Self.llaves" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="llaves">
+              <PropertyRef Name="id_llave" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="llave" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3662,6 +4041,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_playoff_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_posicion_torneo">
           <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
           <End Role="posiciones" Type="Self.posiciones" Multiplicity="*" />
@@ -3746,6 +4137,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_resultado_zona">
+          <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
+          <End Role="resultados_zona" Type="Self.resultados_zona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zonas">
+              <PropertyRef Name="id_zona" />
+            </Principal>
+            <Dependent Role="resultados_zona">
+              <PropertyRef Name="id_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sancion_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_tipo_sancion">
           <End Role="tipos_sanciones" Type="Self.tipos_sanciones" Multiplicity="0..1" />
           <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
@@ -3755,6 +4170,18 @@
             </Principal>
             <Dependent Role="sanciones">
               <PropertyRef Name="id_tipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_zona_sancion">
+          <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zonas">
+              <PropertyRef Name="id_zona" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_zona" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3820,6 +4247,7 @@
           <EntitySet Name="estado_fecha" EntityType="Self.estado_fecha" />
           <EntitySet Name="estados_civil" EntityType="Self.estados_civil" />
           <EntitySet Name="estados_partidos" EntityType="Self.estados_partidos" />
+          <EntitySet Name="etapa_playoff" EntityType="Self.etapa_playoff" />
           <EntitySet Name="fases" EntityType="Self.fases" />
           <EntitySet Name="fechas" EntityType="Self.fechas" />
           <EntitySet Name="files" EntityType="Self.files" />
@@ -3830,6 +4258,7 @@
           <EntitySet Name="goles" EntityType="Self.goles" />
           <EntitySet Name="horarios_fijos" EntityType="Self.horarios_fijos" />
           <EntitySet Name="jugadores" EntityType="Self.jugadores" />
+          <EntitySet Name="llaves" EntityType="Self.llaves" />
           <EntitySet Name="localidades" EntityType="Self.localidades" />
           <EntitySet Name="logs" EntityType="Self.logs" />
           <EntitySet Name="modalidades" EntityType="Self.modalidades" />
@@ -3839,6 +4268,7 @@
           <EntitySet Name="perfiles" EntityType="Self.perfiles" />
           <EntitySet Name="permisos" EntityType="Self.permisos" />
           <EntitySet Name="personas" EntityType="Self.personas" />
+          <EntitySet Name="playoff" EntityType="Self.playoff" />
           <EntitySet Name="posiciones" EntityType="Self.posiciones" />
           <EntitySet Name="posiciones_zona" EntityType="Self.posiciones_zona" />
           <EntitySet Name="provincias" EntityType="Self.provincias" />
@@ -3929,6 +4359,10 @@
             <End Role="files" EntitySet="files" />
             <End Role="equipos" EntitySet="equipos" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_ganador" Association="Self.fk_equipo_ganador">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_gol" Association="Self.fk_equipo_gol">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="goles" EntitySet="goles" />
@@ -3937,9 +4371,17 @@
             <End Role="equipos" EntitySet="equipos" />
             <End Role="goleadores" EntitySet="goleadores" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_local" Association="Self.fk_equipo_local">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_torneo" Association="Self.fk_equipo_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="equipos" EntitySet="equipos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipo_visitante" Association="Self.fk_equipo_visitante">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
           </AssociationSet>
           <AssociationSet Name="fk_equipo_zona" Association="Self.fk_equipo_zona">
             <End Role="equipos" EntitySet="equipos" />
@@ -4013,9 +4455,21 @@
             <End Role="estados_partidos" EntitySet="estados_partidos" />
             <End Role="partidos" EntitySet="partidos" />
           </AssociationSet>
+          <AssociationSet Name="fk_playoff_etapa" Association="Self.fk_playoff_etapa">
+            <End Role="etapa_playoff" EntitySet="etapa_playoff" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_fase_torneo" Association="Self.fk_fase_torneo">
             <End Role="fases" EntitySet="fases" />
             <End Role="zonas" EntitySet="zonas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_fecha_fecha_interzonal" Association="Self.fk_fecha_fecha_interzonal">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="fechas" EntitySet="fechas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sancion_fase" Association="Self.fk_sancion_fase">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="sanciones" EntitySet="sanciones" />
           </AssociationSet>
           <AssociationSet Name="fk_torneo_fase" Association="Self.fk_torneo_fase">
             <End Role="fases" EntitySet="fases" />
@@ -4101,6 +4555,10 @@
             <End Role="partidos" EntitySet="partidos" />
             <End Role="goles" EntitySet="goles" />
           </AssociationSet>
+          <AssociationSet Name="fk_torneo_gol" Association="Self.fk_torneo_gol">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="goles" EntitySet="goles" />
+          </AssociationSet>
           <AssociationSet Name="fk_horario_fijo_partido" Association="Self.fk_horario_fijo_partido">
             <End Role="horarios_fijos" EntitySet="horarios_fijos" />
             <End Role="partidos" EntitySet="partidos" />
@@ -4120,6 +4578,10 @@
           <AssociationSet Name="fk_jugador_sanciones" Association="Self.fk_jugador_sanciones">
             <End Role="jugadores" EntitySet="jugadores" />
             <End Role="sanciones_torneo" EntitySet="sanciones_torneo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_llave_playoff" Association="Self.fk_llave_playoff">
+            <End Role="llaves" EntitySet="llaves" />
+            <End Role="playoff" EntitySet="playoff" />
           </AssociationSet>
           <AssociationSet Name="fk_localidad_provincia" Association="Self.fk_localidad_provincia">
             <End Role="provincias" EntitySet="provincias" />
@@ -4169,6 +4631,10 @@
             <End Role="personas" EntitySet="personas" />
             <End Role="veedores" EntitySet="veedores" />
           </AssociationSet>
+          <AssociationSet Name="fk_playoff_torneo" Association="Self.fk_playoff_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_posicion_torneo" Association="Self.fk_posicion_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="posiciones" EntitySet="posiciones" />
@@ -4197,8 +4663,20 @@
             <End Role="usuarios" EntitySet="usuarios" />
             <End Role="representante_equipo" EntitySet="representante_equipo" />
           </AssociationSet>
+          <AssociationSet Name="fk_resultado_zona" Association="Self.fk_resultado_zona">
+            <End Role="zonas" EntitySet="zonas" />
+            <End Role="resultados_zona" EntitySet="resultados_zona" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sancion_torneo" Association="Self.fk_sancion_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
           <AssociationSet Name="fk_tipo_sancion" Association="Self.fk_tipo_sancion">
             <End Role="tipos_sanciones" EntitySet="tipos_sanciones" />
+            <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
+          <AssociationSet Name="fk_zona_sancion" Association="Self.fk_zona_sancion">
+            <End Role="zonas" EntitySet="zonas" />
             <End Role="sanciones" EntitySet="sanciones" />
           </AssociationSet>
           <AssociationSet Name="fk_jugador_sanciones_torneo" Association="Self.fk_jugador_sanciones_torneo">
@@ -4363,6 +4841,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="etapa_playoff">
+            <EntityTypeMapping TypeName="goldenModel.etapa_playoff">
+              <MappingFragment StoreEntitySet="etapa_playoff">
+                <ScalarProperty Name="id_etapa" ColumnName="id_etapa" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="fases">
             <EntityTypeMapping TypeName="goldenModel.fases">
               <MappingFragment StoreEntitySet="fases">
@@ -4379,6 +4865,7 @@
                 <ScalarProperty Name="id_estado" ColumnName="id_estado" />
                 <ScalarProperty Name="id_fixture" ColumnName="id_fixture" />
                 <ScalarProperty Name="id_fixture_zona" ColumnName="id_fixture_zona" />
+                <ScalarProperty Name="id_fase" ColumnName="id_fase" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4445,6 +4932,7 @@
                 <ScalarProperty Name="id_jugador" ColumnName="id_jugador" />
                 <ScalarProperty Name="id_partido" ColumnName="id_partido" />
                 <ScalarProperty Name="id_equipo" ColumnName="id_equipo" />
+                <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4467,6 +4955,14 @@
                 <ScalarProperty Name="id_persona" ColumnName="id_persona" />
                 <ScalarProperty Name="id_equipo" ColumnName="id_equipo" />
                 <ScalarProperty Name="rol" ColumnName="rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="llaves">
+            <EntityTypeMapping TypeName="goldenModel.llaves">
+              <MappingFragment StoreEntitySet="llaves">
+                <ScalarProperty Name="id_llave" ColumnName="id_llave" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4545,6 +5041,7 @@
                 <ScalarProperty Name="id_resultados_zona" ColumnName="id_resultados_zona" />
                 <ScalarProperty Name="id_resultado" ColumnName="id_resultado" />
                 <ScalarProperty Name="id_horario_fijo" ColumnName="id_horario_fijo" />
+                <ScalarProperty Name="esInterzonal" ColumnName="esInterzonal" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4584,7 +5081,19 @@
                 <ScalarProperty Name="fecha_baja" ColumnName="fecha_baja" />
                 <ScalarProperty Name="ocupacion" ColumnName="ocupacion" />
                 <ScalarProperty Name="id_foto" ColumnName="id_foto" />
-                <ScalarProperty Name="rol" ColumnName="rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="playoff">
+            <EntityTypeMapping TypeName="goldenModel.playoff">
+              <MappingFragment StoreEntitySet="playoff">
+                <ScalarProperty Name="id_playoff" ColumnName="id_playoff" />
+                <ScalarProperty Name="llave" ColumnName="llave" />
+                <ScalarProperty Name="local" ColumnName="local" />
+                <ScalarProperty Name="visitante" ColumnName="visitante" />
+                <ScalarProperty Name="ganador" ColumnName="ganador" />
+                <ScalarProperty Name="id_etapa" ColumnName="id_etapa" />
+                <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4678,6 +5187,7 @@
                 <ScalarProperty Name="id_ganador" ColumnName="id_ganador" />
                 <ScalarProperty Name="id_perdedor" ColumnName="id_perdedor" />
                 <ScalarProperty Name="empate" ColumnName="empate" />
+                <ScalarProperty Name="id_zona" ColumnName="id_zona" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4691,6 +5201,9 @@
                 <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
                 <ScalarProperty Name="id_partido" ColumnName="id_partido" />
                 <ScalarProperty Name="detalle" ColumnName="detalle" />
+                <ScalarProperty Name="id_zona" ColumnName="id_zona" />
+                <ScalarProperty Name="id_fase" ColumnName="id_fase" />
+                <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

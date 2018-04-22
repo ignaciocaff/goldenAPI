@@ -20,6 +20,8 @@ namespace RestServiceGolden
             this.equipos_zona = new HashSet<equipos_zona>();
             this.fixture_zona = new HashSet<fixture_zona>();
             this.posiciones_zona = new HashSet<posiciones_zona>();
+            this.resultados_zona = new HashSet<resultados_zona>();
+            this.sanciones = new HashSet<sanciones>();
         }
     
         public int id_zona { get; set; }
@@ -34,6 +36,10 @@ namespace RestServiceGolden
         public virtual ICollection<fixture_zona> fixture_zona { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<posiciones_zona> posiciones_zona { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<resultados_zona> resultados_zona { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sanciones> sanciones { get; set; }
         public virtual torneos torneos { get; set; }
     }
 }

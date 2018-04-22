@@ -12,18 +12,21 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class goles
+    public partial class playoff
     {
-        public int id_gol { get; set; }
-        public Nullable<System.TimeSpan> minuto { get; set; }
-        public Nullable<int> id_jugador { get; set; }
-        public Nullable<int> id_partido { get; set; }
-        public Nullable<int> id_equipo { get; set; }
+        public int id_playoff { get; set; }
+        public Nullable<int> llave { get; set; }
+        public Nullable<int> local { get; set; }
+        public Nullable<int> visitante { get; set; }
+        public Nullable<int> ganador { get; set; }
+        public Nullable<int> id_etapa { get; set; }
         public Nullable<int> id_torneo { get; set; }
     
         public virtual equipos equipos { get; set; }
-        public virtual jugadores jugadores { get; set; }
-        public virtual partidos partidos { get; set; }
+        public virtual equipos equipos1 { get; set; }
+        public virtual equipos equipos2 { get; set; }
+        public virtual etapa_playoff etapa_playoff { get; set; }
+        public virtual llaves llaves { get; set; }
         public virtual torneos torneos { get; set; }
     }
 }

@@ -17,8 +17,11 @@ namespace RestServiceGolden
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public equipos()
         {
+            this.playoff = new HashSet<playoff>();
             this.goles = new HashSet<goles>();
             this.goleadores = new HashSet<goleadores>();
+            this.playoff1 = new HashSet<playoff>();
+            this.playoff2 = new HashSet<playoff>();
             this.equipos_zona = new HashSet<equipos_zona>();
             this.fotos = new HashSet<fotos>();
             this.resultados = new HashSet<resultados>();
@@ -47,10 +50,16 @@ namespace RestServiceGolden
         public virtual clubes clubes { get; set; }
         public virtual files files { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<playoff> playoff { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<goles> goles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<goleadores> goleadores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<playoff> playoff1 { get; set; }
         public virtual torneos torneos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<playoff> playoff2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<equipos_zona> equipos_zona { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

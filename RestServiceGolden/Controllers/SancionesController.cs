@@ -37,5 +37,38 @@ namespace RestServiceGolden.Controllers
                 return BadRequest(e.ToString());
             }
         }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/sanciones/acumuladoJugador/{id_torneo}/{id_jugador}")]
+        public IHttpActionResult getAcumuladoJugador(int id_torneo, int id_jugador)
+        {
+            List<Sancion> lsSanciones = new List<Sancion>();
+            try
+            {
+                var lsSancion = db.sanciones.Where(x => x.id_jugador == id_jugador && x.id_torneo == id_torneo).ToList();
+
+
+                foreach (var sancionD in lsSancion)
+                {
+                    Sancion sancion = new Sancion();
+                    Jugador jugador = new Jugador();
+                    Zona zona = new Zona();
+                    TipoSancion tipo_sancion = new TipoSancion();
+                    sancion.jugador = jugador;
+                    sancion.jugador.id_jugador = sancionD.id_jugador;
+                    sancion.zona = zona;
+                    sancion.zona.id_zona = sancionD.id_zona;
+                    sancion.tipo_sancion = tipo_sancion;
+                    sancion.tipo_sancion.id_tipo = sancionD.id_tipo;
+                    lsSanciones.Add(sancion);
+
+                }
+                return Ok(lsSanciones);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
     }
 }
