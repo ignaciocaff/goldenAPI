@@ -256,6 +256,9 @@
     <Compile Include="estado_fecha.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="etapa_playoff.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="fases.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
