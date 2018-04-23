@@ -103,7 +103,6 @@ namespace RestServiceGolden.Controllers
                     }
                     return Ok(lsZonas);
                 }
-                return BadRequest();
             }
             catch (Exception e)
             {

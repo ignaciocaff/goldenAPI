@@ -173,6 +173,7 @@ namespace RestServiceGolden.Controllers
                 if (equipo_zona != null)
                 {
                     var sanciones_equipo = db.sanciones_equipo.Where(x => x.id_equipo == id_equipo && x.id_zona == equipo_zona.id_zona && x.id_torneo == equipo_zona.id_torneo).ToList();
+                    var zonas = db.zonas.Where(x => x.id_zona == equipo_zona.id_zona).FirstOrDefault();
 
                     if(sanciones_equipo != null)
                     {
@@ -194,6 +195,7 @@ namespace RestServiceGolden.Controllers
 
                             sancion.zona = zona;
                             sancion.zona.id_zona = san.id_zona;
+                            sancion.zona.descripcion = zonas.descripcion;
 
                             lsSanciones.Add(sancion);
                         }
