@@ -18,6 +18,7 @@ namespace RestServiceGolden
         public fixture_zona()
         {
             this.fechas = new HashSet<fechas>();
+            this.fechas1 = new HashSet<fechas>();
         }
     
         public int id_fixture { get; set; }
@@ -27,6 +28,8 @@ namespace RestServiceGolden
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<fechas> fechas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<fechas> fechas1 { get; set; }
         public virtual torneos torneos { get; set; }
         public virtual tipos_fixture tipos_fixture { get; set; }
         public virtual zonas zonas { get; set; }

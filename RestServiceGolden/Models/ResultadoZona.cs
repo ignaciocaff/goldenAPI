@@ -11,5 +11,6 @@ namespace RestServiceGolden.Models
         public Equipo ganador { get; set; }
         public Equipo perdedor { get; set; }
         public int empate { get; set; }
+        public Zona zona { get; set; }
     }
 }

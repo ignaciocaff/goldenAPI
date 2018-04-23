@@ -34,6 +34,7 @@ namespace RestServiceGolden.Controllers
                 torneoDto.id_categoria = torneo.categoria.id_categoria;
                 torneoDto.id_tipo = torneo.tipoTorneo.id_tipo;
                 torneoDto.id_regla = torneo.regla.id_regla;
+                torneoDto.id_fase = torneo.fase.id_fase;
 
                 torneos torneoCheck = db.torneos.Where(x => x.nombre.ToUpper().Equals(torneoDto.nombre.ToUpper())).FirstOrDefault();
 
@@ -144,6 +145,7 @@ namespace RestServiceGolden.Controllers
                     TipoTorneo tTorneo = new TipoTorneo();
                     Regla regla = new Regla();
                     List<Equipo> lsEquipos = new List<Equipo>();
+                    Fase fase = new Fase();
                     var equipos = db.equipos.Where(x => x.id_torneo == t.id_torneo).ToList();
 
                     torneo.id_torneo = t.id_torneo;
@@ -163,6 +165,8 @@ namespace RestServiceGolden.Controllers
                     torneo.tipoTorneo.descripcion = tipos_torneos.Where(x => x.id_tipo == t.id_tipo).FirstOrDefault().descripcion;
                     torneo.fecha_fin = t.fecha_fin.Value.Date;
                     torneo.fecha_inicio = t.fecha_inicio.Value.Date;
+                    torneo.fase = fase;
+                    torneo.fase.id_fase = t.id_fase;
 
                     foreach (var e in equipos)
                     {
@@ -195,9 +199,12 @@ namespace RestServiceGolden.Controllers
         {
             var torneos = db.torneos.Where(x => x.nombre == nombre).FirstOrDefault();
             Torneo torneo = new Torneo();
+            Fase fase = new Fase();
             torneo.id_torneo = torneos.id_torneo;
             torneo.nombre = torneos.nombre;
             torneo.descripcion = torneos.descripcion;
+            torneo.fase = fase;
+            torneo.fase.id_fase = torneos.id_fase;
 
             return Ok(torneo);
         }

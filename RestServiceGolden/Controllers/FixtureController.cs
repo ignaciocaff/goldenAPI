@@ -139,18 +139,102 @@ namespace RestServiceGolden.Controllers
         }
 
         [ResponseType(typeof(IHttpActionResult))]
-        [Route("api/fecha/obtener/{id_zona}/{id_torneo}")]
-        public IHttpActionResult obtener([FromBody]Fecha fecha, int id_zona, int id_torneo)
+        [Route("api/fecha/obtener/{id_torneo}/{id_zona:int?}/{esInterzonal:int?}")]
+        public IHttpActionResult obtener([FromBody]Fecha fecha, int id_torneo, int? id_zona = 0, int? esInterzonal = 0)
         {
             List<IPartido> lsPartidos = new List<IPartido>();
-
             try
             {
-                var fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == id_zona && x.id_torneo == id_torneo);
-                if (fixture_zona != null)
+                if (esInterzonal == 0)
                 {
-                    var fechas = db.fechas.Where(x => x.id_fixture_zona == fixture_zona.id_fixture && x.fecha == fecha.fecha).ToList();
+                    var fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == id_zona && x.id_torneo == id_torneo);
+                    if (fixture_zona != null)
+                    {
+                        var fechas = db.fechas.Where(x => x.id_fixture_zona == fixture_zona.id_fixture && x.fecha == fecha.fecha).ToList();
 
+
+                        foreach (var f in fechas)
+                        {
+                            foreach (var partido in f.partidos)
+                            {
+                                IPartido iPartido = new IPartido();
+                                Cancha cancha = new Cancha();
+                                HorarioFijo horarioFijo = new HorarioFijo();
+                                IEquipo iLocal = new IEquipo();
+                                IEquipo iVisitante = new IEquipo();
+                                Turno turno = new Turno();
+                                Fecha fechaPartido = new Fecha();
+
+                                var objLocal = (from tEquipos in db.equipos
+                                                join tArchivos in db.files on tEquipos.logo equals tArchivos.Id
+                                                where tEquipos.id_equipo == partido.local
+                                                select new
+                                                {
+                                                    id_equipo = tEquipos.id_equipo,
+                                                    nombre = tEquipos.nombre,
+                                                    imagePath = tArchivos.ImagePath,
+                                                    logo = tEquipos.logo
+                                                }).SingleOrDefault();
+
+                                var objVisitante = (from tEquipos in db.equipos
+                                                    join tArchivos in db.files on tEquipos.logo equals tArchivos.Id
+                                                    where tEquipos.id_equipo == partido.visitante
+                                                    select new
+                                                    {
+                                                        id_equipo = tEquipos.id_equipo,
+                                                        nombre = tEquipos.nombre,
+                                                        imagePath = tArchivos.ImagePath,
+                                                        logo = tEquipos.logo
+                                                    }).SingleOrDefault();
+
+                                iLocal.id_equipo = objLocal.id_equipo;
+                                iLocal.nombre = objLocal.nombre;
+                                iLocal.logo = objLocal.logo;
+                                iLocal.imagePath = objLocal.imagePath;
+
+                                iVisitante.id_equipo = objVisitante.id_equipo;
+                                iVisitante.nombre = objVisitante.nombre;
+                                iVisitante.logo = objVisitante.logo;
+                                iVisitante.imagePath = objVisitante.imagePath;
+
+                                iPartido.local = new List<IEquipo>();
+                                iPartido.visitante = new List<IEquipo>();
+
+
+                                iPartido.local.Add(iLocal);
+                                iPartido.visitante.Add(iVisitante);
+
+                                var canchaDto = db.canchas.SingleOrDefault(x => x.id_cancha == partido.id_cancha);
+
+                                iPartido.cancha = cancha;
+                                iPartido.cancha.id_cancha = (int)partido.id_cancha;
+                                iPartido.cancha.nombre = canchaDto.nombre;
+
+                                var horarioDto = db.horarios_fijos.SingleOrDefault(x => x.id_horario == partido.id_horario_fijo);
+                                iPartido.horario = horarioFijo;
+                                iPartido.horario.id_horario = partido.id_horario_fijo;
+                                iPartido.horario.inicio = horarioDto.inicio;
+                                iPartido.horario.fin = horarioDto.fin;
+                                iPartido.horario.turno = turno;
+                                iPartido.horario.turno.id = horarioDto.id_turno;
+                                iPartido.id_partido = partido.id_partido;
+                                iPartido.id_fixture = f.id_fixture_zona;
+                                iPartido.fecha = fechaPartido;
+                                iPartido.fecha.id_fecha = f.id_fecha;
+                                iPartido.fecha.fecha = (DateTime)f.fecha;
+
+                                if (partido.esInterzonal == null && partido.id_resultado == null && partido.id_resultados_zona == null)
+                                {
+                                    lsPartidos.Add(iPartido);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //Obtengo todos los partidos interzonales sin resultado
+                    var fechas = db.fechas.Where(x => x.fecha == fecha.fecha).ToList();
 
                     foreach (var f in fechas)
                     {
@@ -162,7 +246,7 @@ namespace RestServiceGolden.Controllers
                             IEquipo iLocal = new IEquipo();
                             IEquipo iVisitante = new IEquipo();
                             Turno turno = new Turno();
-
+                            Fecha fechaPartido = new Fecha();
                             var objLocal = (from tEquipos in db.equipos
                                             join tArchivos in db.files on tEquipos.logo equals tArchivos.Id
                                             where tEquipos.id_equipo == partido.local
@@ -216,12 +300,17 @@ namespace RestServiceGolden.Controllers
                             iPartido.horario.turno = turno;
                             iPartido.horario.turno.id = horarioDto.id_turno;
                             iPartido.id_partido = partido.id_partido;
-                            iPartido.id_fixture = f.id_fixture_zona;
-                            lsPartidos.Add(iPartido);
+                            iPartido.fecha = fechaPartido;
+                            iPartido.fecha.id_fecha = f.id_fecha;
+                            iPartido.fecha.fecha = (DateTime)f.fecha;
+
+                            if (partido.esInterzonal == 1 && partido.id_resultado == null && partido.id_resultados_zona == null)
+                            {
+                                lsPartidos.Add(iPartido);
+                            }
                         }
                     }
                 }
-
             }
             catch (Exception e)
             {
@@ -235,7 +324,7 @@ namespace RestServiceGolden.Controllers
         {
             try
             {
-                var fechas = db.fechas.Where(x => x.fecha == iPartido.fecha).ToList();
+                var fechas = db.fechas.Where(x => x.fecha == iPartido.fecha.fecha).ToList();
                 if (fechas.Count > 0)
                 {
                     foreach (var fecha in fechas)

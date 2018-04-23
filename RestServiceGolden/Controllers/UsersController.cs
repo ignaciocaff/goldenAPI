@@ -130,5 +130,79 @@ namespace RestServiceGolden.Controllers
 
             return Ok(equipo);
         }
+
+        [ResponseType(typeof(Equipo))]
+        [Route("api/user/registrar/representante/{id_equipo}")]
+        public IHttpActionResult registrarRepresentante([FromBody]Usuario usuario, int id_equipo)
+        {
+
+            try
+            {
+                goldenEntities db = new goldenEntities();
+                int id_usuario = 0;
+
+                representante_equipo repreCheck = db.representante_equipo.Where(x => x.id_equipo == id_equipo).FirstOrDefault();
+                if (repreCheck == null)
+                {
+                    var usuarioCheck = db.usuarios.Where(x => x.n_usuario == usuario.n_usuario).FirstOrDefault();
+                    if (usuarioCheck == null)
+                    {
+                        var usuarioDto = new usuarios();
+                        usuarioDto.caducidad = usuario.caducidad;
+                        usuarioDto.id_perfil = usuario.perfil.id_perfil;
+                        usuarioDto.n_usuario = usuario.n_usuario;
+                        usuarioDto.password = usuario.password;
+                        db.usuarios.Add(usuarioDto);
+                        db.SaveChanges();
+                        id_usuario = usuarioDto.id_usuario;
+
+                        var representante_equipo = new representante_equipo();
+                        representante_equipo.id_equipo = id_equipo;
+                        representante_equipo.id_usuario = id_usuario;
+                        db.representante_equipo.Add(representante_equipo);
+                        db.SaveChanges();
+
+                        return Ok();
+                    }
+                }
+                return BadRequest();
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
+
+
+
+        [ResponseType(typeof(Equipo))]
+        [Route("api/user/eliminar/representante/{id_equipo}")]
+        public IHttpActionResult getEliminarRepresentante(int id_equipo)
+        {
+
+            try
+            {
+                goldenEntities db = new goldenEntities();
+                var representante = db.representante_equipo.Where(x => x.id_equipo == id_equipo).SingleOrDefault();
+
+                if (representante != null)
+                {
+                    int id_usuario = (int)representante.id_usuario;
+                    db.representante_equipo.Remove(representante);
+                    db.SaveChanges();
+
+                    var usuario = db.usuarios.Where(x => x.id_usuario == id_usuario).SingleOrDefault();
+                    db.usuarios.Remove(usuario);
+                    db.SaveChanges();
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
     }
 }

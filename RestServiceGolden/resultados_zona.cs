@@ -24,10 +24,12 @@ namespace RestServiceGolden
         public Nullable<int> id_ganador { get; set; }
         public Nullable<int> id_perdedor { get; set; }
         public Nullable<sbyte> empate { get; set; }
+        public Nullable<int> id_zona { get; set; }
     
         public virtual equipos equipos { get; set; }
         public virtual equipos equipos1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<partidos> partidos { get; set; }
+        public virtual zonas zonas { get; set; }
     }
 }

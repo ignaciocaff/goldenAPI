@@ -16,10 +16,22 @@ namespace RestServiceGolden
     {
         public int id_sancion { get; set; }
         public Nullable<int> id_jugador { get; set; }
-        public Nullable<System.TimeSpan> minuto { get; set; }
         public Nullable<int> id_tipo { get; set; }
+        public Nullable<int> fecha_inicio { get; set; }
+        public Nullable<int> fecha_fin { get; set; }
+        public Nullable<int> id_partido { get; set; }
+        public string detalle { get; set; }
+        public Nullable<int> id_zona { get; set; }
+        public Nullable<int> id_fase { get; set; }
+        public Nullable<int> id_torneo { get; set; }
     
+        public virtual fases fases { get; set; }
+        public virtual fechas fechas { get; set; }
+        public virtual fechas fechas1 { get; set; }
         public virtual jugadores jugadores { get; set; }
+        public virtual partidos partidos { get; set; }
+        public virtual torneos torneos { get; set; }
         public virtual tipos_sanciones tipos_sanciones { get; set; }
+        public virtual zonas zonas { get; set; }
     }
 }
