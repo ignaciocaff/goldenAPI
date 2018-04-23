@@ -465,6 +465,17 @@
           <Property Name="id_fase" Type="int" />
           <Property Name="id_torneo" Type="int" />
         </EntityType>
+        <EntityType Name="sanciones_equipo">
+          <Key>
+            <PropertyRef Name="id_sancion_equipo" />
+          </Key>
+          <Property Name="id_sancion_equipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="200" />
+          <Property Name="puntos_restados" Type="int" />
+          <Property Name="id_equipo" Type="int" />
+          <Property Name="id_zona" Type="int" />
+          <Property Name="id_torneo" Type="int" />
+        </EntityType>
         <EntityType Name="sanciones_torneo">
           <Key>
             <PropertyRef Name="id_sancion" />
@@ -1568,6 +1579,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_sanciones_equipo_equipo">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
+              <PropertyRef Name="id_equipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sanciones_equipo_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sanciones_equipo_zona">
+          <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zonas">
+              <PropertyRef Name="id_zona" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
+              <PropertyRef Name="id_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_sponsor_club">
           <End Role="clubes" Type="Self.clubes" Multiplicity="0..1" />
           <End Role="sponsors" Type="Self.sponsors" Multiplicity="*" />
@@ -1830,6 +1877,7 @@
           <EntitySet Name="resultados" EntityType="Self.resultados" Schema="golden" store:Type="Tables" />
           <EntitySet Name="resultados_zona" EntityType="Self.resultados_zona" Schema="golden" store:Type="Tables" />
           <EntitySet Name="sanciones" EntityType="Self.sanciones" Schema="golden" store:Type="Tables" />
+          <EntitySet Name="sanciones_equipo" EntityType="Self.sanciones_equipo" Schema="golden" store:Type="Tables" />
           <EntitySet Name="sanciones_torneo" EntityType="Self.sanciones_torneo" Schema="golden" store:Type="Tables" />
           <EntitySet Name="sponsors" EntityType="Self.sponsors" Schema="golden" store:Type="Tables" />
           <EntitySet Name="tipos_cancha" EntityType="Self.tipos_cancha" Schema="golden" store:Type="Tables" />
@@ -2174,6 +2222,18 @@
             <End Role="torneos" EntitySet="torneos" />
             <End Role="sanciones" EntitySet="sanciones" />
           </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_equipo" Association="Self.fk_sanciones_equipo_equipo">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_torneo" Association="Self.fk_sanciones_equipo_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_zona" Association="Self.fk_sanciones_equipo_zona">
+            <End Role="zonas" EntitySet="zonas" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
+          </AssociationSet>
           <AssociationSet Name="fk_sponsor_club" Association="Self.fk_sponsor_club">
             <End Role="clubes" EntitySet="clubes" />
             <End Role="sponsors" EntitySet="sponsors" />
@@ -2383,6 +2443,7 @@
           <NavigationProperty Name="resultados_zona1" Relationship="Self.fk_perdedor_equipo_zona" FromRole="equipos" ToRole="resultados_zona" />
           <NavigationProperty Name="posiciones" Relationship="Self.fk_posicion_equipo" FromRole="equipos" ToRole="posiciones" />
           <NavigationProperty Name="representante_equipo" Relationship="Self.fk_representante_equipo" FromRole="equipos" ToRole="representante_equipo" />
+          <NavigationProperty Name="sanciones_equipo" Relationship="Self.fk_sanciones_equipo_equipo" FromRole="equipos" ToRole="sanciones_equipo" />
           <NavigationProperty Name="partidos1" Relationship="Self.fk_visitante_partido" FromRole="equipos" ToRole="partidos" />
         </EntityType>
         <EntityType Name="equipos_zona">
@@ -2870,6 +2931,20 @@
           <NavigationProperty Name="tipos_sanciones" Relationship="Self.fk_tipo_sancion" FromRole="sanciones" ToRole="tipos_sanciones" />
           <NavigationProperty Name="zonas" Relationship="Self.fk_zona_sancion" FromRole="sanciones" ToRole="zonas" />
         </EntityType>
+        <EntityType Name="sanciones_equipo">
+          <Key>
+            <PropertyRef Name="id_sancion_equipo" />
+          </Key>
+          <Property Name="id_sancion_equipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="puntos_restados" Type="Int32" />
+          <Property Name="id_equipo" Type="Int32" />
+          <Property Name="id_zona" Type="Int32" />
+          <Property Name="id_torneo" Type="Int32" />
+          <NavigationProperty Name="equipos" Relationship="Self.fk_sanciones_equipo_equipo" FromRole="sanciones_equipo" ToRole="equipos" />
+          <NavigationProperty Name="torneos" Relationship="Self.fk_sanciones_equipo_torneo" FromRole="sanciones_equipo" ToRole="torneos" />
+          <NavigationProperty Name="zonas" Relationship="Self.fk_sanciones_equipo_zona" FromRole="sanciones_equipo" ToRole="zonas" />
+        </EntityType>
         <EntityType Name="sanciones_torneo">
           <Key>
             <PropertyRef Name="id_sancion" />
@@ -2969,6 +3044,7 @@
           <NavigationProperty Name="reglas_torneo" Relationship="Self.fk_regla_torneo" FromRole="torneos" ToRole="reglas_torneo" />
           <NavigationProperty Name="reglas_torneo1" Relationship="Self.fk_reglas_torneo" FromRole="torneos" ToRole="reglas_torneo" />
           <NavigationProperty Name="sanciones" Relationship="Self.fk_sancion_torneo" FromRole="torneos" ToRole="sanciones" />
+          <NavigationProperty Name="sanciones_equipo" Relationship="Self.fk_sanciones_equipo_torneo" FromRole="torneos" ToRole="sanciones_equipo" />
           <NavigationProperty Name="sanciones_torneo" Relationship="Self.fk_jugador_sanciones_torneo" FromRole="torneos" ToRole="sanciones_torneo" />
           <NavigationProperty Name="sponsors" Relationship="Self.fk_sponsor_torneo" FromRole="torneos" ToRole="sponsors" />
           <NavigationProperty Name="tipos_torneos" Relationship="Self.fk_tipo_torneo" FromRole="torneos" ToRole="tipos_torneos" />
@@ -3019,6 +3095,7 @@
           <NavigationProperty Name="posiciones_zona" Relationship="Self.fk_posicion_zona" FromRole="zonas" ToRole="posiciones_zona" />
           <NavigationProperty Name="resultados_zona" Relationship="Self.fk_resultado_zona" FromRole="zonas" ToRole="resultados_zona" />
           <NavigationProperty Name="sanciones" Relationship="Self.fk_zona_sancion" FromRole="zonas" ToRole="sanciones" />
+          <NavigationProperty Name="sanciones_equipo" Relationship="Self.fk_sanciones_equipo_zona" FromRole="zonas" ToRole="sanciones_equipo" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_zonas_torneo" FromRole="zonas" ToRole="torneos" />
         </EntityType>
         <Association Name="fk_arbitro_partido">
@@ -3437,6 +3514,18 @@
               <PropertyRef Name="id_equipo" />
             </Principal>
             <Dependent Role="representante_equipo">
+              <PropertyRef Name="id_equipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sanciones_equipo_equipo">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
               <PropertyRef Name="id_equipo" />
             </Dependent>
           </ReferentialConstraint>
@@ -4185,6 +4274,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_sanciones_equipo_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sanciones_equipo_zona">
+          <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zonas">
+              <PropertyRef Name="id_zona" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
+              <PropertyRef Name="id_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_jugador_sanciones_torneo">
           <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
           <End Role="sanciones_torneo" Type="Self.sanciones_torneo" Multiplicity="*" />
@@ -4279,6 +4392,7 @@
           <EntitySet Name="resultados" EntityType="Self.resultados" />
           <EntitySet Name="resultados_zona" EntityType="Self.resultados_zona" />
           <EntitySet Name="sanciones" EntityType="Self.sanciones" />
+          <EntitySet Name="sanciones_equipo" EntityType="Self.sanciones_equipo" />
           <EntitySet Name="sanciones_torneo" EntityType="Self.sanciones_torneo" />
           <EntitySet Name="sponsors" EntityType="Self.sponsors" />
           <EntitySet Name="tipos_cancha" EntityType="Self.tipos_cancha" />
@@ -4430,6 +4544,10 @@
           <AssociationSet Name="fk_representante_equipo" Association="Self.fk_representante_equipo">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="representante_equipo" EntitySet="representante_equipo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_equipo" Association="Self.fk_sanciones_equipo_equipo">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
           </AssociationSet>
           <AssociationSet Name="fk_visitante_partido" Association="Self.fk_visitante_partido">
             <End Role="equipos" EntitySet="equipos" />
@@ -4678,6 +4796,14 @@
           <AssociationSet Name="fk_zona_sancion" Association="Self.fk_zona_sancion">
             <End Role="zonas" EntitySet="zonas" />
             <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_torneo" Association="Self.fk_sanciones_equipo_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_zona" Association="Self.fk_sanciones_equipo_zona">
+            <End Role="zonas" EntitySet="zonas" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
           </AssociationSet>
           <AssociationSet Name="fk_jugador_sanciones_torneo" Association="Self.fk_jugador_sanciones_torneo">
             <End Role="torneos" EntitySet="torneos" />
@@ -5203,6 +5329,18 @@
                 <ScalarProperty Name="detalle" ColumnName="detalle" />
                 <ScalarProperty Name="id_zona" ColumnName="id_zona" />
                 <ScalarProperty Name="id_fase" ColumnName="id_fase" />
+                <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sanciones_equipo">
+            <EntityTypeMapping TypeName="goldenModel.sanciones_equipo">
+              <MappingFragment StoreEntitySet="sanciones_equipo">
+                <ScalarProperty Name="id_sancion_equipo" ColumnName="id_sancion_equipo" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="puntos_restados" ColumnName="puntos_restados" />
+                <ScalarProperty Name="id_equipo" ColumnName="id_equipo" />
+                <ScalarProperty Name="id_zona" ColumnName="id_zona" />
                 <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
               </MappingFragment>
             </EntityTypeMapping>

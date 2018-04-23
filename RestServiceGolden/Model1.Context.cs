@@ -70,6 +70,7 @@ namespace RestServiceGolden
         public virtual DbSet<resultados> resultados { get; set; }
         public virtual DbSet<resultados_zona> resultados_zona { get; set; }
         public virtual DbSet<sanciones> sanciones { get; set; }
+        public virtual DbSet<sanciones_equipo> sanciones_equipo { get; set; }
         public virtual DbSet<sanciones_torneo> sanciones_torneo { get; set; }
         public virtual DbSet<sponsors> sponsors { get; set; }
         public virtual DbSet<tipos_cancha> tipos_cancha { get; set; }
