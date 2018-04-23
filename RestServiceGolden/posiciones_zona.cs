@@ -22,8 +22,13 @@ namespace RestServiceGolden
         public Nullable<int> dif_gol { get; set; }
         public Nullable<int> id_torneo { get; set; }
         public Nullable<int> id_zona { get; set; }
+        public Nullable<int> partidos_jugados { get; set; }
+        public Nullable<int> partidos_ganados { get; set; }
+        public Nullable<int> partidos_empatados { get; set; }
+        public Nullable<int> partidos_perdidos { get; set; }
     
         public virtual zonas zonas { get; set; }
         public virtual torneos torneos { get; set; }
+        public virtual equipos equipos { get; set; }
     }
 }

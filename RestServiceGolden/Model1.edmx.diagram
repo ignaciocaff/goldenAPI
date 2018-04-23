@@ -149,6 +149,7 @@
         <EntityTypeShape EntityType="goldenModel.fases" Width="1.5" PointX="10.375" PointY="8.875" />
         <AssociationConnector Association="goldenModel.fk_fase_torneo" />
         <AssociationConnector Association="goldenModel.fk_torneo_fase" />
+        <AssociationConnector Association="goldenModel.fk_equipo_posicion_zona" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -210,3 +210,10 @@ project.lock.json
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
+*.jpg
+*.png
+*.png
+*.jpeg
+*.png
+RestServiceGolden/UploadedFiles/GOLDEN_CAMISETAS_th_camiseta.png
+RestServiceGolden/UploadedFiles/GOLDEN_CAMISETAS_camiseta.png

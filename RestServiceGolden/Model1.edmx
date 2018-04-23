@@ -348,6 +348,10 @@
           <Property Name="goles_contra" Type="int" />
           <Property Name="dif_gol" Type="int" />
           <Property Name="id_torneo" Type="int" />
+          <Property Name="partidos_jugados" Type="int" />
+          <Property Name="partidos_ganados" Type="int" />
+          <Property Name="partidos_empatados" Type="int" />
+          <Property Name="partidos_perdidos" Type="int" />
         </EntityType>
         <EntityType Name="posiciones_zona">
           <Key>
@@ -361,6 +365,10 @@
           <Property Name="dif_gol" Type="int" />
           <Property Name="id_torneo" Type="int" />
           <Property Name="id_zona" Type="int" />
+          <Property Name="partidos_jugados" Type="int" />
+          <Property Name="partidos_ganados" Type="int" />
+          <Property Name="partidos_empatados" Type="int" />
+          <Property Name="partidos_perdidos" Type="int" />
         </EntityType>
         <EntityType Name="provincias">
           <Key>
@@ -434,7 +442,7 @@
           <Key>
             <PropertyRef Name="id_sancion_equipo" />
           </Key>
-          <Property Name="id_sancion_equipo" Type="int" Nullable="false" />
+          <Property Name="id_sancion_equipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="200" />
           <Property Name="puntos_restados" Type="int" />
           <Property Name="id_equipo" Type="int" />
@@ -713,6 +721,18 @@
               <PropertyRef Name="id_equipo" />
             </Principal>
             <Dependent Role="goleadores">
+              <PropertyRef Name="id_equipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_posicion_zona">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="posiciones_zona" Type="Self.posiciones_zona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="posiciones_zona">
               <PropertyRef Name="id_equipo" />
             </Dependent>
           </ReferentialConstraint>
@@ -1729,6 +1749,10 @@
             <End Role="equipos" EntitySet="equipos" />
             <End Role="goleadores" EntitySet="goleadores" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_posicion_zona" Association="Self.fk_equipo_posicion_zona">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="posiciones_zona" EntitySet="posiciones_zona" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_torneo" Association="Self.fk_equipo_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="equipos" EntitySet="equipos" />
@@ -2164,6 +2188,7 @@
           <NavigationProperty Name="representante_equipo" Relationship="Self.fk_representante_equipo" FromRole="equipos" ToRole="representante_equipo" />
           <NavigationProperty Name="partidos1" Relationship="Self.fk_visitante_partido" FromRole="equipos" ToRole="partidos" />
           <NavigationProperty Name="sanciones_equipo" Relationship="goldenModel.fk_sanciones_equipo_equipo" FromRole="equipos" ToRole="sanciones_equipo" />
+          <NavigationProperty Name="posiciones_zona" Relationship="goldenModel.fk_equipo_posicion_zona" FromRole="equipos" ToRole="posiciones_zona" />
         </EntityType>
         <EntityType Name="equipos_zona">
           <Key>
@@ -2484,6 +2509,10 @@
           <Property Name="id_torneo" Type="Int32" />
           <NavigationProperty Name="equipos" Relationship="Self.fk_posicion_equipo" FromRole="posiciones" ToRole="equipos" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_posicion_torneo" FromRole="posiciones" ToRole="torneos" />
+          <Property Name="partidos_jugados" Type="Int32" />
+          <Property Name="partidos_ganados" Type="Int32" />
+          <Property Name="partidos_empatados" Type="Int32" />
+          <Property Name="partidos_perdidos" Type="Int32" />
         </EntityType>
         <EntityType Name="posiciones_zona">
           <Key>
@@ -2499,6 +2528,11 @@
           <Property Name="id_zona" Type="Int32" />
           <NavigationProperty Name="zonas" Relationship="Self.fk_posicion_zona" FromRole="posiciones_zona" ToRole="zonas" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_torneo_posicion_zona" FromRole="posiciones_zona" ToRole="torneos" />
+          <NavigationProperty Name="equipos" Relationship="goldenModel.fk_equipo_posicion_zona" FromRole="posiciones_zona" ToRole="equipos" />
+          <Property Name="partidos_jugados" Type="Int32" />
+          <Property Name="partidos_ganados" Type="Int32" />
+          <Property Name="partidos_empatados" Type="Int32" />
+          <Property Name="partidos_perdidos" Type="Int32" />
         </EntityType>
         <EntityType Name="provincias">
           <Key>
@@ -4153,6 +4187,10 @@
             <End Role="fases" EntitySet="fases" />
             <End Role="torneos" EntitySet="torneos" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_posicion_zona" Association="goldenModel.fk_equipo_posicion_zona">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="posiciones_zona" EntitySet="posiciones_zona" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="sanciones_equipo">
           <Key>
@@ -4234,6 +4272,18 @@
             </Principal>
             <Dependent Role="torneos">
               <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_posicion_zona">
+          <End Type="goldenModel.equipos" Role="equipos" Multiplicity="0..1" />
+          <End Type="goldenModel.posiciones_zona" Role="posiciones_zona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="posiciones_zona">
+              <PropertyRef Name="id_equipo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4602,6 +4652,10 @@
           <EntitySetMapping Name="posiciones">
             <EntityTypeMapping TypeName="goldenModel.posiciones">
               <MappingFragment StoreEntitySet="posiciones">
+                <ScalarProperty Name="partidos_perdidos" ColumnName="partidos_perdidos" />
+                <ScalarProperty Name="partidos_empatados" ColumnName="partidos_empatados" />
+                <ScalarProperty Name="partidos_ganados" ColumnName="partidos_ganados" />
+                <ScalarProperty Name="partidos_jugados" ColumnName="partidos_jugados" />
                 <ScalarProperty Name="id_posicion" ColumnName="id_posicion" />
                 <ScalarProperty Name="id_equipo" ColumnName="id_equipo" />
                 <ScalarProperty Name="puntos" ColumnName="puntos" />
@@ -4615,6 +4669,10 @@
           <EntitySetMapping Name="posiciones_zona">
             <EntityTypeMapping TypeName="goldenModel.posiciones_zona">
               <MappingFragment StoreEntitySet="posiciones_zona">
+                <ScalarProperty Name="partidos_perdidos" ColumnName="partidos_perdidos" />
+                <ScalarProperty Name="partidos_empatados" ColumnName="partidos_empatados" />
+                <ScalarProperty Name="partidos_ganados" ColumnName="partidos_ganados" />
+                <ScalarProperty Name="partidos_jugados" ColumnName="partidos_jugados" />
                 <ScalarProperty Name="id_posicion" ColumnName="id_posicion" />
                 <ScalarProperty Name="id_equipo" ColumnName="id_equipo" />
                 <ScalarProperty Name="puntos" ColumnName="puntos" />
