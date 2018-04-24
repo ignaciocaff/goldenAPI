@@ -16,5 +16,9 @@ namespace RestServiceGolden.Models
         public String rol { get; set; }
         public int edad { get; set; }
         public int id_jugador { get; set; }
+        public int goles { get; set; }
+        public int partidos_jugados { get; set; }
+        public int tarjetas_amarillas { get; set; }
+        public int tarjetas_rojas { get; set; }
     }
 }

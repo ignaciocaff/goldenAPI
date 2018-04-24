@@ -109,5 +109,53 @@ namespace RestServiceGolden.Controllers
                 return BadRequest(e.ToString());
             }
         }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/goleadores/{id_torneo}")]
+        public IHttpActionResult getGoleadores(int id_torneo)
+        {
+            try { 
+                var goleadores = db.goleadores.Where(x => x.id_torneo == id_torneo).OrderByDescending(x => x.cantidad_goles).Take(20).ToList();
+                List<Goleador> lsGoleadores = new List<Goleador>();
+
+                foreach (var goleador in goleadores)
+                {
+                    Goleador goleadorTorneo = new Goleador();
+                    Torneo torneo = new Torneo();
+                    IEquipo equipo = new IEquipo();
+                    Jugador jugador = new Jugador();
+
+                    var eq = db.equipos.Where(x => x.id_equipo == goleador.id_equipo).FirstOrDefault();
+                    var escudo = db.files.Where(x => x.Id == eq.logo).FirstOrDefault();
+                    var jug = db.jugadores.Where(x => x.id_jugador == goleador.id_jugador).FirstOrDefault();
+                    var per = db.personas.Where(x => x.id_persona == jug.id_persona).FirstOrDefault();
+
+                    goleadorTorneo.cantidad_goles = (int)goleador.cantidad_goles;
+
+                    goleadorTorneo.torneo = torneo;
+                    goleador.torneos.id_torneo = id_torneo;
+
+                    goleadorTorneo.equipo = equipo;
+                    goleadorTorneo.equipo.nombre = eq.nombre;
+                    goleadorTorneo.equipo.id_equipo = eq.id_equipo;
+                    goleadorTorneo.equipo.imagePath = escudo.ThumbPath;
+
+                    goleadorTorneo.jugador = jugador;
+                    goleadorTorneo.jugador.id_jugador = jug.id_jugador;
+                    goleadorTorneo.jugador.nombre = per.nombre;
+                    goleadorTorneo.jugador.apellido = per.apellido;
+
+                    lsGoleadores.Add(goleadorTorneo);
+                }
+
+                return Ok(lsGoleadores);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
+
+
     }
 }

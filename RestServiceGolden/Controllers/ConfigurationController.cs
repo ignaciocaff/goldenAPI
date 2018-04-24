@@ -141,6 +141,10 @@ namespace RestServiceGolden.Controllers
                         posicion.dif_gol = 0;
                         posicion.id_torneo = sancion.torneo.id_torneo;
                         posicion.id_zona = zonaEquipo.id_zona;
+                        posicion.partidos_ganados = 0;
+                        posicion.partidos_perdidos = 0;
+                        posicion.partidos_empatados = 0;
+                        posicion.partidos_jugados = 0;
                         db.posiciones_zona.Add(posicion);
                     }
                 }

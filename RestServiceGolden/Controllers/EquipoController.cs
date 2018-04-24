@@ -381,11 +381,17 @@ namespace RestServiceGolden.Controllers
                                     fecha_nacimiento = tPersonas.fecha_nacimiento,
                                     id_jugador = tJugador.id_jugador
 
-                                }).OrderBy(s => s.apellido);
+                                }).OrderBy(s => s.apellido).ToList();
 
                 List<IJugador> lsJugadores = new List<IJugador>();
                 foreach (var p in personas)
                 {
+                    var gol = db.goleadores.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id).FirstOrDefault();
+                    var pos = db.posiciones.Where(x => x.id_equipo == p.id_equipo && x.id_torneo == id).FirstOrDefault();
+                    var posZ = db.posiciones_zona.Where(x => x.id_equipo == p.id_equipo && x.id_torneo == id).FirstOrDefault();
+                    var ama = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id && x.id_tipo == 1).Count();
+                    var roja = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id && x.id_tipo != 1).Count();
+
                     IJugador jugador = new IJugador();
                     jugador.nombre = p.nombre;
                     jugador.apellido = p.apellido;
@@ -395,6 +401,31 @@ namespace RestServiceGolden.Controllers
                     jugador.imagePath = p.imagePath;
                     jugador.rol = p.rol;
                     jugador.id_jugador = p.id_jugador;
+                    if(gol != null)
+                    {
+                        jugador.goles = (int)gol.cantidad_goles;
+                    }
+                    else
+                    {
+                        jugador.goles = 0;
+                    }
+
+                    if (pos != null)
+                    {
+                        jugador.partidos_jugados = (int)pos.partidos_jugados;
+                    }
+                    else
+                    {
+                        jugador.partidos_jugados = 0;
+                    }
+
+                    if (posZ != null)
+                    {
+                        jugador.partidos_jugados = jugador.partidos_jugados + (int)posZ.partidos_jugados;
+                    } 
+
+                    jugador.tarjetas_amarillas = ama;
+                    jugador.tarjetas_rojas = roja;
 
                     jugador.edad = fecha.Year - p.fecha_nacimiento.Year;
 
