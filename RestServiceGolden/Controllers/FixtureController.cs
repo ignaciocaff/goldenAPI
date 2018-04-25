@@ -318,6 +318,551 @@ namespace RestServiceGolden.Controllers
             }
             return Ok(lsPartidos);
         }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/fecha/obtenerPartido/{id_equipo}/{id_torneo}/{id_zona:int?}/{esInterzonal:int?}")]
+        public IHttpActionResult obtenerPartido([FromBody]Fecha fecha, int id_equipo, int id_torneo, int? id_zona = 0, int? esInterzonal = 0)
+        {
+            try
+            {
+                IPartido iPartido = new IPartido();
+
+                if (esInterzonal == 0)
+                {
+                    var fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == id_zona && x.id_torneo == id_torneo);
+                    if (fixture_zona != null)
+                    {
+                        var partidos = db.fechas.Where(x => x.id_fixture_zona == fixture_zona.id_fixture && x.fecha == fecha.fecha).SingleOrDefault().partidos;
+                        if (partidos != null)
+                        {
+                            var partido = partidos.Where(x => (x.local == id_equipo || x.visitante == id_equipo) && x.esInterzonal == null && x.id_resultados_zona != null).SingleOrDefault();
+                            if (partido != null)
+                            {
+
+                                Cancha cancha = new Cancha();
+                                HorarioFijo horarioFijo = new HorarioFijo();
+                                IEquipo iLocal = new IEquipo();
+                                IEquipo iVisitante = new IEquipo();
+                                Turno turno = new Turno();
+                                Fecha fechaPartido = new Fecha();
+                                List<Sancion> lsSancionesLocal = new List<Sancion>();
+                                List<Sancion> lsSancionesVisitante = new List<Sancion>();
+                                List<Gol> lsGolesLocal = new List<Gol>();
+                                List<Gol> lsGolesVisitante = new List<Gol>();
+                                List<Jugador> lsJugadoresLocal = new List<Jugador>();
+                                List<Jugador> lsJugadoresVisitante = new List<Jugador>();
+
+                                var objLocal = (from tEquipos in db.equipos
+                                                join tArchivos in db.files on tEquipos.logo equals tArchivos.Id
+                                                where tEquipos.id_equipo == partido.local
+                                                select new
+                                                {
+                                                    id_equipo = tEquipos.id_equipo,
+                                                    nombre = tEquipos.nombre,
+                                                    imagePath = tArchivos.ImagePath,
+                                                    logo = tEquipos.logo
+                                                }).SingleOrDefault();
+
+
+                                var jugLocales = (from tJugador in db.jugadores
+                                                  join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                  where tJugador.id_equipo == partido.local
+                                                  select new
+                                                  {
+                                                      id_jugador = tJugador.id_jugador,
+                                                      nombre = tPersona.nombre,
+                                                      apellido = tPersona.apellido,
+                                                      id_equipo = tJugador.id_jugador
+                                                  }).ToList();
+
+                                var objVisitante = (from tEquipos in db.equipos
+                                                    join tArchivos in db.files on tEquipos.logo equals tArchivos.Id
+                                                    where tEquipos.id_equipo == partido.visitante
+                                                    select new
+                                                    {
+                                                        id_equipo = tEquipos.id_equipo,
+                                                        nombre = tEquipos.nombre,
+                                                        imagePath = tArchivos.ImagePath,
+                                                        logo = tEquipos.logo
+                                                    }).SingleOrDefault();
+
+                                var jugVisitantes = (from tJugador in db.jugadores
+                                                     join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                     where tJugador.id_equipo == partido.visitante
+                                                     select new
+                                                     {
+                                                         id_jugador = tJugador.id_jugador,
+                                                         nombre = tPersona.nombre,
+                                                         apellido = tPersona.apellido,
+                                                         id_equipo = tJugador.id_jugador
+                                                     }).ToList();
+
+                                iLocal.id_equipo = objLocal.id_equipo;
+                                iLocal.nombre = objLocal.nombre;
+                                iLocal.logo = objLocal.logo;
+                                iLocal.imagePath = objLocal.imagePath;
+
+                                iVisitante.id_equipo = objVisitante.id_equipo;
+                                iVisitante.nombre = objVisitante.nombre;
+                                iVisitante.logo = objVisitante.logo;
+                                iVisitante.imagePath = objVisitante.imagePath;
+
+                                foreach (var jL in jugLocales)
+                                {
+                                    Jugador jugador = new Jugador();
+                                    Equipo equipo = new Equipo();
+                                    jugador.id_jugador = jL.id_jugador;
+                                    jugador.nombre = jL.nombre;
+                                    jugador.apellido = jL.apellido;
+                                    jugador.equipo = equipo;
+                                    jugador.equipo.id_equipo = jL.id_equipo;
+                                    lsJugadoresLocal.Add(jugador);
+                                }
+
+                                foreach (var jV in jugVisitantes)
+                                {
+                                    Jugador jugador = new Jugador();
+                                    Equipo equipo = new Equipo();
+                                    jugador.id_jugador = jV.id_jugador;
+                                    jugador.nombre = jV.nombre;
+                                    jugador.apellido = jV.apellido;
+                                    jugador.equipo = equipo;
+                                    jugador.equipo.id_equipo = jV.id_equipo;
+                                    lsJugadoresVisitante.Add(jugador);
+                                }
+
+                                iPartido.local = new List<IEquipo>();
+                                iPartido.visitante = new List<IEquipo>();
+
+                                iLocal.lsJugadores = lsJugadoresLocal;
+                                iVisitante.lsJugadores = lsJugadoresVisitante;
+                                iPartido.local.Add(iLocal);
+                                iPartido.visitante.Add(iVisitante);
+
+                                var canchaDto = db.canchas.SingleOrDefault(x => x.id_cancha == partido.id_cancha);
+
+                                iPartido.cancha = cancha;
+                                iPartido.cancha.id_cancha = (int)partido.id_cancha;
+                                iPartido.cancha.nombre = canchaDto.nombre;
+
+                                var horarioDto = db.horarios_fijos.SingleOrDefault(x => x.id_horario == partido.id_horario_fijo);
+                                iPartido.horario = horarioFijo;
+                                iPartido.horario.id_horario = partido.id_horario_fijo;
+                                iPartido.horario.inicio = horarioDto.inicio;
+                                iPartido.horario.fin = horarioDto.fin;
+                                iPartido.horario.turno = turno;
+                                iPartido.horario.turno.id = horarioDto.id_turno;
+                                iPartido.id_partido = partido.id_partido;
+
+
+                                var sLocales = (from tSancion in db.sanciones
+                                                join tJugador in db.jugadores on tSancion.id_jugador equals tJugador.id_jugador
+                                                join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                where tSancion.id_partido == partido.id_partido && tSancion.id_equipo == partido.local
+                                                select new
+                                                {
+                                                    id_partido = tSancion.id_partido,
+                                                    id_jugador = tSancion.id_jugador,
+                                                    id_sancion = tSancion.id_sancion,
+                                                    nombre = tPersona.nombre,
+                                                    apellido = tPersona.apellido,
+                                                    id_tipo = tSancion.id_tipo
+                                                }).ToList();
+
+                                var gLocales = (from tGoles in db.goles
+                                                join tJugador in db.jugadores on tGoles.id_jugador equals tJugador.id_jugador
+                                                join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                where tGoles.id_partido == partido.id_partido && tGoles.id_equipo == partido.local
+                                                select new
+                                                {
+                                                    id_partido = tGoles.id_partido,
+                                                    id_jugador = tGoles.id_jugador,
+                                                    id_gol = tGoles.id_gol,
+                                                    nombre = tPersona.nombre,
+                                                    apellido = tPersona.apellido,
+                                                }).ToList();
+
+
+                                var sVisitantes = (from tSancion in db.sanciones
+                                                   join tJugador in db.jugadores on tSancion.id_jugador equals tJugador.id_jugador
+                                                   join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                   where tSancion.id_partido == partido.id_partido && tSancion.id_equipo == partido.visitante
+                                                   select new
+                                                   {
+                                                       id_partido = tSancion.id_partido,
+                                                       id_jugador = tSancion.id_jugador,
+                                                       id_sancion = tSancion.id_sancion,
+                                                       nombre = tPersona.nombre,
+                                                       apellido = tPersona.apellido,
+                                                       id_tipo = tSancion.id_tipo
+                                                   }).ToList();
+
+                                var gVisitante = (from tGoles in db.goles
+                                                  join tJugador in db.jugadores on tGoles.id_jugador equals tJugador.id_jugador
+                                                  join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                  where tGoles.id_partido == partido.id_partido && tGoles.id_equipo == partido.visitante
+                                                  select new
+                                                  {
+                                                      id_partido = tGoles.id_partido,
+                                                      id_jugador = tGoles.id_jugador,
+                                                      id_gol = tGoles.id_gol,
+                                                      nombre = tPersona.nombre,
+                                                      apellido = tPersona.apellido,
+                                                  }).ToList();
+
+                                foreach (var sL in sLocales)
+                                {
+                                    Sancion sancion = new Sancion();
+                                    TipoSancion tipoSancion = new TipoSancion();
+                                    Partido partidoSancion = new Partido();
+                                    Jugador jugador = new Jugador();
+
+                                    sancion.partido = partidoSancion;
+                                    sancion.partido.id_partido = sL.id_partido;
+                                    sancion.jugador = jugador;
+                                    sancion.jugador.id_jugador = sL.id_jugador;
+                                    sancion.jugador.nombre = sL.nombre;
+                                    sancion.jugador.apellido = sL.apellido;
+                                    sancion.id_sancion = sL.id_sancion;
+                                    sancion.tipo_sancion = tipoSancion;
+                                    sancion.tipo_sancion.id_tipo = sL.id_tipo;
+                                    sancion.tipo_sancion.descripcion = db.tipos_sanciones.Where(x => x.id_tipo == sL.id_tipo).FirstOrDefault().descripcion;
+                                    lsSancionesLocal.Add(sancion);
+                                }
+
+                                foreach (var sV in sVisitantes)
+                                {
+                                    Sancion sancion = new Sancion();
+                                    TipoSancion tipoSancion = new TipoSancion();
+                                    Partido partidoSancion = new Partido();
+                                    Jugador jugador = new Jugador();
+
+                                    sancion.partido = partidoSancion;
+                                    sancion.partido.id_partido = sV.id_partido;
+                                    sancion.jugador = jugador;
+                                    sancion.jugador.id_jugador = sV.id_jugador;
+                                    sancion.jugador.nombre = sV.nombre;
+                                    sancion.jugador.apellido = sV.apellido;
+                                    sancion.id_sancion = sV.id_sancion;
+                                    sancion.tipo_sancion = tipoSancion;
+                                    sancion.tipo_sancion.id_tipo = sV.id_tipo;
+                                    sancion.tipo_sancion.descripcion = db.tipos_sanciones.Where(x => x.id_tipo == sV.id_tipo).FirstOrDefault().descripcion;
+                                    lsSancionesVisitante.Add(sancion);
+                                }
+
+                                foreach (var gL in gLocales)
+                                {
+                                    Gol gol = new Gol();
+                                    Partido partidoGol = new Partido();
+                                    Jugador jugador = new Jugador();
+
+                                    gol.partido = partidoGol;
+                                    gol.partido.id_partido = gL.id_partido;
+                                    gol.jugador = jugador;
+                                    gol.jugador.id_jugador = gL.id_jugador;
+                                    gol.jugador.nombre = gL.nombre;
+                                    gol.jugador.apellido = gL.apellido;
+                                    gol.id_gol = gL.id_gol;
+                                    lsGolesLocal.Add(gol);
+                                }
+
+                                foreach (var gV in gVisitante)
+                                {
+                                    Gol gol = new Gol();
+                                    Partido partidoGol = new Partido();
+                                    Jugador jugador = new Jugador();
+
+                                    gol.partido = partidoGol;
+                                    gol.partido.id_partido = gV.id_partido;
+                                    gol.jugador = jugador;
+                                    gol.jugador.id_jugador = gV.id_jugador;
+                                    gol.jugador.nombre = gV.nombre;
+                                    gol.jugador.apellido = gV.apellido;
+                                    gol.id_gol = gV.id_gol;
+                                    lsGolesVisitante.Add(gol);
+                                }
+
+                                iPartido.lsSancionesLocal = lsSancionesLocal;
+                                iPartido.lsSancionesVisitante = lsSancionesVisitante;
+                                iPartido.lsGolesLocal = lsGolesLocal;
+                                iPartido.lsGolesVisitante = lsGolesVisitante;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+
+                    var fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == null && x.id_torneo == id_torneo);
+                    if (fixture_zona != null)
+                    {
+                        var partidos = db.fechas.Where(x => x.id_fixture_zona == fixture_zona.id_fixture && x.fecha == fecha.fecha).SingleOrDefault().partidos;
+                        if (partidos != null)
+                        {
+                            var partido = partidos.Where(x => (x.local == id_equipo || x.visitante == id_equipo) && x.esInterzonal != null && x.id_resultado != null).SingleOrDefault();
+                            if (partido != null)
+                            {
+
+
+                                Cancha cancha = new Cancha();
+                                HorarioFijo horarioFijo = new HorarioFijo();
+                                IEquipo iLocal = new IEquipo();
+                                IEquipo iVisitante = new IEquipo();
+                                Turno turno = new Turno();
+                                Fecha fechaPartido = new Fecha();
+                                List<Sancion> lsSancionesLocal = new List<Sancion>();
+                                List<Sancion> lsSancionesVisitante = new List<Sancion>();
+                                List<Gol> lsGolesLocal = new List<Gol>();
+                                List<Gol> lsGolesVisitante = new List<Gol>();
+                                List<Jugador> lsJugadoresLocal = new List<Jugador>();
+                                List<Jugador> lsJugadoresVisitante = new List<Jugador>();
+
+                                var objLocal = (from tEquipos in db.equipos
+                                                join tArchivos in db.files on tEquipos.logo equals tArchivos.Id
+                                                where tEquipos.id_equipo == partido.local
+                                                select new
+                                                {
+                                                    id_equipo = tEquipos.id_equipo,
+                                                    nombre = tEquipos.nombre,
+                                                    imagePath = tArchivos.ImagePath,
+                                                    logo = tEquipos.logo
+                                                }).SingleOrDefault();
+
+
+                                var jugLocales = (from tJugador in db.jugadores
+                                                  join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                  where tJugador.id_equipo == partido.local
+                                                  select new
+                                                  {
+                                                      id_jugador = tJugador.id_jugador,
+                                                      nombre = tPersona.nombre,
+                                                      apellido = tPersona.apellido,
+                                                      id_equipo = tJugador.id_jugador
+                                                  }).ToList();
+
+                                var objVisitante = (from tEquipos in db.equipos
+                                                    join tArchivos in db.files on tEquipos.logo equals tArchivos.Id
+                                                    where tEquipos.id_equipo == partido.visitante
+                                                    select new
+                                                    {
+                                                        id_equipo = tEquipos.id_equipo,
+                                                        nombre = tEquipos.nombre,
+                                                        imagePath = tArchivos.ImagePath,
+                                                        logo = tEquipos.logo
+                                                    }).SingleOrDefault();
+
+                                var jugVisitantes = (from tJugador in db.jugadores
+                                                     join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                     where tJugador.id_equipo == partido.visitante
+                                                     select new
+                                                     {
+                                                         id_jugador = tJugador.id_jugador,
+                                                         nombre = tPersona.nombre,
+                                                         apellido = tPersona.apellido,
+                                                         id_equipo = tJugador.id_jugador
+                                                     }).ToList();
+
+                                iLocal.id_equipo = objLocal.id_equipo;
+                                iLocal.nombre = objLocal.nombre;
+                                iLocal.logo = objLocal.logo;
+                                iLocal.imagePath = objLocal.imagePath;
+
+                                iVisitante.id_equipo = objVisitante.id_equipo;
+                                iVisitante.nombre = objVisitante.nombre;
+                                iVisitante.logo = objVisitante.logo;
+                                iVisitante.imagePath = objVisitante.imagePath;
+
+                                foreach (var jL in jugLocales)
+                                {
+                                    Jugador jugador = new Jugador();
+                                    Equipo equipo = new Equipo();
+                                    jugador.id_jugador = jL.id_jugador;
+                                    jugador.nombre = jL.nombre;
+                                    jugador.apellido = jL.apellido;
+                                    jugador.equipo = equipo;
+                                    jugador.equipo.id_equipo = jL.id_equipo;
+                                    lsJugadoresLocal.Add(jugador);
+                                }
+
+                                foreach (var jV in jugVisitantes)
+                                {
+                                    Jugador jugador = new Jugador();
+                                    Equipo equipo = new Equipo();
+                                    jugador.id_jugador = jV.id_jugador;
+                                    jugador.nombre = jV.nombre;
+                                    jugador.apellido = jV.apellido;
+                                    jugador.equipo = equipo;
+                                    jugador.equipo.id_equipo = jV.id_equipo;
+                                    lsJugadoresVisitante.Add(jugador);
+                                }
+
+                                iPartido.local = new List<IEquipo>();
+                                iPartido.visitante = new List<IEquipo>();
+
+                                iLocal.lsJugadores = lsJugadoresLocal;
+                                iVisitante.lsJugadores = lsJugadoresVisitante;
+                                iPartido.local.Add(iLocal);
+                                iPartido.visitante.Add(iVisitante);
+
+                                var canchaDto = db.canchas.SingleOrDefault(x => x.id_cancha == partido.id_cancha);
+
+                                iPartido.cancha = cancha;
+                                iPartido.cancha.id_cancha = (int)partido.id_cancha;
+                                iPartido.cancha.nombre = canchaDto.nombre;
+
+                                var horarioDto = db.horarios_fijos.SingleOrDefault(x => x.id_horario == partido.id_horario_fijo);
+                                iPartido.horario = horarioFijo;
+                                iPartido.horario.id_horario = partido.id_horario_fijo;
+                                iPartido.horario.inicio = horarioDto.inicio;
+                                iPartido.horario.fin = horarioDto.fin;
+                                iPartido.horario.turno = turno;
+                                iPartido.horario.turno.id = horarioDto.id_turno;
+                                iPartido.id_partido = partido.id_partido;
+
+
+                                var sLocales = (from tSancion in db.sanciones
+                                                join tJugador in db.jugadores on tSancion.id_jugador equals tJugador.id_jugador
+                                                join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                where tSancion.id_partido == partido.id_partido && tSancion.id_equipo == partido.local
+                                                select new
+                                                {
+                                                    id_partido = tSancion.id_partido,
+                                                    id_jugador = tSancion.id_jugador,
+                                                    id_sancion = tSancion.id_sancion,
+                                                    nombre = tPersona.nombre,
+                                                    apellido = tPersona.apellido,
+                                                    id_tipo = tSancion.id_tipo
+                                                }).ToList();
+
+                                var gLocales = (from tGoles in db.goles
+                                                join tJugador in db.jugadores on tGoles.id_jugador equals tJugador.id_jugador
+                                                join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                where tGoles.id_partido == partido.id_partido && tGoles.id_equipo == partido.local
+                                                select new
+                                                {
+                                                    id_partido = tGoles.id_partido,
+                                                    id_jugador = tGoles.id_jugador,
+                                                    id_gol = tGoles.id_gol,
+                                                    nombre = tPersona.nombre,
+                                                    apellido = tPersona.apellido,
+                                                }).ToList();
+
+
+                                var sVisitantes = (from tSancion in db.sanciones
+                                                   join tJugador in db.jugadores on tSancion.id_jugador equals tJugador.id_jugador
+                                                   join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                   where tSancion.id_partido == partido.id_partido && tSancion.id_equipo == partido.visitante
+                                                   select new
+                                                   {
+                                                       id_partido = tSancion.id_partido,
+                                                       id_jugador = tSancion.id_jugador,
+                                                       id_sancion = tSancion.id_sancion,
+                                                       nombre = tPersona.nombre,
+                                                       apellido = tPersona.apellido,
+                                                       id_tipo = tSancion.id_tipo
+                                                   }).ToList();
+
+                                var gVisitante = (from tGoles in db.goles
+                                                  join tJugador in db.jugadores on tGoles.id_jugador equals tJugador.id_jugador
+                                                  join tPersona in db.personas on tJugador.id_persona equals tPersona.id_persona
+                                                  where tGoles.id_partido == partido.id_partido && tGoles.id_equipo == partido.visitante
+                                                  select new
+                                                  {
+                                                      id_partido = tGoles.id_partido,
+                                                      id_jugador = tGoles.id_jugador,
+                                                      id_gol = tGoles.id_gol,
+                                                      nombre = tPersona.nombre,
+                                                      apellido = tPersona.apellido,
+                                                  }).ToList();
+
+                                foreach (var sL in sLocales)
+                                {
+                                    Sancion sancion = new Sancion();
+                                    TipoSancion tipoSancion = new TipoSancion();
+                                    Partido partidoSancion = new Partido();
+                                    Jugador jugador = new Jugador();
+
+                                    sancion.partido = partidoSancion;
+                                    sancion.partido.id_partido = sL.id_partido;
+                                    sancion.jugador = jugador;
+                                    sancion.jugador.id_jugador = sL.id_jugador;
+                                    sancion.jugador.nombre = sL.nombre;
+                                    sancion.jugador.apellido = sL.apellido;
+                                    sancion.id_sancion = sL.id_sancion;
+                                    sancion.tipo_sancion = tipoSancion;
+                                    sancion.tipo_sancion.id_tipo = sL.id_tipo;
+                                    sancion.tipo_sancion.descripcion = db.tipos_sanciones.Where(x => x.id_tipo == sL.id_tipo).FirstOrDefault().descripcion;
+                                    lsSancionesLocal.Add(sancion);
+                                }
+
+                                foreach (var sV in sVisitantes)
+                                {
+                                    Sancion sancion = new Sancion();
+                                    TipoSancion tipoSancion = new TipoSancion();
+                                    Partido partidoSancion = new Partido();
+                                    Jugador jugador = new Jugador();
+
+                                    sancion.partido = partidoSancion;
+                                    sancion.partido.id_partido = sV.id_partido;
+                                    sancion.jugador = jugador;
+                                    sancion.jugador.id_jugador = sV.id_jugador;
+                                    sancion.jugador.nombre = sV.nombre;
+                                    sancion.jugador.apellido = sV.apellido;
+                                    sancion.id_sancion = sV.id_sancion;
+                                    sancion.tipo_sancion = tipoSancion;
+                                    sancion.tipo_sancion.id_tipo = sV.id_tipo;
+                                    sancion.tipo_sancion.descripcion = db.tipos_sanciones.Where(x => x.id_tipo == sV.id_tipo).FirstOrDefault().descripcion;
+                                    lsSancionesVisitante.Add(sancion);
+                                }
+
+                                foreach (var gL in gLocales)
+                                {
+                                    Gol gol = new Gol();
+                                    Partido partidoGol = new Partido();
+                                    Jugador jugador = new Jugador();
+
+                                    gol.partido = partidoGol;
+                                    gol.partido.id_partido = gL.id_partido;
+                                    gol.jugador = jugador;
+                                    gol.jugador.id_jugador = gL.id_jugador;
+                                    gol.jugador.nombre = gL.nombre;
+                                    gol.jugador.apellido = gL.apellido;
+                                    gol.id_gol = gL.id_gol;
+                                    lsGolesLocal.Add(gol);
+                                }
+
+                                foreach (var gV in gVisitante)
+                                {
+                                    Gol gol = new Gol();
+                                    Partido partidoGol = new Partido();
+                                    Jugador jugador = new Jugador();
+
+                                    gol.partido = partidoGol;
+                                    gol.partido.id_partido = gV.id_partido;
+                                    gol.jugador = jugador;
+                                    gol.jugador.id_jugador = gV.id_jugador;
+                                    gol.jugador.nombre = gV.nombre;
+                                    gol.jugador.apellido = gV.apellido;
+                                    gol.id_gol = gV.id_gol;
+                                    lsGolesVisitante.Add(gol);
+                                }
+
+                                iPartido.lsSancionesLocal = lsSancionesLocal;
+                                iPartido.lsSancionesVisitante = lsSancionesVisitante;
+                                iPartido.lsGolesLocal = lsGolesLocal;
+                                iPartido.lsGolesVisitante = lsGolesVisitante;
+                            }
+                        }
+                    }
+                }
+                return Ok(iPartido);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
+
         [ResponseType(typeof(IHttpActionResult))]
         [Route("api/fecha/obtenerPartidos")]
         public IHttpActionResult obtenerPartidos([FromBody]IPartido iPartido)
@@ -586,6 +1131,35 @@ namespace RestServiceGolden.Controllers
                     }
                 }
                 return Ok(true);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/fecha/obtenerFInterzonales/{id_torneo}")]
+        public IHttpActionResult getObtenerFInterzonales(int id_torneo)
+        {
+            try
+            {
+                List<Fecha> lsFechas = new List<Fecha>();
+                var fixture = db.fixture_zona.Where(x => x.id_torneo == id_torneo).ToList();
+                foreach (var fix in fixture)
+                {
+                    var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture).ToList();
+
+                    foreach (var f in fechas)
+                    {
+                        Fecha fechaDto = new Fecha();
+                        fechaDto.id_fecha = f.id_fecha;
+                        fechaDto.fecha = (System.DateTime)f.fecha;
+                        lsFechas.Add(fechaDto);
+
+                    }
+                }
+
+                return Ok(lsFechas);
             }
             catch (Exception e)
             {

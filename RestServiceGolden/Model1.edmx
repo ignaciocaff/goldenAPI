@@ -464,6 +464,7 @@
           <Property Name="id_zona" Type="int" />
           <Property Name="id_fase" Type="int" />
           <Property Name="id_torneo" Type="int" />
+          <Property Name="id_equipo" Type="int" />
         </EntityType>
         <EntityType Name="sanciones_equipo">
           <Key>
@@ -772,6 +773,18 @@
             </Principal>
             <Dependent Role="playoff">
               <PropertyRef Name="local" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_sancion">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_equipo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1954,6 +1967,10 @@
             <End Role="equipos" EntitySet="equipos" />
             <End Role="playoff" EntitySet="playoff" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_sancion" Association="Self.fk_equipo_sancion">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_torneo" Association="Self.fk_equipo_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="equipos" EntitySet="equipos" />
@@ -2429,6 +2446,7 @@
           <NavigationProperty Name="goles" Relationship="Self.fk_equipo_gol" FromRole="equipos" ToRole="goles" />
           <NavigationProperty Name="goleadores" Relationship="Self.fk_equipo_goleador" FromRole="equipos" ToRole="goleadores" />
           <NavigationProperty Name="playoff1" Relationship="Self.fk_equipo_local" FromRole="equipos" ToRole="playoff" />
+          <NavigationProperty Name="sanciones" Relationship="Self.fk_equipo_sancion" FromRole="equipos" ToRole="sanciones" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_equipo_torneo" FromRole="equipos" ToRole="torneos" />
           <NavigationProperty Name="playoff2" Relationship="Self.fk_equipo_visitante" FromRole="equipos" ToRole="playoff" />
           <NavigationProperty Name="equipos_zona" Relationship="Self.fk_equipo_zona" FromRole="equipos" ToRole="equipos_zona" />
@@ -2922,6 +2940,8 @@
           <Property Name="id_zona" Type="Int32" />
           <Property Name="id_fase" Type="Int32" />
           <Property Name="id_torneo" Type="Int32" />
+          <Property Name="id_equipo" Type="Int32" />
+          <NavigationProperty Name="equipos" Relationship="Self.fk_equipo_sancion" FromRole="sanciones" ToRole="equipos" />
           <NavigationProperty Name="fases" Relationship="Self.fk_sancion_fase" FromRole="sanciones" ToRole="fases" />
           <NavigationProperty Name="fechas" Relationship="Self.fk_fin_fecha" FromRole="sanciones" ToRole="fechas" />
           <NavigationProperty Name="fechas1" Relationship="Self.fk_inicio_fecha" FromRole="sanciones" ToRole="fechas" />
@@ -3347,6 +3367,18 @@
             </Principal>
             <Dependent Role="playoff">
               <PropertyRef Name="local" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_sancion">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_equipo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4489,6 +4521,10 @@
             <End Role="equipos" EntitySet="equipos" />
             <End Role="playoff" EntitySet="playoff" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_sancion" Association="Self.fk_equipo_sancion">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_torneo" Association="Self.fk_equipo_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="equipos" EntitySet="equipos" />
@@ -5330,6 +5366,7 @@
                 <ScalarProperty Name="id_zona" ColumnName="id_zona" />
                 <ScalarProperty Name="id_fase" ColumnName="id_fase" />
                 <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
+                <ScalarProperty Name="id_equipo" ColumnName="id_equipo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

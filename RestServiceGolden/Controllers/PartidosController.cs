@@ -51,6 +51,7 @@ namespace RestServiceGolden.Controllers
                         sanciones sancionDtoL = new sanciones();
                         sancionDtoL.id_jugador = sancionL.jugador.id_jugador;
                         sancionDtoL.id_partido = sancionL.partido.id_partido;
+                        sancionDtoL.id_equipo = sancionL.equipo.id_equipo;
                         sancionDtoL.id_tipo = sancionL.tipo_sancion.id_tipo;
                         if (sancionL.tipo_sancion.id_tipo == 1)
                         {
@@ -85,7 +86,7 @@ namespace RestServiceGolden.Controllers
                         sancionDtoV.id_jugador = sancionV.jugador.id_jugador;
                         sancionDtoV.id_partido = sancionV.partido.id_partido;
                         sancionDtoV.id_tipo = sancionV.tipo_sancion.id_tipo;
-
+                        sancionDtoV.id_equipo = sancionV.equipo.id_equipo;
                         if (sancionV.tipo_sancion.id_tipo == 1)
                         {
                             sancionDtoV.fecha_inicio = partido.fecha.id_fecha;

@@ -14,5 +14,10 @@ namespace RestServiceGolden.Models
         public HorarioFijo horario { get; set; }
         public Fecha fecha { get; set; }
         public int? id_fixture { get; set; }
+
+        public List<Gol> lsGolesLocal { get; set; }
+        public List<Gol> lsGolesVisitante { get; set; }
+        public List<Sancion> lsSancionesLocal { get; set; }
+        public List<Sancion> lsSancionesVisitante { get; set; }
     }
 }

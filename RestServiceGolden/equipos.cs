@@ -21,6 +21,7 @@ namespace RestServiceGolden
             this.goles = new HashSet<goles>();
             this.goleadores = new HashSet<goleadores>();
             this.playoff1 = new HashSet<playoff>();
+            this.sanciones = new HashSet<sanciones>();
             this.playoff2 = new HashSet<playoff>();
             this.equipos_zona = new HashSet<equipos_zona>();
             this.fotos = new HashSet<fotos>();
@@ -58,6 +59,8 @@ namespace RestServiceGolden
         public virtual ICollection<goleadores> goleadores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<playoff> playoff1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sanciones> sanciones { get; set; }
         public virtual torneos torneos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<playoff> playoff2 { get; set; }
