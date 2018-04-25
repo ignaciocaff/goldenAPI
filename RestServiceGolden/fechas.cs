@@ -34,9 +34,10 @@ namespace RestServiceGolden
         public virtual estado_fecha estado_fecha { get; set; }
         public virtual fases fases { get; set; }
         public virtual fixture fixture { get; set; }
+        public virtual fixture_zona fixture_zona { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<partidos> partidos { get; set; }
-        public virtual fixture_zona fixture_zona { get; set; }
+        public virtual fixture_zona fixture_zona1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sanciones> sanciones { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

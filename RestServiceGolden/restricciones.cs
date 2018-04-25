@@ -14,16 +14,7 @@ namespace RestServiceGolden
     
     public partial class restricciones
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public restricciones()
-        {
-            this.tipos_sanciones = new HashSet<tipos_sanciones>();
-        }
-    
         public int id_restriccion { get; set; }
         public string descripcion { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tipos_sanciones> tipos_sanciones { get; set; }
     }
 }

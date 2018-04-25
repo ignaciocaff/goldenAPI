@@ -359,8 +359,8 @@ namespace RestServiceGolden.Controllers
 
 
         [ResponseType(typeof(IHttpActionResult))]
-        [Route("api/equipo/iJugadores/{id}")]
-        public IHttpActionResult GetiJugadoresByIdEquipo(int id)
+        [Route("api/equipo/iJugadores/{id}/{id_torneo:int?}")]
+        public IHttpActionResult GetiJugadoresByIdEquipo(int id, int? id_torneo = 0)
         {
             DateTime fecha = DateTime.Now;
             try
@@ -386,11 +386,11 @@ namespace RestServiceGolden.Controllers
                 List<IJugador> lsJugadores = new List<IJugador>();
                 foreach (var p in personas)
                 {
-                    var gol = db.goleadores.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id).FirstOrDefault();
-                    var pos = db.posiciones.Where(x => x.id_equipo == p.id_equipo && x.id_torneo == id).FirstOrDefault();
-                    var posZ = db.posiciones_zona.Where(x => x.id_equipo == p.id_equipo && x.id_torneo == id).FirstOrDefault();
-                    var ama = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id && x.id_tipo == 1).Count();
-                    var roja = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id && x.id_tipo != 1).Count();
+                    var gol = db.goleadores.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id_torneo).FirstOrDefault();
+                    var pos = db.posiciones.Where(x => x.id_equipo == p.id_equipo && x.id_torneo == id_torneo).FirstOrDefault();
+                    var posZ = db.posiciones_zona.Where(x => x.id_equipo == p.id_equipo && x.id_torneo == id_torneo).FirstOrDefault();
+                    var ama = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id_torneo && x.id_tipo == 1).Count();
+                    var roja = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id_torneo && x.id_tipo != 1).Count();
 
                     IJugador jugador = new IJugador();
                     jugador.nombre = p.nombre;
@@ -401,7 +401,7 @@ namespace RestServiceGolden.Controllers
                     jugador.imagePath = p.imagePath;
                     jugador.rol = p.rol;
                     jugador.id_jugador = p.id_jugador;
-                    if(gol != null)
+                    if (gol != null)
                     {
                         jugador.goles = (int)gol.cantidad_goles;
                     }
@@ -422,7 +422,7 @@ namespace RestServiceGolden.Controllers
                     if (posZ != null)
                     {
                         jugador.partidos_jugados = jugador.partidos_jugados + (int)posZ.partidos_jugados;
-                    } 
+                    }
 
                     jugador.tarjetas_amarillas = ama;
                     jugador.tarjetas_rojas = roja;
