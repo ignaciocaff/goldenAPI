@@ -22,7 +22,9 @@ namespace RestServiceGolden
     
         public int id_tipo { get; set; }
         public string descripcion { get; set; }
+        public Nullable<int> id_restriccion { get; set; }
     
+        public virtual restricciones restricciones { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sanciones> sanciones { get; set; }
     }

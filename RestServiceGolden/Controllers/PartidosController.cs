@@ -185,6 +185,7 @@ namespace RestServiceGolden.Controllers
                             posicionesDtoLocal.goles_favor = partido.lsGoleadoresLocales.Count;
                             posicionesDtoLocal.goles_contra = partido.lsGoleadoresVisitantes.Count;
                             posicionesDtoLocal.dif_gol = partido.lsGoleadoresLocales.Count - partido.lsGoleadoresVisitantes.Count;
+                            posicionesDtoLocal.partidos_jugados = 1;
 
 
                             if (esInterzonal == 0)
@@ -192,15 +193,24 @@ namespace RestServiceGolden.Controllers
                                 if (partido.local.id_equipo == partido.resultado_zona.ganador.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionesDtoLocal.puntos = 3;
+                                    posicionesDtoLocal.partidos_ganados = 1;
+                                    posicionesDtoLocal.partidos_empatados = 0;
+                                    posicionesDtoLocal.partidos_perdidos = 0;
 
                                 }
                                 else if (partido.local.id_equipo == partido.resultado_zona.perdedor.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionesDtoLocal.puntos = 0;
+                                    posicionesDtoLocal.partidos_ganados = 0;
+                                    posicionesDtoLocal.partidos_empatados = 0;
+                                    posicionesDtoLocal.partidos_perdidos = 1;
                                 }
                                 else
                                 {
                                     posicionesDtoLocal.puntos = 1;
+                                    posicionesDtoLocal.partidos_ganados = 0;
+                                    posicionesDtoLocal.partidos_empatados = 1;
+                                    posicionesDtoLocal.partidos_perdidos = 0;
                                 }
                             }
                             else
@@ -208,15 +218,24 @@ namespace RestServiceGolden.Controllers
                                 if (partido.local.id_equipo == partido.resultado.ganador.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionesDtoLocal.puntos = 3;
+                                    posicionesDtoLocal.partidos_ganados = 1;
+                                    posicionesDtoLocal.partidos_empatados = 0;
+                                    posicionesDtoLocal.partidos_perdidos = 0;
 
                                 }
                                 else if (partido.local.id_equipo == partido.resultado.perdedor.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionesDtoLocal.puntos = 0;
+                                    posicionesDtoLocal.partidos_ganados = 0;
+                                    posicionesDtoLocal.partidos_empatados = 0;
+                                    posicionesDtoLocal.partidos_perdidos = 1;
                                 }
                                 else
                                 {
                                     posicionesDtoLocal.puntos = 1;
+                                    posicionesDtoLocal.partidos_ganados = 0;
+                                    posicionesDtoLocal.partidos_empatados = 1;
+                                    posicionesDtoLocal.partidos_perdidos = 0;
                                 }
                             }
 
@@ -231,15 +250,18 @@ namespace RestServiceGolden.Controllers
                                 if (partido.local.id_equipo == partido.resultado_zona.ganador.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos + 3;
+                                    posicionZonaLocal.partidos_ganados++;
 
                                 }
                                 else if (partido.local.id_equipo == partido.resultado_zona.perdedor.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos;
+                                    posicionZonaLocal.partidos_perdidos++;
                                 }
                                 else
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos + 1;
+                                    posicionZonaLocal.partidos_empatados++;
                                 }
                             }
                             else
@@ -248,15 +270,17 @@ namespace RestServiceGolden.Controllers
                                 if (partido.local.id_equipo == partido.resultado.ganador.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos + 3;
-
+                                    posicionZonaLocal.partidos_ganados++;
                                 }
                                 else if (partido.local.id_equipo == partido.resultado.perdedor.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos;
+                                    posicionZonaLocal.partidos_perdidos++;
                                 }
                                 else
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos + 1;
+                                    posicionZonaLocal.partidos_empatados++;
                                 }
                             }
 
@@ -264,6 +288,7 @@ namespace RestServiceGolden.Controllers
                             posicionZonaLocal.goles_favor = posicionZonaLocal.goles_favor + partido.lsGoleadoresLocales.Count;
                             posicionZonaLocal.goles_contra = posicionZonaLocal.goles_contra + partido.lsGoleadoresVisitantes.Count;
                             posicionZonaLocal.dif_gol = posicionZonaLocal.goles_favor - posicionZonaLocal.goles_contra;
+                            posicionZonaLocal.partidos_jugados++;
                             db.SaveChanges();
                         }
 
@@ -278,21 +303,31 @@ namespace RestServiceGolden.Controllers
                             posicionesDtoVisitante.goles_favor = partido.lsGoleadoresVisitantes.Count;
                             posicionesDtoVisitante.goles_contra = partido.lsGoleadoresLocales.Count;
                             posicionesDtoVisitante.dif_gol = partido.lsGoleadoresVisitantes.Count - partido.lsGoleadoresLocales.Count;
+                            posicionesDtoVisitante.partidos_jugados = 1;
 
                             if (esInterzonal == 0)
                             {
                                 if (partido.visitante.id_equipo == partido.resultado_zona.ganador.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionesDtoVisitante.puntos = 3;
+                                    posicionesDtoVisitante.partidos_ganados = 1;
+                                    posicionesDtoVisitante.partidos_empatados = 0;
+                                    posicionesDtoVisitante.partidos_perdidos = 0;
 
                                 }
                                 else if (partido.visitante.id_equipo == partido.resultado_zona.perdedor.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionesDtoVisitante.puntos = 0;
+                                    posicionesDtoVisitante.partidos_ganados = 0;
+                                    posicionesDtoVisitante.partidos_empatados = 0;
+                                    posicionesDtoVisitante.partidos_perdidos = 1;
                                 }
                                 else
                                 {
                                     posicionesDtoVisitante.puntos = 1;
+                                    posicionesDtoVisitante.partidos_ganados = 0;
+                                    posicionesDtoVisitante.partidos_empatados = 1;
+                                    posicionesDtoVisitante.partidos_perdidos = 0;
                                 }
                                 db.posiciones.Add(posicionesDtoVisitante);
                                 db.SaveChanges();
@@ -302,15 +337,23 @@ namespace RestServiceGolden.Controllers
                                 if (partido.visitante.id_equipo == partido.resultado.ganador.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionesDtoVisitante.puntos = 3;
-
+                                    posicionesDtoVisitante.partidos_ganados = 1;
+                                    posicionesDtoVisitante.partidos_empatados = 0;
+                                    posicionesDtoVisitante.partidos_perdidos = 0;
                                 }
                                 else if (partido.visitante.id_equipo == partido.resultado.perdedor.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionesDtoVisitante.puntos = 0;
+                                    posicionesDtoVisitante.partidos_ganados = 0;
+                                    posicionesDtoVisitante.partidos_empatados = 0;
+                                    posicionesDtoVisitante.partidos_perdidos = 1;
                                 }
                                 else
                                 {
                                     posicionesDtoVisitante.puntos = 1;
+                                    posicionesDtoVisitante.partidos_ganados = 0;
+                                    posicionesDtoVisitante.partidos_empatados = 1;
+                                    posicionesDtoVisitante.partidos_perdidos = 0;
                                 }
                                 db.posiciones.Add(posicionesDtoVisitante);
                                 db.SaveChanges();
@@ -324,20 +367,24 @@ namespace RestServiceGolden.Controllers
                                 if (partido.visitante.id_equipo == partido.resultado_zona.ganador.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos + 3;
+                                    posicionZonaVisitante.partidos_ganados++;
 
                                 }
                                 else if (partido.visitante.id_equipo == partido.resultado_zona.perdedor.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos;
+                                    posicionZonaVisitante.partidos_perdidos++;
                                 }
                                 else
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos + 1;
+                                    posicionZonaVisitante.partidos_empatados++;
                                 }
 
                                 posicionZonaVisitante.goles_favor = posicionZonaVisitante.goles_favor + partido.lsGoleadoresVisitantes.Count;
                                 posicionZonaVisitante.goles_contra = posicionZonaVisitante.goles_contra + partido.lsGoleadoresLocales.Count;
                                 posicionZonaVisitante.dif_gol = posicionZonaVisitante.goles_favor - posicionZonaVisitante.goles_contra;
+                                posicionZonaVisitante.partidos_jugados++;
                                 db.SaveChanges();
                             }
                             else
@@ -345,20 +392,24 @@ namespace RestServiceGolden.Controllers
                                 if (partido.visitante.id_equipo == partido.resultado.ganador.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos + 3;
+                                    posicionZonaVisitante.partidos_ganados++;
 
                                 }
                                 else if (partido.visitante.id_equipo == partido.resultado.perdedor.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos;
+                                    posicionZonaVisitante.partidos_perdidos++;
                                 }
                                 else
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos + 1;
+                                    posicionZonaVisitante.partidos_empatados++;
                                 }
 
                                 posicionZonaVisitante.goles_favor = posicionZonaVisitante.goles_favor + partido.lsGoleadoresVisitantes.Count;
                                 posicionZonaVisitante.goles_contra = posicionZonaVisitante.goles_contra + partido.lsGoleadoresLocales.Count;
                                 posicionZonaVisitante.dif_gol = posicionZonaVisitante.goles_favor - posicionZonaVisitante.goles_contra;
+                                posicionZonaVisitante.partidos_jugados++;
                                 db.SaveChanges();
                             }
                         }
@@ -388,6 +439,7 @@ namespace RestServiceGolden.Controllers
                             posicionesDtoLocal.goles_favor = partido.lsGoleadoresLocales.Count;
                             posicionesDtoLocal.goles_contra = partido.lsGoleadoresVisitantes.Count;
                             posicionesDtoLocal.dif_gol = partido.lsGoleadoresLocales.Count - partido.lsGoleadoresVisitantes.Count;
+                            posicionesDtoLocal.partidos_jugados = 1;
 
 
                             if (esInterzonal == 0)
@@ -396,15 +448,24 @@ namespace RestServiceGolden.Controllers
                                 if (partido.local.id_equipo == partido.resultado_zona.ganador.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionesDtoLocal.puntos = 3;
+                                    posicionesDtoLocal.partidos_ganados = 1;
+                                    posicionesDtoLocal.partidos_empatados = 0;
+                                    posicionesDtoLocal.partidos_perdidos = 0;
 
                                 }
                                 else if (partido.local.id_equipo == partido.resultado_zona.perdedor.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionesDtoLocal.puntos = 0;
+                                    posicionesDtoLocal.partidos_ganados = 0;
+                                    posicionesDtoLocal.partidos_empatados = 0;
+                                    posicionesDtoLocal.partidos_perdidos = 1;
                                 }
                                 else
                                 {
                                     posicionesDtoLocal.puntos = 1;
+                                    posicionesDtoLocal.partidos_ganados = 0;
+                                    posicionesDtoLocal.partidos_empatados = 1;
+                                    posicionesDtoLocal.partidos_perdidos = 0;
                                 }
                             }
                             else
@@ -412,15 +473,24 @@ namespace RestServiceGolden.Controllers
                                 if (partido.local.id_equipo == partido.resultado.ganador.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionesDtoLocal.puntos = 3;
+                                    posicionesDtoLocal.partidos_ganados = 1;
+                                    posicionesDtoLocal.partidos_empatados = 0;
+                                    posicionesDtoLocal.partidos_perdidos = 0;
 
                                 }
                                 else if (partido.local.id_equipo == partido.resultado.perdedor.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionesDtoLocal.puntos = 0;
+                                    posicionesDtoLocal.partidos_ganados = 0;
+                                    posicionesDtoLocal.partidos_empatados = 0;
+                                    posicionesDtoLocal.partidos_perdidos = 1;
                                 }
                                 else
                                 {
                                     posicionesDtoLocal.puntos = 1;
+                                    posicionesDtoLocal.partidos_ganados = 0;
+                                    posicionesDtoLocal.partidos_empatados = 1;
+                                    posicionesDtoLocal.partidos_perdidos = 0;
                                 }
                             }
 
@@ -435,15 +505,18 @@ namespace RestServiceGolden.Controllers
                                 if (partido.local.id_equipo == partido.resultado_zona.ganador.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos + 3;
+                                    posicionZonaLocal.partidos_ganados++;
 
                                 }
                                 else if (partido.local.id_equipo == partido.resultado_zona.perdedor.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos;
+                                    posicionZonaLocal.partidos_perdidos++;
                                 }
                                 else
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos + 1;
+                                    posicionZonaLocal.partidos_empatados++;
                                 }
                             }
                             else
@@ -452,15 +525,20 @@ namespace RestServiceGolden.Controllers
                                 if (partido.local.id_equipo == partido.resultado.ganador.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos + 3;
+                                    posicionZonaLocal.partidos_ganados++;
 
                                 }
                                 else if (partido.local.id_equipo == partido.resultado.perdedor.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos;
+                                    posicionZonaLocal.partidos_perdidos++;
+
                                 }
                                 else
                                 {
                                     posicionZonaLocal.puntos = posicionZonaLocal.puntos + 1;
+                                    posicionZonaLocal.partidos_empatados++;
+
                                 }
                             }
 
@@ -468,6 +546,7 @@ namespace RestServiceGolden.Controllers
                             posicionZonaLocal.goles_favor = posicionZonaLocal.goles_favor + partido.lsGoleadoresLocales.Count;
                             posicionZonaLocal.goles_contra = posicionZonaLocal.goles_contra + partido.lsGoleadoresVisitantes.Count;
                             posicionZonaLocal.dif_gol = posicionZonaLocal.goles_favor - posicionZonaLocal.goles_contra;
+                            posicionZonaLocal.partidos_jugados++;
                             db.SaveChanges();
                         }
 
@@ -492,6 +571,7 @@ namespace RestServiceGolden.Controllers
                             posicionesDtoVisitante.goles_favor = partido.lsGoleadoresVisitantes.Count;
                             posicionesDtoVisitante.goles_contra = partido.lsGoleadoresLocales.Count;
                             posicionesDtoVisitante.dif_gol = partido.lsGoleadoresVisitantes.Count - partido.lsGoleadoresLocales.Count;
+                            posicionesDtoVisitante.partidos_jugados = 1;
 
                             if (esInterzonal == 0)
                             {
@@ -499,15 +579,24 @@ namespace RestServiceGolden.Controllers
                                 if (partido.visitante.id_equipo == partido.resultado_zona.ganador.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionesDtoVisitante.puntos = 3;
+                                    posicionesDtoVisitante.partidos_ganados = 1;
+                                    posicionesDtoVisitante.partidos_empatados = 0;
+                                    posicionesDtoVisitante.partidos_perdidos = 0;
 
                                 }
                                 else if (partido.visitante.id_equipo == partido.resultado_zona.perdedor.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionesDtoVisitante.puntos = 0;
+                                    posicionesDtoVisitante.partidos_ganados = 0;
+                                    posicionesDtoVisitante.partidos_empatados = 0;
+                                    posicionesDtoVisitante.partidos_perdidos = 1;
                                 }
                                 else
                                 {
                                     posicionesDtoVisitante.puntos = 1;
+                                    posicionesDtoVisitante.partidos_ganados = 0;
+                                    posicionesDtoVisitante.partidos_empatados = 1;
+                                    posicionesDtoVisitante.partidos_perdidos = 0;
                                 }
                                 db.posiciones_zona.Add(posicionesDtoVisitante);
                                 db.SaveChanges();
@@ -517,15 +606,24 @@ namespace RestServiceGolden.Controllers
                                 if (partido.visitante.id_equipo == partido.resultado.ganador.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionesDtoVisitante.puntos = 3;
+                                    posicionesDtoVisitante.partidos_ganados = 1;
+                                    posicionesDtoVisitante.partidos_empatados = 0;
+                                    posicionesDtoVisitante.partidos_perdidos = 0;
 
                                 }
                                 else if (partido.visitante.id_equipo == partido.resultado.perdedor.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionesDtoVisitante.puntos = 0;
+                                    posicionesDtoVisitante.partidos_ganados = 0;
+                                    posicionesDtoVisitante.partidos_empatados = 0;
+                                    posicionesDtoVisitante.partidos_perdidos = 1;
                                 }
                                 else
                                 {
                                     posicionesDtoVisitante.puntos = 1;
+                                    posicionesDtoVisitante.partidos_ganados = 0;
+                                    posicionesDtoVisitante.partidos_empatados = 1;
+                                    posicionesDtoVisitante.partidos_perdidos = 0;
                                 }
                                 db.posiciones_zona.Add(posicionesDtoVisitante);
                                 db.SaveChanges();
@@ -539,20 +637,23 @@ namespace RestServiceGolden.Controllers
                                 if (partido.visitante.id_equipo == partido.resultado_zona.ganador.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos + 3;
-
+                                    posicionZonaVisitante.partidos_ganados++;
                                 }
                                 else if (partido.visitante.id_equipo == partido.resultado_zona.perdedor.id_equipo && partido.resultado_zona.empate != 1)
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos;
+                                    posicionZonaVisitante.partidos_perdidos++;
                                 }
                                 else
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos + 1;
+                                    posicionZonaVisitante.partidos_empatados++;
                                 }
 
                                 posicionZonaVisitante.goles_favor = posicionZonaVisitante.goles_favor + partido.lsGoleadoresVisitantes.Count;
                                 posicionZonaVisitante.goles_contra = posicionZonaVisitante.goles_contra + partido.lsGoleadoresLocales.Count;
                                 posicionZonaVisitante.dif_gol = posicionZonaVisitante.goles_favor - posicionZonaVisitante.goles_contra;
+                                posicionZonaVisitante.partidos_jugados++;
                                 db.SaveChanges();
                             }
                             else
@@ -560,20 +661,23 @@ namespace RestServiceGolden.Controllers
                                 if (partido.visitante.id_equipo == partido.resultado.ganador.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos + 3;
-
+                                    posicionZonaVisitante.partidos_ganados++;
                                 }
                                 else if (partido.visitante.id_equipo == partido.resultado.perdedor.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos;
+                                    posicionZonaVisitante.partidos_perdidos++;
                                 }
                                 else
                                 {
                                     posicionZonaVisitante.puntos = posicionZonaVisitante.puntos + 1;
+                                    posicionZonaVisitante.partidos_empatados++;
                                 }
 
                                 posicionZonaVisitante.goles_favor = posicionZonaVisitante.goles_favor + partido.lsGoleadoresVisitantes.Count;
                                 posicionZonaVisitante.goles_contra = posicionZonaVisitante.goles_contra + partido.lsGoleadoresLocales.Count;
                                 posicionZonaVisitante.dif_gol = posicionZonaVisitante.goles_favor - posicionZonaVisitante.goles_contra;
+                                posicionZonaVisitante.partidos_jugados++;
                                 db.SaveChanges();
                             }
                         }
@@ -583,12 +687,65 @@ namespace RestServiceGolden.Controllers
                     {
                         // Pendiente Play Off
                     }
+
+                    actualizarGoleadores(partido, id_torneo);
                 }
                 return Ok();
             }
             catch (Exception e)
             {
                 return BadRequest(e.ToString());
+            }
+        }
+
+
+        public void actualizarGoleadores(Partido partido, int id_torneo)
+        {
+            try { 
+
+                foreach(var gol in partido.lsGoleadoresLocales)
+                {
+                    goleadores goleador = db.goleadores.Where(x => x.id_jugador == gol.jugador.id_jugador && x.id_equipo == gol.equipo.id_equipo && x.id_torneo == id_torneo).SingleOrDefault();
+
+                    if(goleador != null)
+                    {
+                        goleador.cantidad_goles = goleador.cantidad_goles + 1;
+                    }
+                    else
+                    {
+                        goleadores goleadorLocal = new goleadores();
+                        goleadorLocal.id_equipo = gol.equipo.id_equipo;
+                        goleadorLocal.id_jugador = gol.jugador.id_jugador;
+                        goleadorLocal.id_torneo = id_torneo;
+                        goleadorLocal.cantidad_goles = 1;
+                        db.goleadores.Add(goleadorLocal);
+                    }
+                    db.SaveChanges();
+                }
+
+                foreach (var gol in partido.lsGoleadoresVisitantes)
+                {
+                    goleadores goleador = db.goleadores.Where(x => x.id_jugador == gol.jugador.id_jugador && x.id_equipo == gol.equipo.id_equipo && x.id_torneo == id_torneo).SingleOrDefault();
+
+                    if (goleador != null)
+                    {
+                        goleador.cantidad_goles = goleador.cantidad_goles + 1;
+                    }
+                    else
+                    {
+                        goleadores goleadorVisitante = new goleadores();
+                        goleadorVisitante.id_equipo = gol.equipo.id_equipo;
+                        goleadorVisitante.id_jugador = gol.jugador.id_jugador;
+                        goleadorVisitante.id_torneo = id_torneo;
+                        goleadorVisitante.cantidad_goles = 1;
+                        db.goleadores.Add(goleadorVisitante);
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
             }
         }
     }

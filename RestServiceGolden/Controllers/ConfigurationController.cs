@@ -141,6 +141,10 @@ namespace RestServiceGolden.Controllers
                         posicion.dif_gol = 0;
                         posicion.id_torneo = sancion.torneo.id_torneo;
                         posicion.id_zona = zonaEquipo.id_zona;
+                        posicion.partidos_ganados = 0;
+                        posicion.partidos_perdidos = 0;
+                        posicion.partidos_empatados = 0;
+                        posicion.partidos_jugados = 0;
                         db.posiciones_zona.Add(posicion);
                     }
                 }
@@ -162,7 +166,7 @@ namespace RestServiceGolden.Controllers
             }
         }
 
-        [Route("api/sancion_equipo/sanciones/{id}")]
+        [Route("api/sancion_equipo/sanciones/{id_equipo}")]
         public IHttpActionResult getSancionesEquipo(int id_equipo)
         {
             try
@@ -173,6 +177,7 @@ namespace RestServiceGolden.Controllers
                 if (equipo_zona != null)
                 {
                     var sanciones_equipo = db.sanciones_equipo.Where(x => x.id_equipo == id_equipo && x.id_zona == equipo_zona.id_zona && x.id_torneo == equipo_zona.id_torneo).ToList();
+                    var zonas = db.zonas.Where(x => x.id_zona == equipo_zona.id_zona).FirstOrDefault();
 
                     if(sanciones_equipo != null)
                     {
@@ -194,6 +199,7 @@ namespace RestServiceGolden.Controllers
 
                             sancion.zona = zona;
                             sancion.zona.id_zona = san.id_zona;
+                            sancion.zona.descripcion = zonas.descripcion;
 
                             lsSanciones.Add(sancion);
                         }
@@ -209,19 +215,32 @@ namespace RestServiceGolden.Controllers
             }
         }
 
-        [Route("api/sancion_equipo/borrar/{id}")]
-        public IHttpActionResult borrarSancionEquipo(int id_sancion)
+        [Route("api/sancion_equipo/borrar")]
+        public IHttpActionResult borrarSancionEquipo(SancionEquipo sancion)
         {
             try
             {
-                sanciones_equipo sancionDto = new sanciones_equipo();
+                var zona = db.zonas.Where(x => x.id_zona == sancion.zona.id_zona).FirstOrDefault();
 
-                sancionDto.id_sancion_equipo = id_sancion;
-                //sancionDto.descripcion = sancion.descripcion;
-                //sancionDto.puntos_restados = (int)sancion.puntos_restados;
-                //sancionDto.id_equipo = sancion.equipo.id_equipo;
-                //sancionDto.id_torneo = sancion.torneo.id_torneo;
-                //sancionDto.id_zona = sancion.zona.id_zona;
+                if (zona.id_fase == 1)
+                {
+                    posiciones posiciones = db.posiciones.Where(x => x.id_equipo == sancion.equipo.id_equipo && x.id_torneo == sancion.torneo.id_torneo).FirstOrDefault();
+
+                    if (posiciones != null)
+                    {
+                        posiciones.puntos = posiciones.puntos + sancion.puntos_restados;
+                    }
+                } 
+                else if (zona.id_fase == 2)
+                {
+                    posiciones_zona posiciones = db.posiciones_zona.Where(x => x.id_equipo == sancion.equipo.id_equipo && x.id_torneo == sancion.torneo.id_torneo && x.id_zona == sancion.zona.id_zona).FirstOrDefault();
+
+                    if (posiciones != null)
+                    {
+                        posiciones.puntos = posiciones.puntos + sancion.puntos_restados;
+                    }
+                }
+                sanciones_equipo sancionDto = db.sanciones_equipo.Where(x => x.id_sancion_equipo == sancion.id_sancion_equipo).FirstOrDefault();
 
                 db.sanciones_equipo.Attach(sancionDto);
                 db.sanciones_equipo.Remove(sancionDto);

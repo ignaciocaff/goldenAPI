@@ -228,6 +228,7 @@
     <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\JugadorController.cs" />
     <Compile Include="Controllers\NoticiasController.cs" />
+    <Compile Include="Controllers\PosicionesController.cs" />
     <Compile Include="Controllers\PartidosController.cs" />
     <Compile Include="Controllers\ReglasController.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />

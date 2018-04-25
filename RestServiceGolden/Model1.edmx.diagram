@@ -69,8 +69,8 @@
         <AssociationConnector Association="goldenModel.fk_cancha_partido" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_cancha_tipo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_club_cancha" ManuallyRouted="false" />
-        <AssociationConnector Association="goldenModel.fk_categoria_equipo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_categoria_torneo" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_equipo_categoria" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_categoria_noticia" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_equipo_club" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_foto_club" ManuallyRouted="false" />
@@ -91,9 +91,9 @@
         <AssociationConnector Association="goldenModel.fk_foto_equipo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_ganador_equipo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_ganador_equipo_zona" ManuallyRouted="false" />
-        <AssociationConnector Association="goldenModel.fk_img_equipo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_jugador_equipo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_local_partido" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_logo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_logo_camiseta" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_perdedor_equipo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_perdedor_equipo_zona" ManuallyRouted="false" />
@@ -112,15 +112,14 @@
         <AssociationConnector Association="goldenModel.fk_sancion_fase" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_torneo_fase" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_fecha_fixture" ManuallyRouted="false" />
-        <AssociationConnector Association="goldenModel.fk_fecha_fixture_zona" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_fecha_partido" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_fecha_zona_fixture" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_fin_fecha" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_foto_fecha" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_inicio_fecha" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_noticia_fecha" ManuallyRouted="false" />
-        <AssociationConnector Association="goldenModel.fk_id_foto" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_noticia_thumbnail" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_persona_id_foto" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_fixture_tipo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_fixture_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_fixtureZ_torneo" ManuallyRouted="false" />
@@ -133,7 +132,7 @@
         <AssociationConnector Association="goldenModel.fk_partido_gol" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_torneo_gol" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_horario_fijo_partido" ManuallyRouted="false" />
-        <AssociationConnector Association="goldenModel.fk_horario_turno" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_horario_turnos" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_jugador_persona" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_jugador_sancion" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_jugador_sanciones" ManuallyRouted="false" />
@@ -158,6 +157,7 @@
         <AssociationConnector Association="goldenModel.fk_regla_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_reglas_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_representante_usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="goldenModel.fk_tipo_restriccion" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_resultado_zona" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_sancion_torneo" ManuallyRouted="false" />
         <AssociationConnector Association="goldenModel.fk_tipo_sancion" ManuallyRouted="false" />

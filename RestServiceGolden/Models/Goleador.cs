@@ -11,6 +11,6 @@ namespace RestServiceGolden.Models
         public Torneo torneo { get; set; }
         public Jugador jugador { get; set; }
         public int cantidad_goles { get; set; }
-        public Equipo equipo { get; set; }
+        public IEquipo equipo { get; set; }
     }
 }
