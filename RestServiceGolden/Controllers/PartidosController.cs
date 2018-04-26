@@ -470,6 +470,7 @@ namespace RestServiceGolden.Controllers
                             }
                             else
                             {
+                                posicionesDtoLocal.id_zona = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado.ganador.id_equipo).id_zona;
                                 if (partido.local.id_equipo == partido.resultado.ganador.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionesDtoLocal.puntos = 3;
@@ -603,6 +604,7 @@ namespace RestServiceGolden.Controllers
                             }
                             else
                             {
+                                posicionesDtoVisitante.id_zona = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado.ganador.id_equipo).id_zona;
                                 if (partido.visitante.id_equipo == partido.resultado.ganador.id_equipo && partido.resultado.empate != 1)
                                 {
                                     posicionesDtoVisitante.puntos = 3;

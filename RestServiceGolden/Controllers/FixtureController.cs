@@ -1,4 +1,5 @@
-﻿using RestServiceGolden.Models;
+﻿using Microsoft.Ajax.Utilities;
+using RestServiceGolden.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +24,14 @@ namespace RestServiceGolden.Controllers
                 int id_fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == id_zona && x.id_torneo == id_torneo).id_fixture;
                 var fechaDto = partidos.FirstOrDefault().fecha.fecha;
                 var fechaCheck = db.fechas.Where(x => x.fecha == fechaDto && x.id_fixture_zona == id_fixture_zona).SingleOrDefault();
+                var id_fase = db.torneos.Where(x => x.id_torneo == id_torneo).FirstOrDefault().id_fase;
                 if (id_fixture_zona != 0 && fechaCheck == null)
                 {
                     fechas fecha = new fechas();
                     fecha.fecha = partidos.FirstOrDefault().fecha.fecha;
                     fecha.id_estado = 1;
                     fecha.id_fixture_zona = id_fixture_zona;
+                    fecha.id_fase = id_fase;
                     db.fechas.Add(fecha);
                     db.SaveChanges();
 
@@ -51,6 +54,47 @@ namespace RestServiceGolden.Controllers
                     return Ok();
                 }
                 return BadRequest("Esa fecha ya fue creada, debe modificarla.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/fecha/registrarInterzonal/{id_torneo}/{id_fase}")]
+        public IHttpActionResult registrarInterzonal([FromBody]List<Partido> partidos, int id_torneo, int id_fase)
+        {
+            try
+            {
+                int id_fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == null && x.id_torneo == id_torneo).id_fixture;
+                var fechaDto = partidos.FirstOrDefault().fecha.fecha;
+                fechas fecha = new fechas();
+                fecha.fecha = partidos.FirstOrDefault().fecha.fecha;
+                fecha.id_estado = 1;
+                fecha.id_fixture_zona = id_fixture_zona;
+                fecha.id_fase = id_fase;
+                db.fechas.Add(fecha);
+                db.SaveChanges();
+
+                int id_fecha = fecha.id_fecha;
+
+                foreach (Partido p in partidos)
+                {
+                    partidos partido = new partidos();
+                    partido.local = p.local.id_equipo;
+                    partido.visitante = p.visitante.id_equipo;
+                    partido.id_estado_partido = p.estado.id_estado;
+                    partido.id_cancha = p.cancha.id_cancha;
+                    partido.id_horario_fijo = p.horario_fijo.id_horario;
+                    partido.hora_inicio = p.horario_fijo.inicio;
+                    partido.hora_fin = p.horario_fijo.fin;
+                    partido.id_fecha = id_fecha;
+                    partido.esInterzonal = 1;
+                    db.partidos.Add(partido);
+                    db.SaveChanges();
+                }
+                return Ok();
             }
             catch (Exception e)
             {
@@ -1145,9 +1189,15 @@ namespace RestServiceGolden.Controllers
             {
                 List<Fecha> lsFechas = new List<Fecha>();
                 var fixture = db.fixture_zona.Where(x => x.id_torneo == id_torneo).ToList();
+                var id_fase = db.torneos.Where(x => x.id_torneo == id_torneo).FirstOrDefault().id_fase;
                 foreach (var fix in fixture)
                 {
+<<<<<<< HEAD
                     var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture).OrderBy(x => x.fecha).ToList();
+=======
+
+                    var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture && x.id_fase == id_fase).OrderBy(x=> x.fecha).ToList();
+>>>>>>> Nacho
 
                     foreach (var f in fechas)
                     {
