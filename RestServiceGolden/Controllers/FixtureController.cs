@@ -1192,12 +1192,8 @@ namespace RestServiceGolden.Controllers
                 var id_fase = db.torneos.Where(x => x.id_torneo == id_torneo).FirstOrDefault().id_fase;
                 foreach (var fix in fixture)
                 {
-<<<<<<< HEAD
-                    var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture).OrderBy(x => x.fecha).ToList();
-=======
 
                     var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture && x.id_fase == id_fase).OrderBy(x=> x.fecha).ToList();
->>>>>>> Nacho
 
                     foreach (var f in fechas)
                     {
@@ -1219,13 +1215,14 @@ namespace RestServiceGolden.Controllers
 
         [ResponseType(typeof(IHttpActionResult))]
         [Route("api/fecha/obtenerPartidosVisualizacionFixture/{id_torneo}")]
-        public IHttpActionResult getObtenerTodas([FromBody]Fecha fechaDto, int id_torneo)
-        {
+        public IHttpActionResult obtenerPartidosPorFechaFixture([FromBody]Fecha fechaDto, int id_torneo)
+        {            
+            List<IPartido> lsPartidosPrueba = new List<IPartido>();
             try
             {
                 var fechas = (from tFixtureZona in db.fixture_zona
                               join tFecha in db.fechas on tFixtureZona.id_fixture equals tFecha.id_fixture_zona
-                              where tFixtureZona.id_torneo == id_torneo
+                              where tFixtureZona.id_torneo == id_torneo && tFecha.fecha == fechaDto.fecha
                               select new
                               {
                                   id_fixture = tFixtureZona.id_fixture,
@@ -1258,7 +1255,7 @@ namespace RestServiceGolden.Controllers
                         fecha.estado.id_estado = f.estado;
 
 
-                        var partidos = db.partidos.Where(x => x.id_fecha == fechaDto.id_fecha).ToList();
+                        var partidos = db.partidos.Where(x => x.id_fecha == f.id_fecha).ToList();
                         if (partidos.Count > 0)
                         {
                             List<IPartido> lsPartidos = new List<IPartido>();
@@ -1274,25 +1271,25 @@ namespace RestServiceGolden.Controllers
                                 Turno turno = new Turno();
 
                                 var objLocal = (from tEquipos in db.equipos
-                                                join tArchivos in db.files on tEquipos.logo equals tArchivos.Id
+                                                join tArchivos in db.files on tEquipos.camisetalogo equals tArchivos.Id
                                                 where tEquipos.id_equipo == partido.local
                                                 select new
                                                 {
                                                     id_equipo = tEquipos.id_equipo,
                                                     nombre = tEquipos.nombre,
-                                                    imagePath = tArchivos.ImagePath,
-                                                    logo = tEquipos.logo
+                                                    imagePath = tArchivos.ThumbPath,
+                                                    logo = tEquipos.camisetalogo
                                                 }).SingleOrDefault();
 
                                 var objVisitante = (from tEquipos in db.equipos
-                                                    join tArchivos in db.files on tEquipos.logo equals tArchivos.Id
+                                                    join tArchivos in db.files on tEquipos.camisetalogo equals tArchivos.Id
                                                     where tEquipos.id_equipo == partido.visitante
                                                     select new
                                                     {
                                                         id_equipo = tEquipos.id_equipo,
                                                         nombre = tEquipos.nombre,
-                                                        imagePath = tArchivos.ImagePath,
-                                                        logo = tEquipos.logo
+                                                        imagePath = tArchivos.ThumbPath,
+                                                        logo = tEquipos.camisetalogo
                                                     }).SingleOrDefault();
 
                                 iLocal.id_equipo = objLocal.id_equipo;
@@ -1328,6 +1325,7 @@ namespace RestServiceGolden.Controllers
                                 iPartidoExistente.id_partido = partido.id_partido;
 
                                 fecha.iPartidos.Add(iPartidoExistente);
+                                lsPartidosPrueba.Add(iPartidoExistente);
 
                             }
                         }
@@ -1335,7 +1333,7 @@ namespace RestServiceGolden.Controllers
                         fixture.fechas.Add(fecha);
                     }
 
-                    return Ok(fixture);
+                    return Ok(lsPartidosPrueba);
                 }
                 return BadRequest();
             }
