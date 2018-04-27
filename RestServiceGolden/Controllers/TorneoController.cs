@@ -49,17 +49,19 @@ namespace RestServiceGolden.Controllers
                     categoriaEquipo.id = id_torneo;
                     categoriaEquipo.descripcion = torneo.nombre;
                     db.categoria_equipos.Add(categoriaEquipo);
-                }
-                foreach (Equipo e in torneo.lsEquipos)
-                {
-                    if (transaccion)
+
+                    foreach (Equipo e in torneo.lsEquipos)
                     {
-                        equipos equipoToUpdate = db.equipos.Where(x => x.id_equipo == e.id_equipo).FirstOrDefault();
-                        equipoToUpdate.id_torneo = id_torneo;
+                        if (transaccion)
+                        {
+                            equipos equipoToUpdate = db.equipos.Where(x => x.id_equipo == e.id_equipo).FirstOrDefault();
+                            equipoToUpdate.id_torneo = id_torneo;
+                        }
                     }
+                    db.SaveChanges();
+                    return Ok();
                 }
-                db.SaveChanges();
-                return Ok();
+                return BadRequest("El torneo ya existe.");
             }
             catch (Exception e)
             {

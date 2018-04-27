@@ -216,7 +216,7 @@ namespace RestServiceGolden.Controllers
                                                 {
                                                     id_equipo = tEquipos.id_equipo,
                                                     nombre = tEquipos.nombre,
-                                                    imagePath = tArchivos.ImagePath,
+                                                    imagePath = tArchivos.ThumbPath,
                                                     logo = tEquipos.logo
                                                 }).SingleOrDefault();
 
@@ -227,7 +227,7 @@ namespace RestServiceGolden.Controllers
                                                     {
                                                         id_equipo = tEquipos.id_equipo,
                                                         nombre = tEquipos.nombre,
-                                                        imagePath = tArchivos.ImagePath,
+                                                        imagePath = tArchivos.ThumbPath,
                                                         logo = tEquipos.logo
                                                     }).SingleOrDefault();
 
@@ -298,7 +298,7 @@ namespace RestServiceGolden.Controllers
                                             {
                                                 id_equipo = tEquipos.id_equipo,
                                                 nombre = tEquipos.nombre,
-                                                imagePath = tArchivos.ImagePath,
+                                                imagePath = tArchivos.ThumbPath,
                                                 logo = tEquipos.logo
                                             }).SingleOrDefault();
 
@@ -309,7 +309,7 @@ namespace RestServiceGolden.Controllers
                                                 {
                                                     id_equipo = tEquipos.id_equipo,
                                                     nombre = tEquipos.nombre,
-                                                    imagePath = tArchivos.ImagePath,
+                                                    imagePath = tArchivos.ThumbPath,
                                                     logo = tEquipos.logo
                                                 }).SingleOrDefault();
 
@@ -403,7 +403,7 @@ namespace RestServiceGolden.Controllers
                                                 {
                                                     id_equipo = tEquipos.id_equipo,
                                                     nombre = tEquipos.nombre,
-                                                    imagePath = tArchivos.ImagePath,
+                                                    imagePath = tArchivos.ThumbPath,
                                                     logo = tEquipos.logo
                                                 }).SingleOrDefault();
 
@@ -426,7 +426,7 @@ namespace RestServiceGolden.Controllers
                                                     {
                                                         id_equipo = tEquipos.id_equipo,
                                                         nombre = tEquipos.nombre,
-                                                        imagePath = tArchivos.ImagePath,
+                                                        imagePath = tArchivos.ThumbPath,
                                                         logo = tEquipos.logo
                                                     }).SingleOrDefault();
 
@@ -668,7 +668,7 @@ namespace RestServiceGolden.Controllers
                                                 {
                                                     id_equipo = tEquipos.id_equipo,
                                                     nombre = tEquipos.nombre,
-                                                    imagePath = tArchivos.ImagePath,
+                                                    imagePath = tArchivos.ThumbPath,
                                                     logo = tEquipos.logo
                                                 }).SingleOrDefault();
 
@@ -691,7 +691,7 @@ namespace RestServiceGolden.Controllers
                                                     {
                                                         id_equipo = tEquipos.id_equipo,
                                                         nombre = tEquipos.nombre,
-                                                        imagePath = tArchivos.ImagePath,
+                                                        imagePath = tArchivos.ThumbPath,
                                                         logo = tEquipos.logo
                                                     }).SingleOrDefault();
 
@@ -941,7 +941,7 @@ namespace RestServiceGolden.Controllers
                                                     {
                                                         id_equipo = tEquipos.id_equipo,
                                                         nombre = tEquipos.nombre,
-                                                        imagePath = tArchivos.ImagePath,
+                                                        imagePath = tArchivos.ThumbPath,
                                                         logo = tEquipos.logo
                                                     }).SingleOrDefault();
 
@@ -952,7 +952,7 @@ namespace RestServiceGolden.Controllers
                                                         {
                                                             id_equipo = tEquipos.id_equipo,
                                                             nombre = tEquipos.nombre,
-                                                            imagePath = tArchivos.ImagePath,
+                                                            imagePath = tArchivos.ThumbPath,
                                                             logo = tEquipos.logo
                                                         }).SingleOrDefault();
 
@@ -1089,7 +1089,7 @@ namespace RestServiceGolden.Controllers
                                                 {
                                                     id_equipo = tEquipos.id_equipo,
                                                     nombre = tEquipos.nombre,
-                                                    imagePath = tArchivos.ImagePath,
+                                                    imagePath = tArchivos.ThumbPath,
                                                     logo = tEquipos.logo
                                                 }).SingleOrDefault();
 
@@ -1100,7 +1100,7 @@ namespace RestServiceGolden.Controllers
                                                     {
                                                         id_equipo = tEquipos.id_equipo,
                                                         nombre = tEquipos.nombre,
-                                                        imagePath = tArchivos.ImagePath,
+                                                        imagePath = tArchivos.ThumbPath,
                                                         logo = tEquipos.logo
                                                     }).SingleOrDefault();
 

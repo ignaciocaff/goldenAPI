@@ -188,14 +188,14 @@ namespace RestServiceGolden.Controllers
         }
 
         [ResponseType(typeof(Equipo))]
-        [Route("api/equipo/equiposSinZona")]
-        public IHttpActionResult GetEquiposSinZona()
+        [Route("api/equipo/equiposSinZona/{id_torneo}")]
+        public IHttpActionResult GetEquiposSinZona(int id_torneo)
         {
             List<Equipo> lsEquipos = new List<Equipo>();
 
             try
             {
-                var equiposGrla = db.equipos.ToList();
+                var equiposGrla = db.equipos.Where(x => x.id_torneo == id_torneo).ToList();
                 var equipos = new List<equipos>();
 
                 foreach (var eGrla in equiposGrla)
@@ -375,7 +375,7 @@ namespace RestServiceGolden.Controllers
                                     apellido = tPersonas.apellido,
                                     id_persona = tJugador.id_jugador,
                                     id_equipo = tJugador.id_equipo,
-                                    imagePath = tFiles.ImagePath,
+                                    imagePath = tFiles.ThumbPath,
                                     rol = tJugador.rol,
                                     nro_doc = tPersonas.nro_documento,
                                     fecha_nacimiento = tPersonas.fecha_nacimiento,

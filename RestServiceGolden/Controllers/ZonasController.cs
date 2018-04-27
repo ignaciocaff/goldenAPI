@@ -154,6 +154,15 @@ namespace RestServiceGolden.Controllers
                     db.fixture_zona.Add(fixture_zona);
                     db.SaveChanges();
 
+                    var fixtureInterzonal = db.fixture_zona.Where(x => x.id_torneo == zona.torneo.id_torneo && x.id_zona == null).FirstOrDefault();
+                    if (fixtureInterzonal == null)
+                    {
+                        fixture_zona fixture_zona_interzonal = new fixture_zona();
+                        fixture_zona_interzonal.id_tipo = 1;
+                        fixture_zona_interzonal.id_torneo = zona.torneo.id_torneo;
+                        db.fixture_zona.Add(fixture_zona_interzonal);
+                        db.SaveChanges();
+                    }
                 }
                 return Ok();
 
