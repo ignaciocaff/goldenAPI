@@ -516,5 +516,110 @@ namespace RestServiceGolden.Controllers
                 return BadRequest(e.ToString());
             }
         }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/equipo/planilla/{id_torneo}")]
+        public IHttpActionResult getIJugadoresPlanilla(int id_torneo)
+        {
+            DateTime fecha = DateTime.Now;
+            var lsIEquipos = new List<IEquipoPlanilla>();
+                        
+            try
+            {
+                var iequipos = db.equipos.OrderBy(x => x.nombre).Where(x => x.id_torneo == id_torneo).ToList();
+                
+                foreach(var eq in iequipos) {
+                    IEquipoPlanilla equipo = new IEquipoPlanilla();
+                    List<IJugador> lsJugadores = new List<IJugador>();
+
+                    equipo.id_equipo = eq.id_equipo;
+                    equipo.nombre = eq.nombre;
+
+                    var personas = (from tPersonas in db.personas
+                                    join tJugador in db.jugadores on tPersonas.id_persona equals tJugador.id_persona
+                                    join tFiles in db.files on tPersonas.id_foto equals tFiles.Id
+                                    where tJugador.id_equipo == eq.id_equipo
+                                    select new
+                                    {
+                                        nombre = tPersonas.nombre,
+                                        apellido = tPersonas.apellido,
+                                        id_persona = tJugador.id_jugador,
+                                        id_equipo = tJugador.id_equipo,
+                                        imagePath = tFiles.ThumbPath,
+                                        rol = tJugador.rol,
+                                        nro_doc = tPersonas.nro_documento,
+                                        fecha_nacimiento = tPersonas.fecha_nacimiento,
+                                        id_jugador = tJugador.id_jugador
+
+                                    }).OrderBy(s => s.apellido).ToList();
+
+                    foreach (var p in personas)
+                    {
+                        var gol = db.goleadores.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id_torneo).FirstOrDefault();
+                        var pos = db.posiciones.Where(x => x.id_equipo == p.id_equipo && x.id_torneo == id_torneo).FirstOrDefault();
+                        var posZ = db.posiciones_zona.Where(x => x.id_equipo == p.id_equipo && x.id_torneo == id_torneo).FirstOrDefault();
+                        var ama = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id_torneo && x.id_tipo == 1).Count();
+                        var roja = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id_torneo && x.id_tipo != 1).Count();
+
+                        IJugador jugador = new IJugador();
+                        jugador.nombre = p.nombre;
+                        jugador.apellido = p.apellido;
+                        jugador.id_equipo = (int)p.id_equipo;
+                        jugador.id_persona = p.id_persona;
+                        jugador.nro_doc = Convert.ToInt32(p.nro_doc);
+                        jugador.imagePath = p.imagePath;
+                        jugador.rol = p.rol;
+                        jugador.id_jugador = p.id_jugador;
+                        if (gol != null)
+                        {
+                            jugador.goles = (int)gol.cantidad_goles;
+                        }
+                        else
+                        {
+                            jugador.goles = 0;
+                        }
+
+                        if (pos != null)
+                        {
+                            jugador.partidos_jugados = (int)pos.partidos_jugados;
+                        }
+                        else
+                        {
+                            jugador.partidos_jugados = 0;
+                        }
+
+                        if (posZ != null)
+                        {
+                            jugador.partidos_jugados = jugador.partidos_jugados + (int)posZ.partidos_jugados;
+                        }
+
+                        jugador.tarjetas_amarillas = ama;
+                        jugador.tarjetas_rojas = roja;
+
+                        jugador.edad = fecha.Year - p.fecha_nacimiento.Year;
+
+                        if (fecha.Month < p.fecha_nacimiento.Month ||
+                            (fecha.Month == p.fecha_nacimiento.Month && fecha.Day < p.fecha_nacimiento.Day))
+                        {
+                            jugador.edad--;
+                        }
+
+                        if (jugador.edad > 1800)
+                        {
+                            jugador.edad = jugador.edad - 1900;
+                        }
+
+                        lsJugadores.Add(jugador);
+                    }
+                    equipo.lsJugadores = lsJugadores;
+                    lsIEquipos.Add(equipo);
+                }
+                return Ok(lsIEquipos);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
     }
 }

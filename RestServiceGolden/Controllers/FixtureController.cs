@@ -1212,5 +1212,135 @@ namespace RestServiceGolden.Controllers
                 return BadRequest(e.ToString());
             }
         }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/fecha/obtenerPartidosVisualizacionFixture/{id_torneo}")]
+        public IHttpActionResult obtenerPartidosPorFechaFixture([FromBody]Fecha fechaDto, int id_torneo)
+        {            
+            List<IPartido> lsPartidosPrueba = new List<IPartido>();
+            try
+            {
+                var fechas = (from tFixtureZona in db.fixture_zona
+                              join tFecha in db.fechas on tFixtureZona.id_fixture equals tFecha.id_fixture_zona
+                              where tFixtureZona.id_torneo == id_torneo && tFecha.fecha == fechaDto.fecha
+                              select new
+                              {
+                                  id_fixture = tFixtureZona.id_fixture,
+                                  id_torneo = tFixtureZona.id_torneo,
+                                  id_fecha = tFecha.id_fecha,
+                                  estado = tFecha.id_estado,
+                                  fecha = tFecha.fecha
+                              }).ToList();
+
+                if (fechas.Count > 0)
+                {
+                    Fixture fixture = new Fixture();
+                    Torneo torneo = new Torneo();
+                    List<Fecha> lsFechas = new List<Fecha>();
+
+                    fixture.fechas = lsFechas;
+                    fixture.torneo = torneo;
+
+                    foreach (var f in fechas)
+                    {
+                        fixture.id_fixture = f.id_fixture;
+                        fixture.torneo.id_torneo = f.id_torneo;
+
+                        Fecha fecha = new Fecha();
+                        EstadoFecha estado = new EstadoFecha();
+
+                        fecha.id_fecha = f.id_fecha;
+                        fecha.fecha = (DateTime)f.fecha;
+                        fecha.estado = estado;
+                        fecha.estado.id_estado = f.estado;
+
+
+                        var partidos = db.partidos.Where(x => x.id_fecha == f.id_fecha).ToList();
+                        if (partidos.Count > 0)
+                        {
+                            List<IPartido> lsPartidos = new List<IPartido>();
+                            fecha.iPartidos = lsPartidos;
+
+                            foreach (var partido in partidos)
+                            {
+                                IPartido iPartidoExistente = new IPartido();
+                                Cancha cancha = new Cancha();
+                                HorarioFijo horarioFijo = new HorarioFijo();
+                                IEquipo iLocal = new IEquipo(partido.local);
+                                IEquipo iVisitante = new IEquipo(partido.visitante);
+                                Turno turno = new Turno();
+
+                                var objLocal = (from tEquipos in db.equipos
+                                                join tArchivos in db.files on tEquipos.camisetalogo equals tArchivos.Id
+                                                where tEquipos.id_equipo == partido.local
+                                                select new
+                                                {
+                                                    id_equipo = tEquipos.id_equipo,
+                                                    nombre = tEquipos.nombre,
+                                                    imagePath = tArchivos.ThumbPath,
+                                                    logo = tEquipos.camisetalogo
+                                                }).SingleOrDefault();
+
+                                var objVisitante = (from tEquipos in db.equipos
+                                                    join tArchivos in db.files on tEquipos.camisetalogo equals tArchivos.Id
+                                                    where tEquipos.id_equipo == partido.visitante
+                                                    select new
+                                                    {
+                                                        id_equipo = tEquipos.id_equipo,
+                                                        nombre = tEquipos.nombre,
+                                                        imagePath = tArchivos.ThumbPath,
+                                                        logo = tEquipos.camisetalogo
+                                                    }).SingleOrDefault();
+
+                                iLocal.id_equipo = objLocal.id_equipo;
+                                iLocal.nombre = objLocal.nombre;
+                                iLocal.logo = objLocal.logo;
+                                iLocal.imagePath = objLocal.imagePath;
+
+                                iVisitante.id_equipo = objVisitante.id_equipo;
+                                iVisitante.nombre = objVisitante.nombre;
+                                iVisitante.logo = objVisitante.logo;
+                                iVisitante.imagePath = objVisitante.imagePath;
+
+                                iPartidoExistente.local = new List<IEquipo>();
+                                iPartidoExistente.visitante = new List<IEquipo>();
+
+                                iPartidoExistente.local.Add(iLocal);
+                                iPartidoExistente.visitante.Add(iVisitante);
+
+                                var canchaDto = db.canchas.SingleOrDefault(x => x.id_cancha == partido.id_cancha);
+
+                                iPartidoExistente.cancha = cancha;
+                                iPartidoExistente.cancha.id_cancha = (int)partido.id_cancha;
+                                iPartidoExistente.cancha.nombre = canchaDto.nombre;
+
+                                var horarioDtoExistente = db.horarios_fijos.SingleOrDefault(x => x.id_horario == partido.id_horario_fijo);
+                                iPartidoExistente.horario = horarioFijo;
+                                iPartidoExistente.horario.id_horario = partido.id_horario_fijo;
+                                iPartidoExistente.horario.inicio = horarioDtoExistente.inicio;
+                                iPartidoExistente.horario.fin = horarioDtoExistente.fin;
+                                iPartidoExistente.horario.turno = turno;
+                                iPartidoExistente.horario.turno.id = horarioDtoExistente.id_turno;
+
+                                iPartidoExistente.id_partido = partido.id_partido;
+
+                                fecha.iPartidos.Add(iPartidoExistente);
+                                lsPartidosPrueba.Add(iPartidoExistente);
+
+                            }
+                        }
+
+                        fixture.fechas.Add(fecha);
+                    }
+
+                    return Ok(lsPartidosPrueba);
+                }
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
     }
 }
