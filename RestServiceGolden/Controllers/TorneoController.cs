@@ -211,6 +211,23 @@ namespace RestServiceGolden.Controllers
             return Ok(torneo);
         }
 
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/torneo/cambioFase/{id_torneo}")]
+        public IHttpActionResult cambioFase([FromBody] Fase fase, int id_torneo)
+        {
+            try
+            {
+                var torneo = db.torneos.SingleOrDefault(x => x.id_torneo == id_torneo);
+
+                torneo.id_fase = fase.id_fase;
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+        }
 
         [ResponseType(typeof(IEquipoPlanilla))]
         [Route("api/torneo/iequiposPorTorneo/{id}")]

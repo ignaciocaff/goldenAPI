@@ -26,7 +26,7 @@ namespace RestServiceGolden.Controllers
                     List<Posiciones> lsPosiciones = new List<Posiciones>();
                     var posiciones = db.posiciones.Where(x => x.id_torneo == id_torneo).OrderByDescending(x => x.puntos).ToList();
 
-                    foreach(var pos in posiciones)
+                    foreach (var pos in posiciones)
                     {
                         var eq = db.equipos.Where(x => x.id_equipo == pos.id_equipo).FirstOrDefault();
                         var escudo = db.files.Where(x => x.Id == eq.logo).FirstOrDefault();
@@ -46,6 +46,7 @@ namespace RestServiceGolden.Controllers
                         posicion.partidos_perdidos = (int)pos.partidos_perdidos;
 
                         posicion.equipo = equipo;
+                        posicion.equipo.id_equipo = eq.id_equipo;
                         posicion.equipo.nombre = eq.nombre;
                         posicion.equipo.logo = (int)eq.logo;
                         posicion.equipo.imagePath = escudo.ThumbPath;
@@ -58,11 +59,12 @@ namespace RestServiceGolden.Controllers
                 }
                 else
                 {
-                    var lsZonas= new List<List<PosicionesZonas>>();
+                    var lsZonas = new List<List<PosicionesZonas>>();
                     var lsIdZonas = db.posiciones_zona.Where(x => x.id_torneo == id_torneo).Select(x => x.id_zona).Distinct().ToList();
 
-                    foreach(var id in lsIdZonas) {
-                        var posiciones = db.posiciones_zona.Where(x => x.id_zona == id).OrderByDescending(x =>x.puntos).ToList();
+                    foreach (var id in lsIdZonas)
+                    {
+                        var posiciones = db.posiciones_zona.Where(x => x.id_zona == id).OrderByDescending(x => x.puntos).ToList();
                         List<PosicionesZonas> lsPosiciones = new List<PosicionesZonas>();
 
                         foreach (var pos in posiciones)
@@ -86,6 +88,7 @@ namespace RestServiceGolden.Controllers
                             posicion.partidos_perdidos = (int)pos.partidos_perdidos;
 
                             posicion.equipo = equipo;
+                            posicion.equipo.id_equipo = eq.id_equipo;
                             posicion.equipo.nombre = eq.nombre;
                             posicion.equipo.logo = (int)eq.logo;
                             posicion.equipo.imagePath = escudo.ThumbPath;
@@ -114,7 +117,8 @@ namespace RestServiceGolden.Controllers
         [Route("api/goleadores/{id_torneo}")]
         public IHttpActionResult getGoleadores(int id_torneo)
         {
-            try { 
+            try
+            {
                 var goleadores = db.goleadores.Where(x => x.id_torneo == id_torneo).OrderByDescending(x => x.cantidad_goles).Take(20).ToList();
                 List<Goleador> lsGoleadores = new List<Goleador>();
 

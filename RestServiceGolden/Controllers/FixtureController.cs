@@ -389,6 +389,7 @@ namespace RestServiceGolden.Controllers
                                 IEquipo iVisitante = new IEquipo();
                                 Turno turno = new Turno();
                                 Fecha fechaPartido = new Fecha();
+                                ResultadoZona resultado_zona = new ResultadoZona();
                                 List<Sancion> lsSancionesLocal = new List<Sancion>();
                                 List<Sancion> lsSancionesVisitante = new List<Sancion>();
                                 List<Gol> lsGolesLocal = new List<Gol>();
@@ -630,6 +631,8 @@ namespace RestServiceGolden.Controllers
                                 iPartido.lsSancionesVisitante = lsSancionesVisitante;
                                 iPartido.lsGolesLocal = lsGolesLocal;
                                 iPartido.lsGolesVisitante = lsGolesVisitante;
+                                iPartido.resultado_zona = resultado_zona;
+                                iPartido.resultado_zona.id_resultado = (int)partido.id_resultados_zona;
                             }
                         }
                     }
@@ -654,6 +657,7 @@ namespace RestServiceGolden.Controllers
                                 IEquipo iVisitante = new IEquipo();
                                 Turno turno = new Turno();
                                 Fecha fechaPartido = new Fecha();
+                                Resultado resultado = new Resultado();
                                 List<Sancion> lsSancionesLocal = new List<Sancion>();
                                 List<Sancion> lsSancionesVisitante = new List<Sancion>();
                                 List<Gol> lsGolesLocal = new List<Gol>();
@@ -895,6 +899,8 @@ namespace RestServiceGolden.Controllers
                                 iPartido.lsSancionesVisitante = lsSancionesVisitante;
                                 iPartido.lsGolesLocal = lsGolesLocal;
                                 iPartido.lsGolesVisitante = lsGolesVisitante;
+                                iPartido.resultado = resultado;
+                                iPartido.resultado.id_resultado = (int)partido.id_resultado;
                             }
                         }
                     }
@@ -1193,7 +1199,7 @@ namespace RestServiceGolden.Controllers
                 foreach (var fix in fixture)
                 {
 
-                    var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture && x.id_fase == id_fase).OrderBy(x=> x.fecha).ToList();
+                    var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture && x.id_fase == id_fase).OrderBy(x => x.fecha).ToList();
 
                     foreach (var f in fechas)
                     {
@@ -1216,7 +1222,7 @@ namespace RestServiceGolden.Controllers
         [ResponseType(typeof(IHttpActionResult))]
         [Route("api/fecha/obtenerPartidosVisualizacionFixture/{id_torneo}")]
         public IHttpActionResult obtenerPartidosPorFechaFixture([FromBody]Fecha fechaDto, int id_torneo)
-        {            
+        {
             List<IPartido> lsPartidosPrueba = new List<IPartido>();
             try
             {

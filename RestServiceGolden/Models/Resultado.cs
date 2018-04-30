@@ -10,7 +10,7 @@ namespace RestServiceGolden.Models
         public int id_resultado { get; set; }
         public Equipo ganador { get; set; }
         public Equipo perdedor { get; set; }
-        public int empate { get; set; }
+        public int? empate { get; set; }
 
     }
 }
