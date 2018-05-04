@@ -20,5 +20,6 @@ namespace RestServiceGolden.Models
         public int partidos_jugados { get; set; }
         public int tarjetas_amarillas { get; set; }
         public int tarjetas_rojas { get; set; }
+        public string ultima_roja { get; set; }
     }
 }

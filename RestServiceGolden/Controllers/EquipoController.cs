@@ -391,6 +391,7 @@ namespace RestServiceGolden.Controllers
                     var posZ = db.posiciones_zona.Where(x => x.id_equipo == p.id_equipo && x.id_torneo == id_torneo).FirstOrDefault();
                     var ama = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id_torneo && x.id_tipo == 1).Count();
                     var roja = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id_torneo && x.id_tipo != 1).Count();
+                    var ultima_roja = db.sanciones.Where(x => x.id_jugador == p.id_jugador && x.id_torneo == id_torneo && x.id_tipo != 1).OrderByDescending(x => x.fecha_inicio).FirstOrDefault();
 
                     IJugador jugador = new IJugador();
                     jugador.nombre = p.nombre;
@@ -426,6 +427,16 @@ namespace RestServiceGolden.Controllers
 
                     jugador.tarjetas_amarillas = ama;
                     jugador.tarjetas_rojas = roja;
+                    
+                    if(ultima_roja != null)
+                    {
+                        var fec = db.fechas.Where(x => x.id_fecha == ultima_roja.fecha_fin).FirstOrDefault();
+                        if (DateTime.Now < fec.fecha)
+                        {
+                           var desc = db.tipos_sanciones.Where(x => x.id_tipo == ultima_roja.id_tipo).FirstOrDefault();
+                            jugador.ultima_roja = desc.descripcion;
+                        }
+                    }
 
                     jugador.edad = fecha.Year - p.fecha_nacimiento.Year;
 
