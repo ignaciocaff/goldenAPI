@@ -24,7 +24,7 @@ namespace RestServiceGolden.Controllers
                 if (torneos.id_fase == 1)
                 {
                     List<Posiciones> lsPosiciones = new List<Posiciones>();
-                    var posiciones = db.posiciones.Where(x => x.id_torneo == id_torneo).OrderByDescending(x => x.puntos).ToList();
+                    var posiciones = db.posiciones.Where(x => x.id_torneo == id_torneo).OrderByDescending(x => x.puntos).ThenByDescending(x => x.dif_gol).ToList();
 
                     foreach (var pos in posiciones)
                     {
@@ -64,7 +64,7 @@ namespace RestServiceGolden.Controllers
 
                     foreach (var id in lsIdZonas)
                     {
-                        var posiciones = db.posiciones_zona.Where(x => x.id_zona == id).OrderByDescending(x => x.puntos).ToList();
+                        var posiciones = db.posiciones_zona.Where(x => x.id_zona == id).OrderByDescending(x => x.puntos).ThenByDescending(x => x.dif_gol).ToList();
                         List<PosicionesZonas> lsPosiciones = new List<PosicionesZonas>();
 
                         foreach (var pos in posiciones)
