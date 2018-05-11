@@ -1211,7 +1211,7 @@ namespace RestServiceGolden.Controllers
                     }
                 }
 
-                return Ok(lsFechas);
+                return Ok(lsFechas.OrderBy(x => x.fecha));
             }
             catch (Exception e)
             {

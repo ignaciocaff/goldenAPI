@@ -427,13 +427,13 @@ namespace RestServiceGolden.Controllers
 
                     jugador.tarjetas_amarillas = ama;
                     jugador.tarjetas_rojas = roja;
-                    
-                    if(ultima_roja != null)
+
+                    if (ultima_roja != null)
                     {
                         var fec = db.fechas.Where(x => x.id_fecha == ultima_roja.fecha_fin).FirstOrDefault();
                         if (DateTime.Now < fec.fecha)
                         {
-                           var desc = db.tipos_sanciones.Where(x => x.id_tipo == ultima_roja.id_tipo).FirstOrDefault();
+                            var desc = db.tipos_sanciones.Where(x => x.id_tipo == ultima_roja.id_tipo).FirstOrDefault();
                             jugador.ultima_roja = desc.descripcion;
                         }
                     }
@@ -490,6 +490,42 @@ namespace RestServiceGolden.Controllers
         }
 
         [ResponseType(typeof(Equipo))]
+        [Route("api/torneo/iequipos/todos/{id}")]
+        public IHttpActionResult getIEquiposPorTorneo(int id)
+        {
+            List<IEquipo> lsEquipos = new List<IEquipo>();
+
+            try
+            {
+                var equipos = db.equipos.Where(x => x.id_torneo == id).ToList();
+
+
+
+                foreach (var tEquipo in equipos)
+                {
+                    var logo = db.files.Where(x => x.Id == tEquipo.logo).FirstOrDefault();
+                    if (logo != null && logo.ImagePath != null)
+                    {
+                        IEquipo equipo = new IEquipo();
+                        equipo.id_equipo = tEquipo.id_equipo;
+                        equipo.nombre = tEquipo.nombre;
+                        equipo.logo = (tEquipo.logo != null) ? tEquipo.logo.Value : 0;
+                        equipo.imagePath = logo.ThumbPath;
+                        lsEquipos.Add(equipo);
+                    }
+
+                }
+                return Ok(lsEquipos);
+            }
+            catch (Exception e)
+            {
+                e.ToString();
+                Console.WriteLine(e.ToString());
+                return BadRequest(e.ToString());
+            }
+        }
+
+        [ResponseType(typeof(Equipo))]
         [Route("api/torneo/equipo/{id}")]
         public IHttpActionResult getEquipo(int id)
         {
@@ -534,12 +570,13 @@ namespace RestServiceGolden.Controllers
         {
             DateTime fecha = DateTime.Now;
             var lsIEquipos = new List<IEquipoPlanilla>();
-                        
+
             try
             {
                 var iequipos = db.equipos.OrderBy(x => x.nombre).Where(x => x.id_torneo == id_torneo).ToList();
-                
-                foreach(var eq in iequipos) {
+
+                foreach (var eq in iequipos)
+                {
                     IEquipoPlanilla equipo = new IEquipoPlanilla();
                     List<IJugador> lsJugadores = new List<IJugador>();
 
