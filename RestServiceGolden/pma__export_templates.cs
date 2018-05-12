@@ -12,14 +12,12 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class playoff
+    public partial class pma__export_templates
     {
-        public int id_playoff { get; set; }
-        public Nullable<int> llave { get; set; }
-        public Nullable<int> local { get; set; }
-        public Nullable<int> visitante { get; set; }
-        public Nullable<int> ganador { get; set; }
-        public Nullable<int> id_etapa { get; set; }
-        public Nullable<int> id_torneo { get; set; }
+        public long id { get; set; }
+        public string username { get; set; }
+        public string export_type { get; set; }
+        public string template_name { get; set; }
+        public string template_data { get; set; }
     }
 }
