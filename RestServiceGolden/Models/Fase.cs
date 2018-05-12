@@ -7,7 +7,7 @@ namespace RestServiceGolden.Models
 {
     public class Fase
     {
-        public int? id_fase { get; set; }
+        public int id_fase { get; set; }
         public String descripcion { get; set; }
     }
 }

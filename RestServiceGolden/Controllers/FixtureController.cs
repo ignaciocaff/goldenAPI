@@ -498,7 +498,8 @@ namespace RestServiceGolden.Controllers
                                 iPartido.horario.turno = turno;
                                 iPartido.horario.turno.id = horarioDto.id_turno;
                                 iPartido.id_partido = partido.id_partido;
-
+                                iPartido.fecha = fechaPartido;
+                                iPartido.fecha.id_fecha = (int)partido.id_fecha;
 
                                 var sLocales = (from tSancion in db.sanciones
                                                 join tJugador in db.jugadores on tSancion.id_jugador equals tJugador.id_jugador
@@ -767,6 +768,8 @@ namespace RestServiceGolden.Controllers
                                 iPartido.horario.turno.id = horarioDto.id_turno;
                                 iPartido.id_partido = partido.id_partido;
 
+                                iPartido.fecha = fechaPartido;
+                                iPartido.fecha.id_fecha = (int)partido.id_fecha;
 
                                 var sLocales = (from tSancion in db.sanciones
                                                 join tJugador in db.jugadores on tSancion.id_jugador equals tJugador.id_jugador
