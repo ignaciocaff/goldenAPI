@@ -50,7 +50,7 @@ namespace RestServiceGolden.Controllers
             List<Noticia> lsNoticiasPrincipales = new List<Noticia>();
             try
             {
-                var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_categoria_noticia == 1 && (x.id_torneo == id || x.id_torneo == null)).Take(2);
+                var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_categoria_noticia == 1 && (x.id_torneo == id || x.id_torneo == null)).Take(1);
 
                 foreach (var n in noticias)
                 {
@@ -238,7 +238,7 @@ namespace RestServiceGolden.Controllers
             {
                 List<Noticia> lsNoticiasHistoricas = new List<Noticia>();
 
-                var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_torneo == id || x.id_torneo == null).Take(11);
+                var noticias = db.noticias.OrderByDescending(x => x.id_noticia).Where(x => x.id_torneo == id || x.id_torneo == null).Take(10);
 
                 foreach (var n in noticias)
                 {
