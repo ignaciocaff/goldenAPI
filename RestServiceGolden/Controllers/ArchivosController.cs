@@ -58,14 +58,17 @@ namespace RestServiceGolden.Controllers
 
         private async Task<int> SaveFiles(files file, Image img)
         {
-            // save thumb
-            SaveToFolder(img, new Size(160, 160), file.ThumbPath);
-            // save image of size max 600 x 600
+
             if (file.SectionId.Equals("NOTICIAS")) {
                 SaveToFolder(img, new Size((int)img.PhysicalDimension.Width, (int)img.PhysicalDimension.Height), file.ImagePath);
+                SaveToFolder(img, new Size(358, 200), file.ThumbPath);
+
             }
-            else { 
+            else {
+                // save image of size max 600 x 600
                 SaveToFolder(img, new Size(650, 650), file.ImagePath);
+                // save thumb
+                SaveToFolder(img, new Size(160, 160), file.ThumbPath);
             }
             // Save  to database
             return await Save(file);
