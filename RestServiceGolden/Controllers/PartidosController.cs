@@ -1,4 +1,6 @@
-﻿using RestServiceGolden.Models;
+﻿using Newtonsoft.Json;
+using RestServiceGolden.Models;
+using RestServiceGolden.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -696,6 +698,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("PartidosController");
+                logger.AgregarMensaje("api/partidos/registrar/" + " Parametros de entrada: " +
+                JsonConvert.SerializeObject(lsPartidos, Formatting.None) + id_fase + id_torneo + esInterzonal, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -817,6 +823,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("PartidosController");
+                logger.AgregarMensaje("api/partido/eliminar/sancion/" + " Parametros de entrada: " +
+                id_sancion, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest("No es posible eliminar la sanción" + e.Message);
             }
         }
@@ -948,7 +958,11 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("No es posible eliminar la sanción" + e.Message);
+                var logger = new Logger("PartidosController");
+                logger.AgregarMensaje("api/partido/eliminar/gol" + " Parametros de entrada: " +
+                id_gol + id_fase + id_zona, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
+                return BadRequest("No es posible eliminar el gol" + e.Message);
             }
         }
 
@@ -1633,6 +1647,11 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+
+                var logger = new Logger("PartidosController");
+                logger.AgregarMensaje("api/partidos/modificar/" + " Parametros de entrada: " +
+                JsonConvert.SerializeObject(partido, Formatting.None) + id_fase + id_torneo + esInterzonal, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }

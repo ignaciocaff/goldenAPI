@@ -1,4 +1,6 @@
-﻿using RestServiceGolden.Models;
+﻿using Newtonsoft.Json;
+using RestServiceGolden.Models;
+using RestServiceGolden.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +75,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("ZonasController");
+                logger.AgregarMensaje("api/zona/todos/" + " Parametros de entrada: " +
+                  id, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -95,6 +101,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("ZonasController");
+                logger.AgregarMensaje("api/zona/tienePlayoff/" + " Parametros de entrada: " +
+                  id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -169,6 +179,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("ZonasController");
+                logger.AgregarMensaje("api/zona/registrar/" + " Parametros de entrada: " +
+                  JsonConvert.SerializeObject(lsZonas, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -255,6 +269,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("ZonasController");
+                logger.AgregarMensaje("api/zona/eliminar/" + " Parametros de entrada: " +
+                  JsonConvert.SerializeObject(zona, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -296,6 +314,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("ZonasController");
+                logger.AgregarMensaje("api/zona/update/" + " Parametros de entrada: " +
+                  JsonConvert.SerializeObject(lsZonas, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }

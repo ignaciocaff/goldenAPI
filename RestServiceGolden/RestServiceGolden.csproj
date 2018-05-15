@@ -519,6 +519,7 @@
     <Compile Include="usuarios.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utilidades\Logger.cs" />
     <Compile Include="veedores.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

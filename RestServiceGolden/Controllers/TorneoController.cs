@@ -1,4 +1,7 @@
-﻿using RestServiceGolden.Models;
+﻿using Newtonsoft.Json;
+using RestServiceGolden.App_Start;
+using RestServiceGolden.Models;
+using RestServiceGolden.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +68,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("TorneoControllerException");
+                logger.AgregarMensaje("api/torneo/registrar" + " Parametros de entrada: " +
+                JsonConvert.SerializeObject(torneo, Formatting.None), " Excepción: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 throw new Exception(e.Message, e.InnerException);
             }
         }
@@ -121,10 +128,13 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message, e.InnerException);
+                var logger = new Logger("TorneoControllerException");
+                logger.AgregarMensaje("api/torneo/update" + " Parametros de entrada: " +
+                   JsonConvert.SerializeObject(torneo, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
+                return BadRequest();
             }
         }
-
 
         [ResponseType(typeof(IHttpActionResult))]
         [Route("api/torneo/todos")]
@@ -172,6 +182,7 @@ namespace RestServiceGolden.Controllers
 
                     foreach (var e in equipos)
                     {
+
                         Equipo equipo = new Equipo();
                         Torneo torneoEquipo = new Torneo();
                         Categoria categoriaEquipo = new Categoria();
@@ -186,11 +197,14 @@ namespace RestServiceGolden.Controllers
                     torneo.lsEquipos = lsEquipos;
                     lsTorneos.Add(torneo);
                 }
+
             }
             catch (Exception e)
             {
-                e.ToString();
-                Console.WriteLine(e.StackTrace.ToString());
+                var logger = new Logger("TorneoControllerException");
+                logger.AgregarMensaje("api/torneo/todos", "Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
+                return BadRequest();
             }
             return Ok(lsTorneos);
         }
@@ -217,14 +231,28 @@ namespace RestServiceGolden.Controllers
         {
             try
             {
+
                 var torneo = db.torneos.SingleOrDefault(x => x.id_torneo == id_torneo);
+                var equipos = db.equipos_zona.Where(x => x.id_torneo == id_torneo).ToList();
 
                 torneo.id_fase = fase.id_fase;
+
+                foreach (var equipo in equipos)
+                {
+                    var equipoUpdate = db.equipos_zona.SingleOrDefault(x => x.id_equipo == equipo.id_equipo);
+                    equipoUpdate.id_zona = null;
+                }
+
                 db.SaveChanges();
                 return Ok();
             }
             catch (Exception e)
             {
+                var logger = new Logger("TorneoControllerException");
+                logger.AgregarMensaje("api/torneo/cambioFase" + " Parametros de entrada: " +
+                   JsonConvert.SerializeObject(fase, Formatting.None) + id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
+
                 return BadRequest();
             }
         }
@@ -254,8 +282,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
-                e.ToString();
-                Console.WriteLine(e.ToString());
+                var logger = new Logger("TorneoControllerException");
+                logger.AgregarMensaje("api/torneo/iequiposPorTorneo" + " Parametros de entrada: " +
+                id, " Excepción: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
 
