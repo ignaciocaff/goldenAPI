@@ -15,7 +15,7 @@ namespace RestServiceGolden.Controllers
         [Route("api/helperTablas")]
         public IHttpActionResult GetAll()
         {
-            var posiciones = db.posiciones.Where(x => x.id_torneo == 27).ToList().OrderBy(x => x.id_equipo);
+            var posiciones = db.posiciones.Where(x => x.id_torneo == 28).ToList().OrderBy(x => x.id_equipo);
 
 
             foreach (var posicion in posiciones)
@@ -118,7 +118,7 @@ namespace RestServiceGolden.Controllers
                 Console.Write(posicion.id_equipo + puntos + partidos_jugados + partidos_ganados + partidos_perdidos + partidos_empatados + goles_favor + goles_contra + dif_gol);
 
                 posiciones posicionParaActualizar = db.posiciones.SingleOrDefault(x => x.id_equipo == posicion.id_equipo
-                    && x.id_torneo == 27);
+                    && x.id_torneo == 28);
 
                 posicionParaActualizar.puntos = puntos;
                 posicionParaActualizar.partidos_jugados = partidos_jugados;
