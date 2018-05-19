@@ -210,6 +210,41 @@ namespace RestServiceGolden.Controllers
         }
 
         [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/torneo/vigentes")]
+        public IHttpActionResult GetAllSoloTorneo()
+        {
+            List<Torneo> lsTorneos = new List<Torneo>();
+            try
+            {
+                var torneos = db.torneos.ToList();
+
+                foreach (var t in torneos)
+                {
+                    Torneo torneo = new Torneo();
+                    Fase fase = new Fase();
+
+                    torneo.id_torneo = t.id_torneo;
+                    torneo.nombre = t.nombre;
+                    torneo.descripcion = t.descripcion;
+                    torneo.fecha_fin = t.fecha_fin.Value.Date;
+                    torneo.fecha_inicio = t.fecha_inicio.Value.Date;
+                    torneo.fase = fase;
+                    torneo.fase.id_fase = t.id_fase;
+                    lsTorneos.Add(torneo);
+                }
+
+            }
+            catch (Exception e)
+            {
+                var logger = new Logger("TorneoControllerException");
+                logger.AgregarMensaje("api/torneo/todos", "Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
+                return BadRequest();
+            }
+            return Ok(lsTorneos);
+        }
+
+        [ResponseType(typeof(IHttpActionResult))]
         [Route("api/torneo/{nombre}")]
         public IHttpActionResult GetById(String nombre)
         {

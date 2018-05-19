@@ -18,5 +18,6 @@ namespace RestServiceGolden.Models
         public Modalidad modalidad { get; set; }
         public List<Equipo> lsEquipos { get; set; }
         public Fase fase { get; set; }
+        public EstadoTorneo estado { get; set; }
     }
 }
