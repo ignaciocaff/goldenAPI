@@ -48,6 +48,7 @@ namespace RestServiceGolden.Controllers
                                            id_torneo = tEquipos.id_torneo,
                                            logo = tEquipos.logo,
                                            id_zona = tZonas.id_zona,
+                                           camisetalogo = tEquipos.camisetalogo
                                        }).OrderBy(s => s.nombre);
 
 
@@ -61,6 +62,7 @@ namespace RestServiceGolden.Controllers
                                 equipo.id_equipo = equipoZona.id_equipo;
                                 equipo.nombre = equipoZona.nombre;
                                 equipo.logo = (equipoZona.logo != null) ? (int)equipoZona.logo : 0;
+                                equipo.camisetalogo = (equipoZona.camisetalogo != null) ? (int)equipoZona.camisetalogo : 0;
                                 equipo.torneo = torneo;
                                 equipo.torneo.id_torneo = equipoZona.id_torneo;
                                 lsEquipos.Add(equipo);
