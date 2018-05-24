@@ -1,4 +1,6 @@
-﻿using RestServiceGolden.Models;
+﻿using Newtonsoft.Json;
+using RestServiceGolden.Models;
+using RestServiceGolden.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +56,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/registrar/" + " Parametros de entrada: " +
+                  JsonConvert.SerializeObject(equipo, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
 
@@ -76,6 +82,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/desvincular/" + " Parametros de entrada: " +
+                  JsonConvert.SerializeObject(lsEquipos, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest("No se pudieron desvincular los equipos");
             }
         }
@@ -119,8 +129,9 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
-                e.ToString();
-                Console.WriteLine(e.ToString());
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/obtenerTodos/", " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -181,8 +192,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
-                e.ToString();
-                Console.WriteLine(e.ToString());
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/equiposPorZona/" + " Parametros de entrada: " +
+                  id_zona, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -250,8 +263,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
-                e.ToString();
-                Console.WriteLine(e.ToString());
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/equiposSinZona/" + " Parametros de entrada: " +
+                  id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -297,6 +312,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/jugadores/" + " Parametros de entrada: " +
+                  id, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -316,6 +335,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/desvincular/jugadores/" + " Parametros de entrada: " +
+                  id_jugador, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -353,6 +376,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/update/" + " Parametros de entrada: " +
+                  JsonConvert.SerializeObject(equipo, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -457,6 +484,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/iJugadores/" + " Parametros de entrada: " +
+                  id + id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -483,8 +514,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
-                e.ToString();
-                Console.WriteLine(e.ToString());
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipos/todos/" + " Parametros de entrada: " +
+                  id, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -519,8 +552,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
-                e.ToString();
-                Console.WriteLine(e.ToString());
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/iequipos/todos/" + " Parametros de entrada: " +
+                  id, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -558,8 +593,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
-                e.ToString();
-                Console.WriteLine(e.ToString());
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/" + " Parametros de entrada: " +
+                 id, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -666,6 +703,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("EquipoController");
+                logger.AgregarMensaje("api/equipo/planilla/" + " Parametros de entrada: " +
+                 id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }

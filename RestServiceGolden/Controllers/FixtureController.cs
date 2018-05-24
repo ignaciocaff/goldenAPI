@@ -1,5 +1,7 @@
 ﻿using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 using RestServiceGolden.Models;
+using RestServiceGolden.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +59,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/registrar/" + " Parametros de entrada: " +
+                  JsonConvert.SerializeObject(partidos, Formatting.None) + id_zona + id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -98,6 +104,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/registrarInterzonal/" + " Parametros de entrada: " +
+                  JsonConvert.SerializeObject(partidos, Formatting.None) + id_torneo + id_fase, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -155,6 +165,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/modificar/" + " Parametros de entrada: " +
+                  JsonConvert.SerializeObject(partidos, Formatting.None) + id_zona + id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -358,6 +372,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/obtener/" + " Parametros de entrada: " +
+                JsonConvert.SerializeObject(fecha, Formatting.None) + id_torneo + id_zona + esInterzonal, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
             return Ok(lsPartidos);
@@ -912,6 +930,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/obtenerPartido/" + " Parametros de entrada: " +
+                JsonConvert.SerializeObject(fecha, Formatting.None) + id_equipo + id_torneo + id_zona + esInterzonal, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -1007,6 +1029,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/obtenerPartidos/" + " Parametros de entrada: " +
+                JsonConvert.SerializeObject(iPartido, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -1031,6 +1057,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/eliminarPartido/" + " Parametros de entrada: " +
+                  JsonConvert.SerializeObject(iPartido, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -1159,6 +1189,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/obtenerTodas/" + " Parametros de entrada: " +
+                id_zona + id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -1187,6 +1221,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/modificarFecha/" + " Parametros de entrada: " +
+                 JsonConvert.SerializeObject(fixture, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -1218,6 +1256,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/obtenerFInterzonales/" + " Parametros de entrada: " +
+                 id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -1348,6 +1390,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/obtenerPartidosVisualizacionFixture/" + " Parametros de entrada: " +
+                JsonConvert.SerializeObject(fechaDto, Formatting.None) + id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
@@ -1585,6 +1631,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/obtenerResultadosVisualizacionFecha/" + " Parametros de entrada: " +
+                JsonConvert.SerializeObject(fecha, Formatting.None) + id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
             return Ok(lsPartidos);
@@ -1623,6 +1673,10 @@ namespace RestServiceGolden.Controllers
             }
             catch (Exception e)
             {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/obtenerFechasJugadas/" + " Parametros de entrada: " +
+                id_torneo, " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
                 return BadRequest(e.ToString());
             }
         }
