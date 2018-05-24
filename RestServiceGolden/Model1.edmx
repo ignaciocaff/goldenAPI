@@ -95,8 +95,8 @@
           <Property Name="id_club" Type="int" />
           <Property Name="id_torneo" Type="int" />
           <Property Name="id_categoria_equipo" Type="int" />
-          <Property Name="camiseta" Type="int" />
           <Property Name="camisetalogo" Type="int" />
+          <Property Name="camiseta" Type="int" />
         </EntityType>
         <EntityType Name="equipos_zona">
           <Key>
@@ -229,9 +229,10 @@
             <PropertyRef Name="id_horario" />
           </Key>
           <Property Name="id_horario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="id_turno" Type="int" />
+          <Property Name="turno" Type="varchar" MaxLength="45" />
           <Property Name="inicio" Type="varchar" MaxLength="50" />
           <Property Name="fin" Type="varchar" MaxLength="50" />
+          <Property Name="id_turno" Type="int" />
         </EntityType>
         <EntityType Name="jugadores">
           <Key>
@@ -357,8 +358,8 @@
           <Property Name="fecha_alta" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="fecha_modificacion" Type="datetime" Precision="0" />
           <Property Name="fecha_baja" Type="datetime" Precision="0" />
-          <Property Name="id_foto" Type="int" />
           <Property Name="ocupacion" Type="varchar" MaxLength="45" />
+          <Property Name="id_foto" Type="int" />
         </EntityType>
         <EntityType Name="playoff">
           <Key>
@@ -371,209 +372,6 @@
           <Property Name="ganador" Type="int" />
           <Property Name="id_etapa" Type="int" />
           <Property Name="id_torneo" Type="int" />
-        </EntityType>
-        <EntityType Name="pma__bookmark">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="dbase" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="user" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="label" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="query" Type="text" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__central_columns">
-          <Key>
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="col_name" />
-          </Key>
-          <Property Name="db_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="col_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="col_type" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="col_length" Type="text" />
-          <Property Name="col_collation" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="col_isNull" Type="bool" Nullable="false" />
-          <Property Name="col_extra" Type="varchar" MaxLength="255" />
-          <Property Name="col_default" Type="text" />
-        </EntityType>
-        <EntityType Name="pma__column_info">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="db_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="table_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="column_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="comment" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="mimetype" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="transformation" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="transformation_options" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="input_transformation" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="input_transformation_options" Type="varchar" MaxLength="255" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__designer_settings">
-          <Key>
-            <PropertyRef Name="username" />
-          </Key>
-          <Property Name="username" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="settings_data" Type="text" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__export_templates">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="username" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="export_type" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="template_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="template_data" Type="text" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__favorite">
-          <Key>
-            <PropertyRef Name="username" />
-          </Key>
-          <Property Name="username" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="tables" Type="text" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__history">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="ubigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="username" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="db" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="table" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="timevalue" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="sqlquery" Type="text" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__navigationhiding">
-          <Key>
-            <PropertyRef Name="username" />
-            <PropertyRef Name="item_name" />
-            <PropertyRef Name="item_type" />
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="table_name" />
-          </Key>
-          <Property Name="username" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="item_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="item_type" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="db_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="table_name" Type="varchar" MaxLength="64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__pdf_pages">
-          <Key>
-            <PropertyRef Name="page_nr" />
-          </Key>
-          <Property Name="db_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="page_nr" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="page_descr" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__recent">
-          <Key>
-            <PropertyRef Name="username" />
-          </Key>
-          <Property Name="username" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="tables" Type="text" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__relation">
-          <Key>
-            <PropertyRef Name="master_db" />
-            <PropertyRef Name="master_table" />
-            <PropertyRef Name="master_field" />
-          </Key>
-          <Property Name="master_db" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="master_table" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="master_field" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="foreign_db" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="foreign_table" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="foreign_field" Type="varchar" MaxLength="64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__savedsearches">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="username" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="db_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="search_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="search_data" Type="text" Nullable="false" />
-        </EntityType>
-        <!--Errores durante la generación:
-advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la versión de Entity Framework de destino; se excluyó la columna 'x' de la tabla 'def.golden.pma__table_coords'.
-advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la versión de Entity Framework de destino; se excluyó la columna 'y' de la tabla 'def.golden.pma__table_coords'.-->
-        <EntityType Name="pma__table_coords">
-          <Key>
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="table_name" />
-            <PropertyRef Name="pdf_page_number" />
-          </Key>
-          <Property Name="db_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="table_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="pdf_page_number" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__table_info">
-          <Key>
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="table_name" />
-          </Key>
-          <Property Name="db_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="table_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="display_field" Type="varchar" MaxLength="64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__table_uiprefs">
-          <Key>
-            <PropertyRef Name="username" />
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="table_name" />
-          </Key>
-          <Property Name="username" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="db_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="table_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="prefs" Type="text" Nullable="false" />
-          <Property Name="last_update" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__tracking">
-          <Key>
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="table_name" />
-            <PropertyRef Name="version" />
-          </Key>
-          <Property Name="db_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="table_name" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="version" Type="uint" Nullable="false" />
-          <Property Name="date_created" Type="datetime" Precision="0" Nullable="false" />
-          <Property Name="date_updated" Type="datetime" Precision="0" Nullable="false" />
-          <Property Name="schema_snapshot" Type="text" Nullable="false" />
-          <Property Name="schema_sql" Type="text" />
-          <Property Name="data_sql" Type="longtext" />
-          <Property Name="tracking" Type="set" />
-          <Property Name="tracking_active" Type="uint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__userconfig">
-          <Key>
-            <PropertyRef Name="username" />
-          </Key>
-          <Property Name="username" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="timevalue" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="config_data" Type="text" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__usergroups">
-          <Key>
-            <PropertyRef Name="usergroup" />
-            <PropertyRef Name="tab" />
-            <PropertyRef Name="allowed" />
-          </Key>
-          <Property Name="usergroup" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="tab" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="allowed" Type="enum" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__users">
-          <Key>
-            <PropertyRef Name="username" />
-            <PropertyRef Name="usergroup" />
-          </Key>
-          <Property Name="username" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="usergroup" Type="varchar" MaxLength="64" Nullable="false" />
         </EntityType>
         <EntityType Name="posiciones">
           <Key>
@@ -802,7 +600,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_zona" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="45" />
           <Property Name="id_torneo" Type="int" />
-          <Property Name="id_fase" Type="int" Nullable="false" />
+          <Property Name="id_fase" Type="int" />
         </EntityType>
         <Association Name="fk_arbitro_partido">
           <End Role="arbitros" Type="Self.arbitros" Multiplicity="0..1" />
@@ -876,18 +674,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_categoria_equipo">
-          <End Role="categorias" Type="Self.categorias" Multiplicity="0..1" />
-          <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="categorias">
-              <PropertyRef Name="id_categoria" />
-            </Principal>
-            <Dependent Role="equipos">
-              <PropertyRef Name="id_categoria_equipo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_categoria_noticia">
           <End Role="categorias_noticias" Type="Self.categorias_noticias" Multiplicity="0..1" />
           <End Role="noticias" Type="Self.noticias" Multiplicity="*" />
@@ -936,6 +722,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_equipo_categoria">
+          <End Role="categorias" Type="Self.categorias" Multiplicity="0..1" />
+          <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categorias">
+              <PropertyRef Name="id_categoria" />
+            </Principal>
+            <Dependent Role="equipos">
+              <PropertyRef Name="id_categoria_equipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_equipo_club">
           <End Role="clubes" Type="Self.clubes" Multiplicity="0..1" />
           <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
@@ -945,6 +743,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="equipos">
               <PropertyRef Name="id_club" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_ganador">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="ganador" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -972,6 +782,42 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_equipo_local">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="local" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_posicion_zona">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="posiciones_zona" Type="Self.posiciones_zona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="posiciones_zona">
+              <PropertyRef Name="id_equipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_sancion">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_equipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_equipo_torneo">
           <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
           <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
@@ -981,6 +827,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="equipos">
               <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_visitante">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="visitante" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1032,6 +890,30 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_fase_torneo">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="zonas" Type="Self.zonas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="zonas">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_fecha_fecha_interzonal">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="fechas">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_fecha_fixture">
           <End Role="fixture" Type="Self.fixture" Multiplicity="0..1" />
           <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
@@ -1053,6 +935,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="partidos">
               <PropertyRef Name="id_fecha" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_fecha_zona_fixture">
+          <End Role="fixture_zona" Type="Self.fixture_zona" Multiplicity="0..1" />
+          <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fixture_zona">
+              <PropertyRef Name="id_fixture" />
+            </Principal>
+            <Dependent Role="fechas">
+              <PropertyRef Name="id_fixture_zona" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1089,18 +983,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="fixture">
               <PropertyRef Name="id_torneo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_fixture_zona">
-          <End Role="fixture_zona" Type="Self.fixture_zona" Multiplicity="0..1" />
-          <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="fixture_zona">
-              <PropertyRef Name="id_fixture" />
-            </Principal>
-            <Dependent Role="fechas">
-              <PropertyRef Name="id_fixture_zona" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1200,7 +1082,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_horario_turno">
+        <Association Name="fk_horario_turnos">
           <End Role="turnos" Type="Self.turnos" Multiplicity="0..1" />
           <End Role="horarios_fijos" Type="Self.horarios_fijos" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1209,18 +1091,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="horarios_fijos">
               <PropertyRef Name="id_turno" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_img_equipo">
-          <End Role="files" Type="Self.files" Multiplicity="0..1" />
-          <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="files">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="equipos">
-              <PropertyRef Name="logo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1320,6 +1190,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_llave_playoff">
+          <End Role="llaves" Type="Self.llaves" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="llaves">
+              <PropertyRef Name="id_llave" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="llave" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_local_partido">
           <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
           <End Role="partidos" Type="Self.partidos" Multiplicity="*" />
@@ -1341,6 +1223,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="localidades">
               <PropertyRef Name="id_provincia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_logo">
+          <End Role="files" Type="Self.files" Multiplicity="0..1" />
+          <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="files">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="equipos">
+              <PropertyRef Name="logo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1512,7 +1406,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_persona_foto">
+        <Association Name="fk_persona_id_foto">
           <End Role="files" Type="Self.files" Multiplicity="0..1" />
           <End Role="personas" Type="Self.personas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1545,6 +1439,30 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="personas">
               <PropertyRef Name="id_tipo_documento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_playoff_etapa">
+          <End Role="etapa_playoff" Type="Self.etapa_playoff" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="etapa_playoff">
+              <PropertyRef Name="id_etapa" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="id_etapa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_playoff_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="id_torneo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1593,6 +1511,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="torneos">
               <PropertyRef Name="id_regla" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_reglamento_id_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="reglamentos" Type="Self.reglamentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="reglamentos">
+              <PropertyRef Name="id_torneo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1656,6 +1586,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_resultado_zona">
+          <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
+          <End Role="resultados_zona" Type="Self.resultados_zona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zonas">
+              <PropertyRef Name="id_zona" />
+            </Principal>
+            <Dependent Role="resultados_zona">
+              <PropertyRef Name="id_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_sancion_fase">
           <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
           <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
@@ -1677,6 +1619,42 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="sanciones">
               <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sanciones_equipo_equipo">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
+              <PropertyRef Name="id_equipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sanciones_equipo_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sanciones_equipo_zona">
+          <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zonas">
+              <PropertyRef Name="id_zona" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
+              <PropertyRef Name="id_zona" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1860,18 +1838,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_zona_fase">
-          <End Role="fases" Type="Self.fases" Multiplicity="1" />
-          <End Role="zonas" Type="Self.zonas" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="fases">
-              <PropertyRef Name="id_fase" />
-            </Principal>
-            <Dependent Role="zonas">
-              <PropertyRef Name="id_fase" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_zona_fixture">
           <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
           <End Role="fixture_zona" Type="Self.fixture_zona" Multiplicity="*" />
@@ -1957,25 +1923,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <EntitySet Name="permisos" EntityType="Self.permisos" Schema="golden" store:Type="Tables" />
           <EntitySet Name="personas" EntityType="Self.personas" Schema="golden" store:Type="Tables" />
           <EntitySet Name="playoff" EntityType="Self.playoff" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__bookmark" EntityType="Self.pma__bookmark" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__central_columns" EntityType="Self.pma__central_columns" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__column_info" EntityType="Self.pma__column_info" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__designer_settings" EntityType="Self.pma__designer_settings" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__export_templates" EntityType="Self.pma__export_templates" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__favorite" EntityType="Self.pma__favorite" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__history" EntityType="Self.pma__history" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__navigationhiding" EntityType="Self.pma__navigationhiding" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__pdf_pages" EntityType="Self.pma__pdf_pages" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__recent" EntityType="Self.pma__recent" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__relation" EntityType="Self.pma__relation" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__savedsearches" EntityType="Self.pma__savedsearches" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__table_coords" EntityType="Self.pma__table_coords" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__table_info" EntityType="Self.pma__table_info" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__table_uiprefs" EntityType="Self.pma__table_uiprefs" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__tracking" EntityType="Self.pma__tracking" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__userconfig" EntityType="Self.pma__userconfig" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__usergroups" EntityType="Self.pma__usergroups" Schema="golden" store:Type="Tables" />
-          <EntitySet Name="pma__users" EntityType="Self.pma__users" Schema="golden" store:Type="Tables" />
           <EntitySet Name="posiciones" EntityType="Self.posiciones" Schema="golden" store:Type="Tables" />
           <EntitySet Name="posiciones_zona" EntityType="Self.posiciones_zona" Schema="golden" store:Type="Tables" />
           <EntitySet Name="provincias" EntityType="Self.provincias" Schema="golden" store:Type="Tables" />
@@ -2023,10 +1970,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="canchas" EntitySet="canchas" />
             <End Role="tipos_cancha" EntitySet="tipos_cancha" />
           </AssociationSet>
-          <AssociationSet Name="fk_categoria_equipo" Association="Self.fk_categoria_equipo">
-            <End Role="categorias" EntitySet="categorias" />
-            <End Role="equipos" EntitySet="equipos" />
-          </AssociationSet>
           <AssociationSet Name="fk_categoria_noticia" Association="Self.fk_categoria_noticia">
             <End Role="categorias_noticias" EntitySet="categorias_noticias" />
             <End Role="noticias" EntitySet="noticias" />
@@ -2043,9 +1986,17 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="localidades" EntitySet="localidades" />
             <End Role="domicilios" EntitySet="domicilios" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_categoria" Association="Self.fk_equipo_categoria">
+            <End Role="categorias" EntitySet="categorias" />
+            <End Role="equipos" EntitySet="equipos" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_club" Association="Self.fk_equipo_club">
             <End Role="clubes" EntitySet="clubes" />
             <End Role="equipos" EntitySet="equipos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipo_ganador" Association="Self.fk_equipo_ganador">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
           </AssociationSet>
           <AssociationSet Name="fk_equipo_gol" Association="Self.fk_equipo_gol">
             <End Role="equipos" EntitySet="equipos" />
@@ -2055,9 +2006,25 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="equipos" EntitySet="equipos" />
             <End Role="goleadores" EntitySet="goleadores" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_local" Association="Self.fk_equipo_local">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipo_posicion_zona" Association="Self.fk_equipo_posicion_zona">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="posiciones_zona" EntitySet="posiciones_zona" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipo_sancion" Association="Self.fk_equipo_sancion">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_torneo" Association="Self.fk_equipo_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="equipos" EntitySet="equipos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipo_visitante" Association="Self.fk_equipo_visitante">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
           </AssociationSet>
           <AssociationSet Name="fk_equipo_zona" Association="Self.fk_equipo_zona">
             <End Role="equipos" EntitySet="equipos" />
@@ -2075,6 +2042,14 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="estados_torneo" EntitySet="estados_torneo" />
             <End Role="torneos" EntitySet="torneos" />
           </AssociationSet>
+          <AssociationSet Name="fk_fase_torneo" Association="Self.fk_fase_torneo">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="zonas" EntitySet="zonas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_fecha_fecha_interzonal" Association="Self.fk_fecha_fecha_interzonal">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="fechas" EntitySet="fechas" />
+          </AssociationSet>
           <AssociationSet Name="fk_fecha_fixture" Association="Self.fk_fecha_fixture">
             <End Role="fixture" EntitySet="fixture" />
             <End Role="fechas" EntitySet="fechas" />
@@ -2082,6 +2057,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_fecha_partido" Association="Self.fk_fecha_partido">
             <End Role="fechas" EntitySet="fechas" />
             <End Role="partidos" EntitySet="partidos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_fecha_zona_fixture" Association="Self.fk_fecha_zona_fixture">
+            <End Role="fixture_zona" EntitySet="fixture_zona" />
+            <End Role="fechas" EntitySet="fechas" />
           </AssociationSet>
           <AssociationSet Name="fk_fin_fecha" Association="Self.fk_fin_fecha">
             <End Role="fechas" EntitySet="fechas" />
@@ -2094,10 +2073,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_fixture_torneo" Association="Self.fk_fixture_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="fixture" EntitySet="fixture" />
-          </AssociationSet>
-          <AssociationSet Name="fk_fixture_zona" Association="Self.fk_fixture_zona">
-            <End Role="fixture_zona" EntitySet="fixture_zona" />
-            <End Role="fechas" EntitySet="fechas" />
           </AssociationSet>
           <AssociationSet Name="fk_fixtureZ_torneo" Association="Self.fk_fixtureZ_torneo">
             <End Role="torneos" EntitySet="torneos" />
@@ -2131,13 +2106,9 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="horarios_fijos" EntitySet="horarios_fijos" />
             <End Role="partidos" EntitySet="partidos" />
           </AssociationSet>
-          <AssociationSet Name="fk_horario_turno" Association="Self.fk_horario_turno">
+          <AssociationSet Name="fk_horario_turnos" Association="Self.fk_horario_turnos">
             <End Role="turnos" EntitySet="turnos" />
             <End Role="horarios_fijos" EntitySet="horarios_fijos" />
-          </AssociationSet>
-          <AssociationSet Name="fk_img_equipo" Association="Self.fk_img_equipo">
-            <End Role="files" EntitySet="files" />
-            <End Role="equipos" EntitySet="equipos" />
           </AssociationSet>
           <AssociationSet Name="fk_inicio_fecha" Association="Self.fk_inicio_fecha">
             <End Role="fechas" EntitySet="fechas" />
@@ -2171,6 +2142,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="torneos" EntitySet="torneos" />
             <End Role="sanciones_torneo" EntitySet="sanciones_torneo" />
           </AssociationSet>
+          <AssociationSet Name="fk_llave_playoff" Association="Self.fk_llave_playoff">
+            <End Role="llaves" EntitySet="llaves" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_local_partido" Association="Self.fk_local_partido">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="partidos" EntitySet="partidos" />
@@ -2178,6 +2153,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_localidad_provincia" Association="Self.fk_localidad_provincia">
             <End Role="provincias" EntitySet="provincias" />
             <End Role="localidades" EntitySet="localidades" />
+          </AssociationSet>
+          <AssociationSet Name="fk_logo" Association="Self.fk_logo">
+            <End Role="files" EntitySet="files" />
+            <End Role="equipos" EntitySet="equipos" />
           </AssociationSet>
           <AssociationSet Name="fk_logo_camiseta" Association="Self.fk_logo_camiseta">
             <End Role="files" EntitySet="files" />
@@ -2235,7 +2214,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="estados_civil" EntitySet="estados_civil" />
             <End Role="personas" EntitySet="personas" />
           </AssociationSet>
-          <AssociationSet Name="fk_persona_foto" Association="Self.fk_persona_foto">
+          <AssociationSet Name="fk_persona_id_foto" Association="Self.fk_persona_id_foto">
             <End Role="files" EntitySet="files" />
             <End Role="personas" EntitySet="personas" />
           </AssociationSet>
@@ -2246,6 +2225,14 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_persona_tipo_doc" Association="Self.fk_persona_tipo_doc">
             <End Role="tipos_documento" EntitySet="tipos_documento" />
             <End Role="personas" EntitySet="personas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_playoff_etapa" Association="Self.fk_playoff_etapa">
+            <End Role="etapa_playoff" EntitySet="etapa_playoff" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
+          <AssociationSet Name="fk_playoff_torneo" Association="Self.fk_playoff_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="playoff" EntitySet="playoff" />
           </AssociationSet>
           <AssociationSet Name="fk_posicion_equipo" Association="Self.fk_posicion_equipo">
             <End Role="equipos" EntitySet="equipos" />
@@ -2262,6 +2249,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_regla_torneo" Association="Self.fk_regla_torneo">
             <End Role="reglas_torneo" EntitySet="reglas_torneo" />
             <End Role="torneos" EntitySet="torneos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_reglamento_id_torneo" Association="Self.fk_reglamento_id_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="reglamentos" EntitySet="reglamentos" />
           </AssociationSet>
           <AssociationSet Name="fk_reglas_torneo" Association="Self.fk_reglas_torneo">
             <End Role="torneos" EntitySet="torneos" />
@@ -2283,6 +2274,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="resultados_zona" EntitySet="resultados_zona" />
             <End Role="partidos" EntitySet="partidos" />
           </AssociationSet>
+          <AssociationSet Name="fk_resultado_zona" Association="Self.fk_resultado_zona">
+            <End Role="zonas" EntitySet="zonas" />
+            <End Role="resultados_zona" EntitySet="resultados_zona" />
+          </AssociationSet>
           <AssociationSet Name="fk_sancion_fase" Association="Self.fk_sancion_fase">
             <End Role="fases" EntitySet="fases" />
             <End Role="sanciones" EntitySet="sanciones" />
@@ -2290,6 +2285,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_sancion_torneo" Association="Self.fk_sancion_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_equipo" Association="Self.fk_sanciones_equipo_equipo">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_torneo" Association="Self.fk_sanciones_equipo_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_zona" Association="Self.fk_sanciones_equipo_zona">
+            <End Role="zonas" EntitySet="zonas" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
           </AssociationSet>
           <AssociationSet Name="fk_sponsor_club" Association="Self.fk_sponsor_club">
             <End Role="clubes" EntitySet="clubes" />
@@ -2351,10 +2358,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="equipos" EntitySet="equipos" />
             <End Role="partidos" EntitySet="partidos" />
           </AssociationSet>
-          <AssociationSet Name="fk_zona_fase" Association="Self.fk_zona_fase">
-            <End Role="fases" EntitySet="fases" />
-            <End Role="zonas" EntitySet="zonas" />
-          </AssociationSet>
           <AssociationSet Name="fk_zona_fixture" Association="Self.fk_zona_fixture">
             <End Role="zonas" EntitySet="zonas" />
             <End Role="fixture_zona" EntitySet="fixture_zona" />
@@ -2414,8 +2417,8 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           </Key>
           <Property Name="id_categoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="equipos" Relationship="Self.fk_categoria_equipo" FromRole="categorias" ToRole="equipos" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_categoria_torneo" FromRole="categorias" ToRole="torneos" />
+          <NavigationProperty Name="equipos" Relationship="Self.fk_equipo_categoria" FromRole="categorias" ToRole="equipos" />
         </EntityType>
         <EntityType Name="categorias_noticias">
           <Key>
@@ -2485,26 +2488,32 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_club" Type="Int32" />
           <Property Name="id_torneo" Type="Int32" />
           <Property Name="id_categoria_equipo" Type="Int32" />
-          <Property Name="camiseta" Type="Int32" />
           <Property Name="camisetalogo" Type="Int32" />
-          <NavigationProperty Name="categorias" Relationship="Self.fk_categoria_equipo" FromRole="equipos" ToRole="categorias" />
+          <Property Name="camiseta" Type="Int32" />
+          <NavigationProperty Name="categorias" Relationship="Self.fk_equipo_categoria" FromRole="equipos" ToRole="categorias" />
           <NavigationProperty Name="clubes" Relationship="Self.fk_equipo_club" FromRole="equipos" ToRole="clubes" />
           <NavigationProperty Name="files" Relationship="Self.fk_camiseta" FromRole="equipos" ToRole="files" />
+          <NavigationProperty Name="playoff" Relationship="Self.fk_equipo_ganador" FromRole="equipos" ToRole="playoff" />
           <NavigationProperty Name="goles" Relationship="Self.fk_equipo_gol" FromRole="equipos" ToRole="goles" />
           <NavigationProperty Name="goleadores" Relationship="Self.fk_equipo_goleador" FromRole="equipos" ToRole="goleadores" />
+          <NavigationProperty Name="playoff1" Relationship="Self.fk_equipo_local" FromRole="equipos" ToRole="playoff" />
+          <NavigationProperty Name="posiciones_zona" Relationship="Self.fk_equipo_posicion_zona" FromRole="equipos" ToRole="posiciones_zona" />
+          <NavigationProperty Name="sanciones" Relationship="Self.fk_equipo_sancion" FromRole="equipos" ToRole="sanciones" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_equipo_torneo" FromRole="equipos" ToRole="torneos" />
+          <NavigationProperty Name="playoff2" Relationship="Self.fk_equipo_visitante" FromRole="equipos" ToRole="playoff" />
           <NavigationProperty Name="equipos_zona" Relationship="Self.fk_equipo_zona" FromRole="equipos" ToRole="equipos_zona" />
           <NavigationProperty Name="fotos" Relationship="Self.fk_foto_equipo" FromRole="equipos" ToRole="fotos" />
           <NavigationProperty Name="resultados" Relationship="Self.fk_ganador_equipo" FromRole="equipos" ToRole="resultados" />
           <NavigationProperty Name="resultados_zona" Relationship="Self.fk_ganador_equipo_zona" FromRole="equipos" ToRole="resultados_zona" />
-          <NavigationProperty Name="files1" Relationship="Self.fk_img_equipo" FromRole="equipos" ToRole="files" />
           <NavigationProperty Name="jugadores" Relationship="Self.fk_jugador_equipo" FromRole="equipos" ToRole="jugadores" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_local_partido" FromRole="equipos" ToRole="partidos" />
+          <NavigationProperty Name="files1" Relationship="Self.fk_logo" FromRole="equipos" ToRole="files" />
           <NavigationProperty Name="files2" Relationship="Self.fk_logo_camiseta" FromRole="equipos" ToRole="files" />
           <NavigationProperty Name="resultados1" Relationship="Self.fk_perdedor_equipo" FromRole="equipos" ToRole="resultados" />
           <NavigationProperty Name="resultados_zona1" Relationship="Self.fk_perdedor_equipo_zona" FromRole="equipos" ToRole="resultados_zona" />
           <NavigationProperty Name="posiciones" Relationship="Self.fk_posicion_equipo" FromRole="equipos" ToRole="posiciones" />
           <NavigationProperty Name="representante_equipo" Relationship="Self.fk_representante_equipo" FromRole="equipos" ToRole="representante_equipo" />
+          <NavigationProperty Name="sanciones_equipo" Relationship="Self.fk_sanciones_equipo_equipo" FromRole="equipos" ToRole="sanciones_equipo" />
           <NavigationProperty Name="partidos1" Relationship="Self.fk_visitante_partido" FromRole="equipos" ToRole="partidos" />
         </EntityType>
         <EntityType Name="equipos_zona">
@@ -2560,6 +2569,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           </Key>
           <Property Name="id_etapa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="playoff" Relationship="Self.fk_playoff_etapa" FromRole="etapa_playoff" ToRole="playoff" />
         </EntityType>
         <EntityType Name="fases">
           <Key>
@@ -2567,9 +2577,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           </Key>
           <Property Name="id_fase" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="zonas" Relationship="Self.fk_fase_torneo" FromRole="fases" ToRole="zonas" />
+          <NavigationProperty Name="fechas" Relationship="Self.fk_fecha_fecha_interzonal" FromRole="fases" ToRole="fechas" />
           <NavigationProperty Name="sanciones" Relationship="Self.fk_sancion_fase" FromRole="fases" ToRole="sanciones" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_torneo_fase" FromRole="fases" ToRole="torneos" />
-          <NavigationProperty Name="zonas" Relationship="Self.fk_zona_fase" FromRole="fases" ToRole="zonas" />
         </EntityType>
         <EntityType Name="fechas">
           <Key>
@@ -2582,10 +2593,11 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_fixture_zona" Type="Int32" />
           <Property Name="id_fase" Type="Int32" />
           <NavigationProperty Name="estado_fecha" Relationship="Self.fk_estado_fecha" FromRole="fechas" ToRole="estado_fecha" />
+          <NavigationProperty Name="fases" Relationship="Self.fk_fecha_fecha_interzonal" FromRole="fechas" ToRole="fases" />
           <NavigationProperty Name="fixture" Relationship="Self.fk_fecha_fixture" FromRole="fechas" ToRole="fixture" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_fecha_partido" FromRole="fechas" ToRole="partidos" />
+          <NavigationProperty Name="fixture_zona" Relationship="Self.fk_fecha_zona_fixture" FromRole="fechas" ToRole="fixture_zona" />
           <NavigationProperty Name="sanciones" Relationship="Self.fk_fin_fecha" FromRole="fechas" ToRole="sanciones" />
-          <NavigationProperty Name="fixture_zona" Relationship="Self.fk_fixture_zona" FromRole="fechas" ToRole="fixture_zona" />
           <NavigationProperty Name="fotos" Relationship="Self.fk_foto_fecha" FromRole="fechas" ToRole="fotos" />
           <NavigationProperty Name="sanciones1" Relationship="Self.fk_inicio_fecha" FromRole="fechas" ToRole="sanciones" />
           <NavigationProperty Name="noticias" Relationship="Self.fk_noticia_fecha" FromRole="fechas" ToRole="noticias" />
@@ -2602,10 +2614,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="SectionId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FileSize" Type="Int32" Nullable="false" />
           <NavigationProperty Name="equipos" Relationship="Self.fk_camiseta" FromRole="files" ToRole="equipos" />
-          <NavigationProperty Name="equipos1" Relationship="Self.fk_img_equipo" FromRole="files" ToRole="equipos" />
+          <NavigationProperty Name="equipos1" Relationship="Self.fk_logo" FromRole="files" ToRole="equipos" />
           <NavigationProperty Name="equipos2" Relationship="Self.fk_logo_camiseta" FromRole="files" ToRole="equipos" />
           <NavigationProperty Name="noticias" Relationship="Self.fk_noticia_thumbnail" FromRole="files" ToRole="noticias" />
-          <NavigationProperty Name="personas" Relationship="Self.fk_persona_foto" FromRole="files" ToRole="personas" />
+          <NavigationProperty Name="personas" Relationship="Self.fk_persona_id_foto" FromRole="files" ToRole="personas" />
         </EntityType>
         <EntityType Name="fixture">
           <Key>
@@ -2626,7 +2638,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_torneo" Type="Int32" />
           <Property Name="id_tipo" Type="Int32" />
           <Property Name="id_zona" Type="Int32" />
-          <NavigationProperty Name="fechas" Relationship="Self.fk_fixture_zona" FromRole="fixture_zona" ToRole="fechas" />
+          <NavigationProperty Name="fechas" Relationship="Self.fk_fecha_zona_fixture" FromRole="fixture_zona" ToRole="fechas" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_fixtureZ_torneo" FromRole="fixture_zona" ToRole="torneos" />
           <NavigationProperty Name="tipos_fixture" Relationship="Self.fk_tipo_fixtureZ" FromRole="fixture_zona" ToRole="tipos_fixture" />
           <NavigationProperty Name="zonas" Relationship="Self.fk_zona_fixture" FromRole="fixture_zona" ToRole="zonas" />
@@ -2679,11 +2691,12 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <PropertyRef Name="id_horario" />
           </Key>
           <Property Name="id_horario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_turno" Type="Int32" />
+          <Property Name="turno" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="inicio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="fin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_turno" Type="Int32" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_horario_fijo_partido" FromRole="horarios_fijos" ToRole="partidos" />
-          <NavigationProperty Name="turnos" Relationship="Self.fk_horario_turno" FromRole="horarios_fijos" ToRole="turnos" />
+          <NavigationProperty Name="turnos" Relationship="Self.fk_horario_turnos" FromRole="horarios_fijos" ToRole="turnos" />
         </EntityType>
         <EntityType Name="jugadores">
           <Key>
@@ -2708,6 +2721,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           </Key>
           <Property Name="id_llave" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="playoff" Relationship="Self.fk_llave_playoff" FromRole="llaves" ToRole="playoff" />
         </EntityType>
         <EntityType Name="localidades">
           <Key>
@@ -2839,13 +2853,13 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="fecha_alta" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="fecha_modificacion" Type="DateTime" />
           <Property Name="fecha_baja" Type="DateTime" />
-          <Property Name="id_foto" Type="Int32" />
           <Property Name="ocupacion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="id_foto" Type="Int32" />
           <NavigationProperty Name="arbitros" Relationship="Self.fk_arbitro_persona" FromRole="personas" ToRole="arbitros" />
           <NavigationProperty Name="contactos" Relationship="Self.fk_persona_contacto" FromRole="personas" ToRole="contactos" />
           <NavigationProperty Name="domicilios" Relationship="Self.fk_persona_domicilio" FromRole="personas" ToRole="domicilios" />
           <NavigationProperty Name="estados_civil" Relationship="Self.fk_persona_estado_civil" FromRole="personas" ToRole="estados_civil" />
-          <NavigationProperty Name="files" Relationship="Self.fk_persona_foto" FromRole="personas" ToRole="files" />
+          <NavigationProperty Name="files" Relationship="Self.fk_persona_id_foto" FromRole="personas" ToRole="files" />
           <NavigationProperty Name="jugadores" Relationship="Self.fk_jugador_persona" FromRole="personas" ToRole="jugadores" />
           <NavigationProperty Name="nacionalidades" Relationship="Self.fk_persona_nacionalidad" FromRole="personas" ToRole="nacionalidades" />
           <NavigationProperty Name="tipos_documento" Relationship="Self.fk_persona_tipo_doc" FromRole="personas" ToRole="tipos_documento" />
@@ -2862,206 +2876,12 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="ganador" Type="Int32" />
           <Property Name="id_etapa" Type="Int32" />
           <Property Name="id_torneo" Type="Int32" />
-        </EntityType>
-        <EntityType Name="pma__bookmark">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="dbase" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="user" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="query" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__central_columns">
-          <Key>
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="col_name" />
-          </Key>
-          <Property Name="db_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="col_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="col_type" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="col_length" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
-          <Property Name="col_collation" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="col_isNull" Type="Boolean" Nullable="false" />
-          <Property Name="col_extra" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="col_default" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="pma__column_info">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="db_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="table_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="column_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="comment" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="mimetype" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="transformation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="transformation_options" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="input_transformation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="input_transformation_options" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__designer_settings">
-          <Key>
-            <PropertyRef Name="username" />
-          </Key>
-          <Property Name="username" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="settings_data" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__export_templates">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="export_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="template_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="template_data" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__favorite">
-          <Key>
-            <PropertyRef Name="username" />
-          </Key>
-          <Property Name="username" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="tables" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__history">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Decimal" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="db" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="table" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="timevalue" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="sqlquery" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__navigationhiding">
-          <Key>
-            <PropertyRef Name="username" />
-            <PropertyRef Name="item_name" />
-            <PropertyRef Name="item_type" />
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="table_name" />
-          </Key>
-          <Property Name="username" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="item_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="item_type" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="db_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="table_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__pdf_pages">
-          <Key>
-            <PropertyRef Name="page_nr" />
-          </Key>
-          <Property Name="db_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="page_nr" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="page_descr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__recent">
-          <Key>
-            <PropertyRef Name="username" />
-          </Key>
-          <Property Name="username" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="tables" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__relation">
-          <Key>
-            <PropertyRef Name="master_db" />
-            <PropertyRef Name="master_table" />
-            <PropertyRef Name="master_field" />
-          </Key>
-          <Property Name="master_db" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="master_table" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="master_field" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="foreign_db" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="foreign_table" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="foreign_field" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__savedsearches">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="db_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="search_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="search_data" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__table_coords">
-          <Key>
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="table_name" />
-            <PropertyRef Name="pdf_page_number" />
-          </Key>
-          <Property Name="db_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="table_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="pdf_page_number" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__table_info">
-          <Key>
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="table_name" />
-          </Key>
-          <Property Name="db_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="table_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="display_field" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__table_uiprefs">
-          <Key>
-            <PropertyRef Name="username" />
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="table_name" />
-          </Key>
-          <Property Name="username" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="db_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="table_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="prefs" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="last_update" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="pma__tracking">
-          <Key>
-            <PropertyRef Name="db_name" />
-            <PropertyRef Name="table_name" />
-            <PropertyRef Name="version" />
-          </Key>
-          <Property Name="db_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="table_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="version" Type="Int64" Nullable="false" />
-          <Property Name="date_created" Type="DateTime" Nullable="false" />
-          <Property Name="date_updated" Type="DateTime" Nullable="false" />
-          <Property Name="schema_snapshot" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="schema_sql" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
-          <Property Name="data_sql" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="tracking" Type="String" MaxLength="65531" FixedLength="false" Unicode="false" />
-          <Property Name="tracking_active" Type="Int64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__userconfig">
-          <Key>
-            <PropertyRef Name="username" />
-          </Key>
-          <Property Name="username" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="timevalue" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="config_data" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__usergroups">
-          <Key>
-            <PropertyRef Name="usergroup" />
-            <PropertyRef Name="tab" />
-            <PropertyRef Name="allowed" />
-          </Key>
-          <Property Name="usergroup" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="tab" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="allowed" Type="String" MaxLength="65532" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="pma__users">
-          <Key>
-            <PropertyRef Name="username" />
-            <PropertyRef Name="usergroup" />
-          </Key>
-          <Property Name="username" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="usergroup" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="equipos" Relationship="Self.fk_equipo_ganador" FromRole="playoff" ToRole="equipos" />
+          <NavigationProperty Name="equipos1" Relationship="Self.fk_equipo_local" FromRole="playoff" ToRole="equipos" />
+          <NavigationProperty Name="equipos2" Relationship="Self.fk_equipo_visitante" FromRole="playoff" ToRole="equipos" />
+          <NavigationProperty Name="etapa_playoff" Relationship="Self.fk_playoff_etapa" FromRole="playoff" ToRole="etapa_playoff" />
+          <NavigationProperty Name="llaves" Relationship="Self.fk_llave_playoff" FromRole="playoff" ToRole="llaves" />
+          <NavigationProperty Name="torneos" Relationship="Self.fk_playoff_torneo" FromRole="playoff" ToRole="torneos" />
         </EntityType>
         <EntityType Name="posiciones">
           <Key>
@@ -3097,6 +2917,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="partidos_ganados" Type="Int32" />
           <Property Name="partidos_empatados" Type="Int32" />
           <Property Name="partidos_perdidos" Type="Int32" />
+          <NavigationProperty Name="equipos" Relationship="Self.fk_equipo_posicion_zona" FromRole="posiciones_zona" ToRole="equipos" />
           <NavigationProperty Name="zonas" Relationship="Self.fk_posicion_zona" FromRole="posiciones_zona" ToRole="zonas" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_torneo_posicion_zona" FromRole="posiciones_zona" ToRole="torneos" />
         </EntityType>
@@ -3118,6 +2939,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_reglamento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="16777215" FixedLength="false" Unicode="false" />
           <Property Name="id_torneo" Type="Int32" />
+          <NavigationProperty Name="torneos" Relationship="Self.fk_reglamento_id_torneo" FromRole="reglamentos" ToRole="torneos" />
         </EntityType>
         <EntityType Name="reglas_torneo">
           <Key>
@@ -3171,6 +2993,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <NavigationProperty Name="equipos" Relationship="Self.fk_ganador_equipo_zona" FromRole="resultados_zona" ToRole="equipos" />
           <NavigationProperty Name="equipos1" Relationship="Self.fk_perdedor_equipo_zona" FromRole="resultados_zona" ToRole="equipos" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_resultado_partido_zona" FromRole="resultados_zona" ToRole="partidos" />
+          <NavigationProperty Name="zonas" Relationship="Self.fk_resultado_zona" FromRole="resultados_zona" ToRole="zonas" />
         </EntityType>
         <EntityType Name="sanciones">
           <Key>
@@ -3187,6 +3010,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_fase" Type="Int32" />
           <Property Name="id_torneo" Type="Int32" />
           <Property Name="id_equipo" Type="Int32" />
+          <NavigationProperty Name="equipos" Relationship="Self.fk_equipo_sancion" FromRole="sanciones" ToRole="equipos" />
           <NavigationProperty Name="fases" Relationship="Self.fk_sancion_fase" FromRole="sanciones" ToRole="fases" />
           <NavigationProperty Name="fechas" Relationship="Self.fk_fin_fecha" FromRole="sanciones" ToRole="fechas" />
           <NavigationProperty Name="fechas1" Relationship="Self.fk_inicio_fecha" FromRole="sanciones" ToRole="fechas" />
@@ -3206,6 +3030,9 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_equipo" Type="Int32" />
           <Property Name="id_zona" Type="Int32" />
           <Property Name="id_torneo" Type="Int32" />
+          <NavigationProperty Name="equipos" Relationship="Self.fk_sanciones_equipo_equipo" FromRole="sanciones_equipo" ToRole="equipos" />
+          <NavigationProperty Name="torneos" Relationship="Self.fk_sanciones_equipo_torneo" FromRole="sanciones_equipo" ToRole="torneos" />
+          <NavigationProperty Name="zonas" Relationship="Self.fk_sanciones_equipo_zona" FromRole="sanciones_equipo" ToRole="zonas" />
         </EntityType>
         <EntityType Name="sanciones_torneo">
           <Key>
@@ -3303,11 +3130,14 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <NavigationProperty Name="goles" Relationship="Self.fk_torneo_gol" FromRole="torneos" ToRole="goles" />
           <NavigationProperty Name="modalidades" Relationship="Self.fk_modalidad_torneo" FromRole="torneos" ToRole="modalidades" />
           <NavigationProperty Name="noticias" Relationship="Self.fk_noticia_torneo" FromRole="torneos" ToRole="noticias" />
+          <NavigationProperty Name="playoff" Relationship="Self.fk_playoff_torneo" FromRole="torneos" ToRole="playoff" />
           <NavigationProperty Name="posiciones" Relationship="Self.fk_posicion_torneo" FromRole="torneos" ToRole="posiciones" />
           <NavigationProperty Name="posiciones_zona" Relationship="Self.fk_torneo_posicion_zona" FromRole="torneos" ToRole="posiciones_zona" />
+          <NavigationProperty Name="reglamentos" Relationship="Self.fk_reglamento_id_torneo" FromRole="torneos" ToRole="reglamentos" />
           <NavigationProperty Name="reglas_torneo" Relationship="Self.fk_regla_torneo" FromRole="torneos" ToRole="reglas_torneo" />
           <NavigationProperty Name="reglas_torneo1" Relationship="Self.fk_reglas_torneo" FromRole="torneos" ToRole="reglas_torneo" />
           <NavigationProperty Name="sanciones" Relationship="Self.fk_sancion_torneo" FromRole="torneos" ToRole="sanciones" />
+          <NavigationProperty Name="sanciones_equipo" Relationship="Self.fk_sanciones_equipo_torneo" FromRole="torneos" ToRole="sanciones_equipo" />
           <NavigationProperty Name="sanciones_torneo" Relationship="Self.fk_jugador_sanciones_torneo" FromRole="torneos" ToRole="sanciones_torneo" />
           <NavigationProperty Name="sponsors" Relationship="Self.fk_sponsor_torneo" FromRole="torneos" ToRole="sponsors" />
           <NavigationProperty Name="tipos_torneos" Relationship="Self.fk_tipo_torneo" FromRole="torneos" ToRole="tipos_torneos" />
@@ -3319,7 +3149,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="horarios_fijos" Relationship="Self.fk_horario_turno" FromRole="turnos" ToRole="horarios_fijos" />
+          <NavigationProperty Name="horarios_fijos" Relationship="Self.fk_horario_turnos" FromRole="turnos" ToRole="horarios_fijos" />
         </EntityType>
         <EntityType Name="usuarios">
           <Key>
@@ -3351,12 +3181,14 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_zona" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="id_torneo" Type="Int32" />
-          <Property Name="id_fase" Type="Int32" Nullable="false" />
+          <Property Name="id_fase" Type="Int32" />
           <NavigationProperty Name="equipos_zona" Relationship="Self.fk_zona_zonas" FromRole="zonas" ToRole="equipos_zona" />
-          <NavigationProperty Name="fases" Relationship="Self.fk_zona_fase" FromRole="zonas" ToRole="fases" />
+          <NavigationProperty Name="fases" Relationship="Self.fk_fase_torneo" FromRole="zonas" ToRole="fases" />
           <NavigationProperty Name="fixture_zona" Relationship="Self.fk_zona_fixture" FromRole="zonas" ToRole="fixture_zona" />
           <NavigationProperty Name="posiciones_zona" Relationship="Self.fk_posicion_zona" FromRole="zonas" ToRole="posiciones_zona" />
+          <NavigationProperty Name="resultados_zona" Relationship="Self.fk_resultado_zona" FromRole="zonas" ToRole="resultados_zona" />
           <NavigationProperty Name="sanciones" Relationship="Self.fk_zona_sancion" FromRole="zonas" ToRole="sanciones" />
+          <NavigationProperty Name="sanciones_equipo" Relationship="Self.fk_sanciones_equipo_zona" FromRole="zonas" ToRole="sanciones_equipo" />
           <NavigationProperty Name="torneos" Relationship="Self.fk_zonas_torneo" FromRole="zonas" ToRole="torneos" />
         </EntityType>
         <Association Name="fk_arbitro_partido">
@@ -3431,18 +3263,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_categoria_equipo">
-          <End Role="categorias" Type="Self.categorias" Multiplicity="0..1" />
-          <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="categorias">
-              <PropertyRef Name="id_categoria" />
-            </Principal>
-            <Dependent Role="equipos">
-              <PropertyRef Name="id_categoria_equipo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_categoria_torneo">
           <End Role="categorias" Type="Self.categorias" Multiplicity="0..1" />
           <End Role="torneos" Type="Self.torneos" Multiplicity="*" />
@@ -3452,6 +3272,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="torneos">
               <PropertyRef Name="id_categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_categoria">
+          <End Role="categorias" Type="Self.categorias" Multiplicity="0..1" />
+          <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categorias">
+              <PropertyRef Name="id_categoria" />
+            </Principal>
+            <Dependent Role="equipos">
+              <PropertyRef Name="id_categoria_equipo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3563,6 +3395,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_equipo_ganador">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="ganador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_equipo_gol">
           <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
           <End Role="goles" Type="Self.goles" Multiplicity="*" />
@@ -3587,6 +3431,42 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_equipo_local">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="local" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_posicion_zona">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="posiciones_zona" Type="Self.posiciones_zona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="posiciones_zona">
+              <PropertyRef Name="id_equipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_sancion">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="sanciones">
+              <PropertyRef Name="id_equipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_equipo_torneo">
           <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
           <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
@@ -3596,6 +3476,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="equipos">
               <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipo_visitante">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="visitante" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3647,18 +3539,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_img_equipo">
-          <End Role="files" Type="Self.files" Multiplicity="0..1" />
-          <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="files">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="equipos">
-              <PropertyRef Name="logo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_jugador_equipo">
           <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
           <End Role="jugadores" Type="Self.jugadores" Multiplicity="*" />
@@ -3680,6 +3560,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="partidos">
               <PropertyRef Name="local" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_logo">
+          <End Role="files" Type="Self.files" Multiplicity="0..1" />
+          <End Role="equipos" Type="Self.equipos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="files">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="equipos">
+              <PropertyRef Name="logo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3739,6 +3631,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
               <PropertyRef Name="id_equipo" />
             </Principal>
             <Dependent Role="representante_equipo">
+              <PropertyRef Name="id_equipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sanciones_equipo_equipo">
+          <End Role="equipos" Type="Self.equipos" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipos">
+              <PropertyRef Name="id_equipo" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
               <PropertyRef Name="id_equipo" />
             </Dependent>
           </ReferentialConstraint>
@@ -3827,6 +3731,42 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_playoff_etapa">
+          <End Role="etapa_playoff" Type="Self.etapa_playoff" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="etapa_playoff">
+              <PropertyRef Name="id_etapa" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="id_etapa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_fase_torneo">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="zonas" Type="Self.zonas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="zonas">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_fecha_fecha_interzonal">
+          <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
+          <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fases">
+              <PropertyRef Name="id_fase" />
+            </Principal>
+            <Dependent Role="fechas">
+              <PropertyRef Name="id_fase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_sancion_fase">
           <End Role="fases" Type="Self.fases" Multiplicity="0..1" />
           <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
@@ -3847,18 +3787,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
               <PropertyRef Name="id_fase" />
             </Principal>
             <Dependent Role="torneos">
-              <PropertyRef Name="id_fase" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_zona_fase">
-          <End Role="fases" Type="Self.fases" Multiplicity="1" />
-          <End Role="zonas" Type="Self.zonas" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="fases">
-              <PropertyRef Name="id_fase" />
-            </Principal>
-            <Dependent Role="zonas">
               <PropertyRef Name="id_fase" />
             </Dependent>
           </ReferentialConstraint>
@@ -3887,6 +3815,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_fecha_zona_fixture">
+          <End Role="fixture_zona" Type="Self.fixture_zona" Multiplicity="0..1" />
+          <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fixture_zona">
+              <PropertyRef Name="id_fixture" />
+            </Principal>
+            <Dependent Role="fechas">
+              <PropertyRef Name="id_fixture_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_fin_fecha">
           <End Role="fechas" Type="Self.fechas" Multiplicity="0..1" />
           <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
@@ -3896,18 +3836,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="sanciones">
               <PropertyRef Name="fecha_fin" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_fixture_zona">
-          <End Role="fixture_zona" Type="Self.fixture_zona" Multiplicity="0..1" />
-          <End Role="fechas" Type="Self.fechas" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="fixture_zona">
-              <PropertyRef Name="id_fixture" />
-            </Principal>
-            <Dependent Role="fechas">
-              <PropertyRef Name="id_fixture_zona" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3959,7 +3887,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_persona_foto">
+        <Association Name="fk_persona_id_foto">
           <End Role="files" Type="Self.files" Multiplicity="0..1" />
           <End Role="personas" Type="Self.personas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4115,7 +4043,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_horario_turno">
+        <Association Name="fk_horario_turnos">
           <End Role="turnos" Type="Self.turnos" Multiplicity="0..1" />
           <End Role="horarios_fijos" Type="Self.horarios_fijos" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4160,6 +4088,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="sanciones_torneo">
               <PropertyRef Name="id_jugador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_llave_playoff">
+          <End Role="llaves" Type="Self.llaves" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="llaves">
+              <PropertyRef Name="id_llave" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="llave" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4307,6 +4247,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_playoff_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="playoff" Type="Self.playoff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="playoff">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_posicion_torneo">
           <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
           <End Role="posiciones" Type="Self.posiciones" Multiplicity="*" />
@@ -4339,6 +4291,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
               <PropertyRef Name="id_torneo" />
             </Principal>
             <Dependent Role="posiciones_zona">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_reglamento_id_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="reglamentos" Type="Self.reglamentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="reglamentos">
               <PropertyRef Name="id_torneo" />
             </Dependent>
           </ReferentialConstraint>
@@ -4391,6 +4355,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_resultado_zona">
+          <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
+          <End Role="resultados_zona" Type="Self.resultados_zona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zonas">
+              <PropertyRef Name="id_zona" />
+            </Principal>
+            <Dependent Role="resultados_zona">
+              <PropertyRef Name="id_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_sancion_torneo">
           <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
           <End Role="sanciones" Type="Self.sanciones" Multiplicity="*" />
@@ -4423,6 +4399,30 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
               <PropertyRef Name="id_zona" />
             </Principal>
             <Dependent Role="sanciones">
+              <PropertyRef Name="id_zona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sanciones_equipo_torneo">
+          <End Role="torneos" Type="Self.torneos" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="torneos">
+              <PropertyRef Name="id_torneo" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
+              <PropertyRef Name="id_torneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sanciones_equipo_zona">
+          <End Role="zonas" Type="Self.zonas" Multiplicity="0..1" />
+          <End Role="sanciones_equipo" Type="Self.sanciones_equipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zonas">
+              <PropertyRef Name="id_zona" />
+            </Principal>
+            <Dependent Role="sanciones_equipo">
               <PropertyRef Name="id_zona" />
             </Dependent>
           </ReferentialConstraint>
@@ -4512,25 +4512,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <EntitySet Name="permisos" EntityType="Self.permisos" />
           <EntitySet Name="personas" EntityType="Self.personas" />
           <EntitySet Name="playoff" EntityType="Self.playoff" />
-          <EntitySet Name="pma__bookmark" EntityType="Self.pma__bookmark" />
-          <EntitySet Name="pma__central_columns" EntityType="Self.pma__central_columns" />
-          <EntitySet Name="pma__column_info" EntityType="Self.pma__column_info" />
-          <EntitySet Name="pma__designer_settings" EntityType="Self.pma__designer_settings" />
-          <EntitySet Name="pma__export_templates" EntityType="Self.pma__export_templates" />
-          <EntitySet Name="pma__favorite" EntityType="Self.pma__favorite" />
-          <EntitySet Name="pma__history" EntityType="Self.pma__history" />
-          <EntitySet Name="pma__navigationhiding" EntityType="Self.pma__navigationhiding" />
-          <EntitySet Name="pma__pdf_pages" EntityType="Self.pma__pdf_pages" />
-          <EntitySet Name="pma__recent" EntityType="Self.pma__recent" />
-          <EntitySet Name="pma__relation" EntityType="Self.pma__relation" />
-          <EntitySet Name="pma__savedsearches" EntityType="Self.pma__savedsearches" />
-          <EntitySet Name="pma__table_coords" EntityType="Self.pma__table_coords" />
-          <EntitySet Name="pma__table_info" EntityType="Self.pma__table_info" />
-          <EntitySet Name="pma__table_uiprefs" EntityType="Self.pma__table_uiprefs" />
-          <EntitySet Name="pma__tracking" EntityType="Self.pma__tracking" />
-          <EntitySet Name="pma__userconfig" EntityType="Self.pma__userconfig" />
-          <EntitySet Name="pma__usergroups" EntityType="Self.pma__usergroups" />
-          <EntitySet Name="pma__users" EntityType="Self.pma__users" />
           <EntitySet Name="posiciones" EntityType="Self.posiciones" />
           <EntitySet Name="posiciones_zona" EntityType="Self.posiciones_zona" />
           <EntitySet Name="provincias" EntityType="Self.provincias" />
@@ -4578,13 +4559,13 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="clubes" EntitySet="clubes" />
             <End Role="canchas" EntitySet="canchas" />
           </AssociationSet>
-          <AssociationSet Name="fk_categoria_equipo" Association="Self.fk_categoria_equipo">
-            <End Role="categorias" EntitySet="categorias" />
-            <End Role="equipos" EntitySet="equipos" />
-          </AssociationSet>
           <AssociationSet Name="fk_categoria_torneo" Association="Self.fk_categoria_torneo">
             <End Role="categorias" EntitySet="categorias" />
             <End Role="torneos" EntitySet="torneos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipo_categoria" Association="Self.fk_equipo_categoria">
+            <End Role="categorias" EntitySet="categorias" />
+            <End Role="equipos" EntitySet="equipos" />
           </AssociationSet>
           <AssociationSet Name="fk_categoria_noticia" Association="Self.fk_categoria_noticia">
             <End Role="categorias_noticias" EntitySet="categorias_noticias" />
@@ -4622,6 +4603,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="files" EntitySet="files" />
             <End Role="equipos" EntitySet="equipos" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_ganador" Association="Self.fk_equipo_ganador">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_gol" Association="Self.fk_equipo_gol">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="goles" EntitySet="goles" />
@@ -4630,9 +4615,25 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="equipos" EntitySet="equipos" />
             <End Role="goleadores" EntitySet="goleadores" />
           </AssociationSet>
+          <AssociationSet Name="fk_equipo_local" Association="Self.fk_equipo_local">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipo_posicion_zona" Association="Self.fk_equipo_posicion_zona">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="posiciones_zona" EntitySet="posiciones_zona" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipo_sancion" Association="Self.fk_equipo_sancion">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
           <AssociationSet Name="fk_equipo_torneo" Association="Self.fk_equipo_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="equipos" EntitySet="equipos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipo_visitante" Association="Self.fk_equipo_visitante">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="playoff" EntitySet="playoff" />
           </AssociationSet>
           <AssociationSet Name="fk_equipo_zona" Association="Self.fk_equipo_zona">
             <End Role="equipos" EntitySet="equipos" />
@@ -4650,10 +4651,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="equipos" EntitySet="equipos" />
             <End Role="resultados_zona" EntitySet="resultados_zona" />
           </AssociationSet>
-          <AssociationSet Name="fk_img_equipo" Association="Self.fk_img_equipo">
-            <End Role="files" EntitySet="files" />
-            <End Role="equipos" EntitySet="equipos" />
-          </AssociationSet>
           <AssociationSet Name="fk_jugador_equipo" Association="Self.fk_jugador_equipo">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="jugadores" EntitySet="jugadores" />
@@ -4661,6 +4658,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_local_partido" Association="Self.fk_local_partido">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="partidos" EntitySet="partidos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_logo" Association="Self.fk_logo">
+            <End Role="files" EntitySet="files" />
+            <End Role="equipos" EntitySet="equipos" />
           </AssociationSet>
           <AssociationSet Name="fk_logo_camiseta" Association="Self.fk_logo_camiseta">
             <End Role="files" EntitySet="files" />
@@ -4681,6 +4682,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_representante_equipo" Association="Self.fk_representante_equipo">
             <End Role="equipos" EntitySet="equipos" />
             <End Role="representante_equipo" EntitySet="representante_equipo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_equipo" Association="Self.fk_sanciones_equipo_equipo">
+            <End Role="equipos" EntitySet="equipos" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
           </AssociationSet>
           <AssociationSet Name="fk_visitante_partido" Association="Self.fk_visitante_partido">
             <End Role="equipos" EntitySet="equipos" />
@@ -4710,6 +4715,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="estados_torneo" EntitySet="estados_torneo" />
             <End Role="torneos" EntitySet="torneos" />
           </AssociationSet>
+          <AssociationSet Name="fk_playoff_etapa" Association="Self.fk_playoff_etapa">
+            <End Role="etapa_playoff" EntitySet="etapa_playoff" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
+          <AssociationSet Name="fk_fase_torneo" Association="Self.fk_fase_torneo">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="zonas" EntitySet="zonas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_fecha_fecha_interzonal" Association="Self.fk_fecha_fecha_interzonal">
+            <End Role="fases" EntitySet="fases" />
+            <End Role="fechas" EntitySet="fechas" />
+          </AssociationSet>
           <AssociationSet Name="fk_sancion_fase" Association="Self.fk_sancion_fase">
             <End Role="fases" EntitySet="fases" />
             <End Role="sanciones" EntitySet="sanciones" />
@@ -4717,10 +4734,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_torneo_fase" Association="Self.fk_torneo_fase">
             <End Role="fases" EntitySet="fases" />
             <End Role="torneos" EntitySet="torneos" />
-          </AssociationSet>
-          <AssociationSet Name="fk_zona_fase" Association="Self.fk_zona_fase">
-            <End Role="fases" EntitySet="fases" />
-            <End Role="zonas" EntitySet="zonas" />
           </AssociationSet>
           <AssociationSet Name="fk_fecha_fixture" Association="Self.fk_fecha_fixture">
             <End Role="fixture" EntitySet="fixture" />
@@ -4730,13 +4743,13 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="fechas" EntitySet="fechas" />
             <End Role="partidos" EntitySet="partidos" />
           </AssociationSet>
+          <AssociationSet Name="fk_fecha_zona_fixture" Association="Self.fk_fecha_zona_fixture">
+            <End Role="fixture_zona" EntitySet="fixture_zona" />
+            <End Role="fechas" EntitySet="fechas" />
+          </AssociationSet>
           <AssociationSet Name="fk_fin_fecha" Association="Self.fk_fin_fecha">
             <End Role="fechas" EntitySet="fechas" />
             <End Role="sanciones" EntitySet="sanciones" />
-          </AssociationSet>
-          <AssociationSet Name="fk_fixture_zona" Association="Self.fk_fixture_zona">
-            <End Role="fixture_zona" EntitySet="fixture_zona" />
-            <End Role="fechas" EntitySet="fechas" />
           </AssociationSet>
           <AssociationSet Name="fk_foto_fecha" Association="Self.fk_foto_fecha">
             <End Role="fechas" EntitySet="fechas" />
@@ -4754,7 +4767,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="files" EntitySet="files" />
             <End Role="noticias" EntitySet="noticias" />
           </AssociationSet>
-          <AssociationSet Name="fk_persona_foto" Association="Self.fk_persona_foto">
+          <AssociationSet Name="fk_persona_id_foto" Association="Self.fk_persona_id_foto">
             <End Role="files" EntitySet="files" />
             <End Role="personas" EntitySet="personas" />
           </AssociationSet>
@@ -4806,7 +4819,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="horarios_fijos" EntitySet="horarios_fijos" />
             <End Role="partidos" EntitySet="partidos" />
           </AssociationSet>
-          <AssociationSet Name="fk_horario_turno" Association="Self.fk_horario_turno">
+          <AssociationSet Name="fk_horario_turnos" Association="Self.fk_horario_turnos">
             <End Role="turnos" EntitySet="turnos" />
             <End Role="horarios_fijos" EntitySet="horarios_fijos" />
           </AssociationSet>
@@ -4821,6 +4834,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_jugador_sanciones" Association="Self.fk_jugador_sanciones">
             <End Role="jugadores" EntitySet="jugadores" />
             <End Role="sanciones_torneo" EntitySet="sanciones_torneo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_llave_playoff" Association="Self.fk_llave_playoff">
+            <End Role="llaves" EntitySet="llaves" />
+            <End Role="playoff" EntitySet="playoff" />
           </AssociationSet>
           <AssociationSet Name="fk_localidad_provincia" Association="Self.fk_localidad_provincia">
             <End Role="provincias" EntitySet="provincias" />
@@ -4870,6 +4887,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="personas" EntitySet="personas" />
             <End Role="veedores" EntitySet="veedores" />
           </AssociationSet>
+          <AssociationSet Name="fk_playoff_torneo" Association="Self.fk_playoff_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="playoff" EntitySet="playoff" />
+          </AssociationSet>
           <AssociationSet Name="fk_posicion_torneo" Association="Self.fk_posicion_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="posiciones" EntitySet="posiciones" />
@@ -4881,6 +4902,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_torneo_posicion_zona" Association="Self.fk_torneo_posicion_zona">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="posiciones_zona" EntitySet="posiciones_zona" />
+          </AssociationSet>
+          <AssociationSet Name="fk_reglamento_id_torneo" Association="Self.fk_reglamento_id_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="reglamentos" EntitySet="reglamentos" />
           </AssociationSet>
           <AssociationSet Name="fk_regla_torneo" Association="Self.fk_regla_torneo">
             <End Role="reglas_torneo" EntitySet="reglas_torneo" />
@@ -4898,6 +4923,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="restricciones" EntitySet="restricciones" />
             <End Role="tipos_sanciones" EntitySet="tipos_sanciones" />
           </AssociationSet>
+          <AssociationSet Name="fk_resultado_zona" Association="Self.fk_resultado_zona">
+            <End Role="zonas" EntitySet="zonas" />
+            <End Role="resultados_zona" EntitySet="resultados_zona" />
+          </AssociationSet>
           <AssociationSet Name="fk_sancion_torneo" Association="Self.fk_sancion_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="sanciones" EntitySet="sanciones" />
@@ -4909,6 +4938,14 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_zona_sancion" Association="Self.fk_zona_sancion">
             <End Role="zonas" EntitySet="zonas" />
             <End Role="sanciones" EntitySet="sanciones" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_torneo" Association="Self.fk_sanciones_equipo_torneo">
+            <End Role="torneos" EntitySet="torneos" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sanciones_equipo_zona" Association="Self.fk_sanciones_equipo_zona">
+            <End Role="zonas" EntitySet="zonas" />
+            <End Role="sanciones_equipo" EntitySet="sanciones_equipo" />
           </AssociationSet>
           <AssociationSet Name="fk_jugador_sanciones_torneo" Association="Self.fk_jugador_sanciones_torneo">
             <End Role="torneos" EntitySet="torneos" />
@@ -5030,8 +5067,8 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
                 <ScalarProperty Name="id_club" ColumnName="id_club" />
                 <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
                 <ScalarProperty Name="id_categoria_equipo" ColumnName="id_categoria_equipo" />
-                <ScalarProperty Name="camiseta" ColumnName="camiseta" />
                 <ScalarProperty Name="camisetalogo" ColumnName="camisetalogo" />
+                <ScalarProperty Name="camiseta" ColumnName="camiseta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5179,9 +5216,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <EntityTypeMapping TypeName="goldenModel.horarios_fijos">
               <MappingFragment StoreEntitySet="horarios_fijos">
                 <ScalarProperty Name="id_horario" ColumnName="id_horario" />
-                <ScalarProperty Name="id_turno" ColumnName="id_turno" />
+                <ScalarProperty Name="turno" ColumnName="turno" />
                 <ScalarProperty Name="inicio" ColumnName="inicio" />
                 <ScalarProperty Name="fin" ColumnName="fin" />
+                <ScalarProperty Name="id_turno" ColumnName="id_turno" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5318,8 +5356,8 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
                 <ScalarProperty Name="fecha_alta" ColumnName="fecha_alta" />
                 <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
                 <ScalarProperty Name="fecha_baja" ColumnName="fecha_baja" />
-                <ScalarProperty Name="id_foto" ColumnName="id_foto" />
                 <ScalarProperty Name="ocupacion" ColumnName="ocupacion" />
+                <ScalarProperty Name="id_foto" ColumnName="id_foto" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5333,208 +5371,6 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
                 <ScalarProperty Name="ganador" ColumnName="ganador" />
                 <ScalarProperty Name="id_etapa" ColumnName="id_etapa" />
                 <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__bookmark">
-            <EntityTypeMapping TypeName="goldenModel.pma__bookmark">
-              <MappingFragment StoreEntitySet="pma__bookmark">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="dbase" ColumnName="dbase" />
-                <ScalarProperty Name="user" ColumnName="user" />
-                <ScalarProperty Name="label" ColumnName="label" />
-                <ScalarProperty Name="query" ColumnName="query" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__central_columns">
-            <EntityTypeMapping TypeName="goldenModel.pma__central_columns">
-              <MappingFragment StoreEntitySet="pma__central_columns">
-                <ScalarProperty Name="db_name" ColumnName="db_name" />
-                <ScalarProperty Name="col_name" ColumnName="col_name" />
-                <ScalarProperty Name="col_type" ColumnName="col_type" />
-                <ScalarProperty Name="col_length" ColumnName="col_length" />
-                <ScalarProperty Name="col_collation" ColumnName="col_collation" />
-                <ScalarProperty Name="col_isNull" ColumnName="col_isNull" />
-                <ScalarProperty Name="col_extra" ColumnName="col_extra" />
-                <ScalarProperty Name="col_default" ColumnName="col_default" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__column_info">
-            <EntityTypeMapping TypeName="goldenModel.pma__column_info">
-              <MappingFragment StoreEntitySet="pma__column_info">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="db_name" ColumnName="db_name" />
-                <ScalarProperty Name="table_name" ColumnName="table_name" />
-                <ScalarProperty Name="column_name" ColumnName="column_name" />
-                <ScalarProperty Name="comment" ColumnName="comment" />
-                <ScalarProperty Name="mimetype" ColumnName="mimetype" />
-                <ScalarProperty Name="transformation" ColumnName="transformation" />
-                <ScalarProperty Name="transformation_options" ColumnName="transformation_options" />
-                <ScalarProperty Name="input_transformation" ColumnName="input_transformation" />
-                <ScalarProperty Name="input_transformation_options" ColumnName="input_transformation_options" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__designer_settings">
-            <EntityTypeMapping TypeName="goldenModel.pma__designer_settings">
-              <MappingFragment StoreEntitySet="pma__designer_settings">
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="settings_data" ColumnName="settings_data" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__export_templates">
-            <EntityTypeMapping TypeName="goldenModel.pma__export_templates">
-              <MappingFragment StoreEntitySet="pma__export_templates">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="export_type" ColumnName="export_type" />
-                <ScalarProperty Name="template_name" ColumnName="template_name" />
-                <ScalarProperty Name="template_data" ColumnName="template_data" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__favorite">
-            <EntityTypeMapping TypeName="goldenModel.pma__favorite">
-              <MappingFragment StoreEntitySet="pma__favorite">
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="tables" ColumnName="tables" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__history">
-            <EntityTypeMapping TypeName="goldenModel.pma__history">
-              <MappingFragment StoreEntitySet="pma__history">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="db" ColumnName="db" />
-                <ScalarProperty Name="table" ColumnName="table" />
-                <ScalarProperty Name="timevalue" ColumnName="timevalue" />
-                <ScalarProperty Name="sqlquery" ColumnName="sqlquery" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__navigationhiding">
-            <EntityTypeMapping TypeName="goldenModel.pma__navigationhiding">
-              <MappingFragment StoreEntitySet="pma__navigationhiding">
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="item_name" ColumnName="item_name" />
-                <ScalarProperty Name="item_type" ColumnName="item_type" />
-                <ScalarProperty Name="db_name" ColumnName="db_name" />
-                <ScalarProperty Name="table_name" ColumnName="table_name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__pdf_pages">
-            <EntityTypeMapping TypeName="goldenModel.pma__pdf_pages">
-              <MappingFragment StoreEntitySet="pma__pdf_pages">
-                <ScalarProperty Name="db_name" ColumnName="db_name" />
-                <ScalarProperty Name="page_nr" ColumnName="page_nr" />
-                <ScalarProperty Name="page_descr" ColumnName="page_descr" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__recent">
-            <EntityTypeMapping TypeName="goldenModel.pma__recent">
-              <MappingFragment StoreEntitySet="pma__recent">
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="tables" ColumnName="tables" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__relation">
-            <EntityTypeMapping TypeName="goldenModel.pma__relation">
-              <MappingFragment StoreEntitySet="pma__relation">
-                <ScalarProperty Name="master_db" ColumnName="master_db" />
-                <ScalarProperty Name="master_table" ColumnName="master_table" />
-                <ScalarProperty Name="master_field" ColumnName="master_field" />
-                <ScalarProperty Name="foreign_db" ColumnName="foreign_db" />
-                <ScalarProperty Name="foreign_table" ColumnName="foreign_table" />
-                <ScalarProperty Name="foreign_field" ColumnName="foreign_field" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__savedsearches">
-            <EntityTypeMapping TypeName="goldenModel.pma__savedsearches">
-              <MappingFragment StoreEntitySet="pma__savedsearches">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="db_name" ColumnName="db_name" />
-                <ScalarProperty Name="search_name" ColumnName="search_name" />
-                <ScalarProperty Name="search_data" ColumnName="search_data" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__table_coords">
-            <EntityTypeMapping TypeName="goldenModel.pma__table_coords">
-              <MappingFragment StoreEntitySet="pma__table_coords">
-                <ScalarProperty Name="db_name" ColumnName="db_name" />
-                <ScalarProperty Name="table_name" ColumnName="table_name" />
-                <ScalarProperty Name="pdf_page_number" ColumnName="pdf_page_number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__table_info">
-            <EntityTypeMapping TypeName="goldenModel.pma__table_info">
-              <MappingFragment StoreEntitySet="pma__table_info">
-                <ScalarProperty Name="db_name" ColumnName="db_name" />
-                <ScalarProperty Name="table_name" ColumnName="table_name" />
-                <ScalarProperty Name="display_field" ColumnName="display_field" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__table_uiprefs">
-            <EntityTypeMapping TypeName="goldenModel.pma__table_uiprefs">
-              <MappingFragment StoreEntitySet="pma__table_uiprefs">
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="db_name" ColumnName="db_name" />
-                <ScalarProperty Name="table_name" ColumnName="table_name" />
-                <ScalarProperty Name="prefs" ColumnName="prefs" />
-                <ScalarProperty Name="last_update" ColumnName="last_update" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__tracking">
-            <EntityTypeMapping TypeName="goldenModel.pma__tracking">
-              <MappingFragment StoreEntitySet="pma__tracking">
-                <ScalarProperty Name="db_name" ColumnName="db_name" />
-                <ScalarProperty Name="table_name" ColumnName="table_name" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="date_created" ColumnName="date_created" />
-                <ScalarProperty Name="date_updated" ColumnName="date_updated" />
-                <ScalarProperty Name="schema_snapshot" ColumnName="schema_snapshot" />
-                <ScalarProperty Name="schema_sql" ColumnName="schema_sql" />
-                <ScalarProperty Name="data_sql" ColumnName="data_sql" />
-                <ScalarProperty Name="tracking" ColumnName="tracking" />
-                <ScalarProperty Name="tracking_active" ColumnName="tracking_active" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__userconfig">
-            <EntityTypeMapping TypeName="goldenModel.pma__userconfig">
-              <MappingFragment StoreEntitySet="pma__userconfig">
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="timevalue" ColumnName="timevalue" />
-                <ScalarProperty Name="config_data" ColumnName="config_data" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__usergroups">
-            <EntityTypeMapping TypeName="goldenModel.pma__usergroups">
-              <MappingFragment StoreEntitySet="pma__usergroups">
-                <ScalarProperty Name="usergroup" ColumnName="usergroup" />
-                <ScalarProperty Name="tab" ColumnName="tab" />
-                <ScalarProperty Name="allowed" ColumnName="allowed" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="pma__users">
-            <EntityTypeMapping TypeName="goldenModel.pma__users">
-              <MappingFragment StoreEntitySet="pma__users">
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="usergroup" ColumnName="usergroup" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

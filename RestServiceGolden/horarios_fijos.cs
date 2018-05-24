@@ -21,9 +21,10 @@ namespace RestServiceGolden
         }
     
         public int id_horario { get; set; }
-        public Nullable<int> id_turno { get; set; }
+        public string turno { get; set; }
         public string inicio { get; set; }
         public string fin { get; set; }
+        public Nullable<int> id_turno { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<partidos> partidos { get; set; }

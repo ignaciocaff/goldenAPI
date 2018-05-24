@@ -268,5 +268,25 @@ namespace RestServiceGolden.Controllers
                 return BadRequest(ex.ToString());
             }
         }
+
+        [ResponseType(typeof(Noticia))]
+        [Route("api/noticia/borrarNoticia/{id}")]
+        public IHttpActionResult getBorrarNoticia(int id)
+        {
+            try
+            {
+                noticias noticia = db.noticias.Where(x => x.id_noticia == id).FirstOrDefault();
+
+                db.noticias.Attach(noticia);
+                db.noticias.Remove(noticia);
+                db.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
     }
 }

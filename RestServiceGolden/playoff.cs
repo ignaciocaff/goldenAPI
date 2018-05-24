@@ -21,5 +21,12 @@ namespace RestServiceGolden
         public Nullable<int> ganador { get; set; }
         public Nullable<int> id_etapa { get; set; }
         public Nullable<int> id_torneo { get; set; }
+    
+        public virtual equipos equipos { get; set; }
+        public virtual equipos equipos1 { get; set; }
+        public virtual equipos equipos2 { get; set; }
+        public virtual etapa_playoff etapa_playoff { get; set; }
+        public virtual llaves llaves { get; set; }
+        public virtual torneos torneos { get; set; }
     }
 }

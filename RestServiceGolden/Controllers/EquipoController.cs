@@ -460,8 +460,15 @@ namespace RestServiceGolden.Controllers
                         var fec = db.fechas.Where(x => x.id_fecha == ultima_roja.fecha_fin).FirstOrDefault();
                         if (DateTime.Now < fec.fecha)
                         {
-                            var desc = db.tipos_sanciones.Where(x => x.id_tipo == ultima_roja.id_tipo).FirstOrDefault();
-                            jugador.ultima_roja = desc.descripcion;
+                            if (ultima_roja.id_tipo == 7)
+                            {
+                                jugador.ultima_roja = ultima_roja.detalle;
+                            }
+                            else
+                            {
+                                var desc = db.tipos_sanciones.Where(x => x.id_tipo == ultima_roja.id_tipo).FirstOrDefault();
+                                jugador.ultima_roja = desc.descripcion;
+                            }
                         }
                     }
 
