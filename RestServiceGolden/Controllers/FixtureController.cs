@@ -1236,11 +1236,10 @@ namespace RestServiceGolden.Controllers
             {
                 List<Fecha> lsFechas = new List<Fecha>();
                 var fixture = db.fixture_zona.Where(x => x.id_torneo == id_torneo).ToList();
-                var id_fase = db.torneos.Where(x => x.id_torneo == id_torneo).FirstOrDefault().id_fase;
                 foreach (var fix in fixture)
                 {
 
-                    var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture && x.id_fase == id_fase).OrderBy(x => x.fecha).ToList();
+                    var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture).OrderBy(x => x.fecha).ToList();
 
                     foreach (var f in fechas)
                     {
@@ -1648,10 +1647,9 @@ namespace RestServiceGolden.Controllers
             {
                 List<Fecha> lsFechas = new List<Fecha>();
                 var fixture = db.fixture_zona.Where(x => x.id_torneo == id_torneo).ToList();
-                var id_fase = db.torneos.Where(x => x.id_torneo == id_torneo).FirstOrDefault().id_fase;
                 foreach (var fix in fixture)
                 {
-                    var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture && x.id_fase == id_fase).OrderBy(x => x.fecha).ToList();
+                    var fechas = db.fechas.Where(x => x.id_fixture_zona == fix.id_fixture).OrderBy(x => x.fecha).ToList();
 
                     foreach (var f in fechas)
                     {

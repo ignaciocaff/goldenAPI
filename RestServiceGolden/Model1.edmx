@@ -131,6 +131,13 @@
           <Property Name="id_estado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="45" />
         </EntityType>
+        <EntityType Name="estados_torneo">
+          <Key>
+            <PropertyRef Name="id_estado" />
+          </Key>
+          <Property Name="id_estado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="45" />
+        </EntityType>
         <EntityType Name="etapa_playoff">
           <Key>
             <PropertyRef Name="id_etapa" />
@@ -760,6 +767,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_regla" Type="int" />
           <Property Name="id_modalidad" Type="int" />
           <Property Name="id_fase" Type="int" Nullable="false" />
+          <Property Name="id_estado" Type="int" />
         </EntityType>
         <EntityType Name="turnos">
           <Key>
@@ -1009,6 +1017,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="partidos">
               <PropertyRef Name="id_estado_partido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_estado_torneo">
+          <End Role="estados_torneo" Type="Self.estados_torneo" Multiplicity="0..1" />
+          <End Role="torneos" Type="Self.torneos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estados_torneo">
+              <PropertyRef Name="id_estado" />
+            </Principal>
+            <Dependent Role="torneos">
+              <PropertyRef Name="id_estado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1914,6 +1934,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <EntitySet Name="estado_fecha" EntityType="Self.estado_fecha" Schema="golden" store:Type="Tables" />
           <EntitySet Name="estados_civil" EntityType="Self.estados_civil" Schema="golden" store:Type="Tables" />
           <EntitySet Name="estados_partidos" EntityType="Self.estados_partidos" Schema="golden" store:Type="Tables" />
+          <EntitySet Name="estados_torneo" EntityType="Self.estados_torneo" Schema="golden" store:Type="Tables" />
           <EntitySet Name="etapa_playoff" EntityType="Self.etapa_playoff" Schema="golden" store:Type="Tables" />
           <EntitySet Name="fases" EntityType="Self.fases" Schema="golden" store:Type="Tables" />
           <EntitySet Name="fechas" EntityType="Self.fechas" Schema="golden" store:Type="Tables" />
@@ -2049,6 +2070,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_estado_partido" Association="Self.fk_estado_partido">
             <End Role="estados_partidos" EntitySet="estados_partidos" />
             <End Role="partidos" EntitySet="partidos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_estado_torneo" Association="Self.fk_estado_torneo">
+            <End Role="estados_torneo" EntitySet="estados_torneo" />
+            <End Role="torneos" EntitySet="torneos" />
           </AssociationSet>
           <AssociationSet Name="fk_fecha_fixture" Association="Self.fk_fecha_fixture">
             <End Role="fixture" EntitySet="fixture" />
@@ -2520,6 +2545,14 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_estado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="partidos" Relationship="Self.fk_estado_partido" FromRole="estados_partidos" ToRole="partidos" />
+        </EntityType>
+        <EntityType Name="estados_torneo">
+          <Key>
+            <PropertyRef Name="id_estado" />
+          </Key>
+          <Property Name="id_estado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="torneos" Relationship="Self.fk_estado_torneo" FromRole="estados_torneo" ToRole="torneos" />
         </EntityType>
         <EntityType Name="etapa_playoff">
           <Key>
@@ -3257,9 +3290,11 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id_regla" Type="Int32" />
           <Property Name="id_modalidad" Type="Int32" />
           <Property Name="id_fase" Type="Int32" Nullable="false" />
+          <Property Name="id_estado" Type="Int32" />
           <NavigationProperty Name="categorias" Relationship="Self.fk_categoria_torneo" FromRole="torneos" ToRole="categorias" />
           <NavigationProperty Name="equipos" Relationship="Self.fk_equipo_torneo" FromRole="torneos" ToRole="equipos" />
           <NavigationProperty Name="equipos_zona" Relationship="Self.fk_torneo_zona" FromRole="torneos" ToRole="equipos_zona" />
+          <NavigationProperty Name="estados_torneo" Relationship="Self.fk_estado_torneo" FromRole="torneos" ToRole="estados_torneo" />
           <NavigationProperty Name="fases" Relationship="Self.fk_torneo_fase" FromRole="torneos" ToRole="fases" />
           <NavigationProperty Name="fixture" Relationship="Self.fk_fixture_torneo" FromRole="torneos" ToRole="fixture" />
           <NavigationProperty Name="fixture_zona" Relationship="Self.fk_fixtureZ_torneo" FromRole="torneos" ToRole="fixture_zona" />
@@ -3777,6 +3812,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="partidos">
               <PropertyRef Name="id_estado_partido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_estado_torneo">
+          <End Role="estados_torneo" Type="Self.estados_torneo" Multiplicity="0..1" />
+          <End Role="torneos" Type="Self.torneos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estados_torneo">
+              <PropertyRef Name="id_estado" />
+            </Principal>
+            <Dependent Role="torneos">
+              <PropertyRef Name="id_estado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4442,6 +4489,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <EntitySet Name="estado_fecha" EntityType="Self.estado_fecha" />
           <EntitySet Name="estados_civil" EntityType="Self.estados_civil" />
           <EntitySet Name="estados_partidos" EntityType="Self.estados_partidos" />
+          <EntitySet Name="estados_torneo" EntityType="Self.estados_torneo" />
           <EntitySet Name="etapa_playoff" EntityType="Self.etapa_playoff" />
           <EntitySet Name="fases" EntityType="Self.fases" />
           <EntitySet Name="fechas" EntityType="Self.fechas" />
@@ -4657,6 +4705,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_estado_partido" Association="Self.fk_estado_partido">
             <End Role="estados_partidos" EntitySet="estados_partidos" />
             <End Role="partidos" EntitySet="partidos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_estado_torneo" Association="Self.fk_estado_torneo">
+            <End Role="estados_torneo" EntitySet="estados_torneo" />
+            <End Role="torneos" EntitySet="torneos" />
           </AssociationSet>
           <AssociationSet Name="fk_sancion_fase" Association="Self.fk_sancion_fase">
             <End Role="fases" EntitySet="fases" />
@@ -5015,6 +5067,14 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <EntitySetMapping Name="estados_partidos">
             <EntityTypeMapping TypeName="goldenModel.estados_partidos">
               <MappingFragment StoreEntitySet="estados_partidos">
+                <ScalarProperty Name="id_estado" ColumnName="id_estado" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="estados_torneo">
+            <EntityTypeMapping TypeName="goldenModel.estados_torneo">
+              <MappingFragment StoreEntitySet="estados_torneo">
                 <ScalarProperty Name="id_estado" ColumnName="id_estado" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
               </MappingFragment>
@@ -5687,6 +5747,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
                 <ScalarProperty Name="id_regla" ColumnName="id_regla" />
                 <ScalarProperty Name="id_modalidad" ColumnName="id_modalidad" />
                 <ScalarProperty Name="id_fase" ColumnName="id_fase" />
+                <ScalarProperty Name="id_estado" ColumnName="id_estado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
