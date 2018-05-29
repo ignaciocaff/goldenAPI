@@ -20,9 +20,5 @@ namespace RestServiceGolden
         public Nullable<int> id_equipo { get; set; }
         public Nullable<int> id_zona { get; set; }
         public Nullable<int> id_torneo { get; set; }
-    
-        public virtual equipos equipos { get; set; }
-        public virtual torneos torneos { get; set; }
-        public virtual zonas zonas { get; set; }
     }
 }

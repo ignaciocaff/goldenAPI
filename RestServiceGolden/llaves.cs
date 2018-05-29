@@ -14,16 +14,7 @@ namespace RestServiceGolden
     
     public partial class llaves
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public llaves()
-        {
-            this.playoff = new HashSet<playoff>();
-        }
-    
         public int id_llave { get; set; }
         public string descripcion { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<playoff> playoff { get; set; }
     }
 }

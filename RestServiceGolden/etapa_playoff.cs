@@ -14,16 +14,7 @@ namespace RestServiceGolden
     
     public partial class etapa_playoff
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public etapa_playoff()
-        {
-            this.playoff = new HashSet<playoff>();
-        }
-    
         public int id_etapa { get; set; }
         public string descripcion { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<playoff> playoff { get; set; }
     }
 }

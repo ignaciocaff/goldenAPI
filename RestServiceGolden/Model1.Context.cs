@@ -61,6 +61,25 @@ namespace RestServiceGolden
         public virtual DbSet<permisos> permisos { get; set; }
         public virtual DbSet<personas> personas { get; set; }
         public virtual DbSet<playoff> playoff { get; set; }
+        public virtual DbSet<pma__bookmark> pma__bookmark { get; set; }
+        public virtual DbSet<pma__central_columns> pma__central_columns { get; set; }
+        public virtual DbSet<pma__column_info> pma__column_info { get; set; }
+        public virtual DbSet<pma__designer_settings> pma__designer_settings { get; set; }
+        public virtual DbSet<pma__export_templates> pma__export_templates { get; set; }
+        public virtual DbSet<pma__favorite> pma__favorite { get; set; }
+        public virtual DbSet<pma__history> pma__history { get; set; }
+        public virtual DbSet<pma__navigationhiding> pma__navigationhiding { get; set; }
+        public virtual DbSet<pma__pdf_pages> pma__pdf_pages { get; set; }
+        public virtual DbSet<pma__recent> pma__recent { get; set; }
+        public virtual DbSet<pma__relation> pma__relation { get; set; }
+        public virtual DbSet<pma__savedsearches> pma__savedsearches { get; set; }
+        public virtual DbSet<pma__table_coords> pma__table_coords { get; set; }
+        public virtual DbSet<pma__table_info> pma__table_info { get; set; }
+        public virtual DbSet<pma__table_uiprefs> pma__table_uiprefs { get; set; }
+        public virtual DbSet<pma__tracking> pma__tracking { get; set; }
+        public virtual DbSet<pma__userconfig> pma__userconfig { get; set; }
+        public virtual DbSet<pma__usergroups> pma__usergroups { get; set; }
+        public virtual DbSet<pma__users> pma__users { get; set; }
         public virtual DbSet<posiciones> posiciones { get; set; }
         public virtual DbSet<posiciones_zona> posiciones_zona { get; set; }
         public virtual DbSet<provincias> provincias { get; set; }

@@ -17,13 +17,8 @@ namespace RestServiceGolden
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public equipos()
         {
-            this.playoff = new HashSet<playoff>();
             this.goles = new HashSet<goles>();
             this.goleadores = new HashSet<goleadores>();
-            this.playoff1 = new HashSet<playoff>();
-            this.posiciones_zona = new HashSet<posiciones_zona>();
-            this.sanciones = new HashSet<sanciones>();
-            this.playoff2 = new HashSet<playoff>();
             this.equipos_zona = new HashSet<equipos_zona>();
             this.fotos = new HashSet<fotos>();
             this.resultados = new HashSet<resultados>();
@@ -34,7 +29,6 @@ namespace RestServiceGolden
             this.resultados_zona1 = new HashSet<resultados_zona>();
             this.posiciones = new HashSet<posiciones>();
             this.representante_equipo = new HashSet<representante_equipo>();
-            this.sanciones_equipo = new HashSet<sanciones_equipo>();
             this.partidos1 = new HashSet<partidos>();
         }
     
@@ -46,27 +40,17 @@ namespace RestServiceGolden
         public Nullable<int> id_club { get; set; }
         public Nullable<int> id_torneo { get; set; }
         public Nullable<int> id_categoria_equipo { get; set; }
-        public Nullable<int> camisetalogo { get; set; }
         public Nullable<int> camiseta { get; set; }
+        public Nullable<int> camisetalogo { get; set; }
     
         public virtual categorias categorias { get; set; }
         public virtual clubes clubes { get; set; }
         public virtual files files { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<playoff> playoff { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<goles> goles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<goleadores> goleadores { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<playoff> playoff1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<posiciones_zona> posiciones_zona { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<sanciones> sanciones { get; set; }
         public virtual torneos torneos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<playoff> playoff2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<equipos_zona> equipos_zona { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -75,11 +59,11 @@ namespace RestServiceGolden
         public virtual ICollection<resultados> resultados { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<resultados_zona> resultados_zona { get; set; }
+        public virtual files files1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<jugadores> jugadores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<partidos> partidos { get; set; }
-        public virtual files files1 { get; set; }
         public virtual files files2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<resultados> resultados1 { get; set; }
@@ -89,8 +73,6 @@ namespace RestServiceGolden
         public virtual ICollection<posiciones> posiciones { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<representante_equipo> representante_equipo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<sanciones_equipo> sanciones_equipo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<partidos> partidos1 { get; set; }
     }

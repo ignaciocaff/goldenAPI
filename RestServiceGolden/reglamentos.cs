@@ -17,7 +17,5 @@ namespace RestServiceGolden
         public int id_reglamento { get; set; }
         public string descripcion { get; set; }
         public Nullable<int> id_torneo { get; set; }
-    
-        public virtual torneos torneos { get; set; }
     }
 }

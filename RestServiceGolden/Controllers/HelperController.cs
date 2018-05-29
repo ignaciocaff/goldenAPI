@@ -15,7 +15,7 @@ namespace RestServiceGolden.Controllers
         [Route("api/helperTablas")]
         public IHttpActionResult GetAll()
         {
-            var posiciones = db.posiciones.Where(x => x.id_torneo == 28).ToList().OrderBy(x => x.id_equipo);
+            var posiciones = db.posiciones_zona.Where(x => x.id_torneo == 27 && x.id_zona == 19).ToList().OrderBy(x => x.id_equipo);
 
 
             foreach (var posicion in posiciones)
@@ -30,22 +30,38 @@ namespace RestServiceGolden.Controllers
                 var goles_contra = 0;
                 var dif_gol = 0;
                 var listaCompletaGolesEnContra = new List<goles>();
+                var lsPartidos = new List<partidos>();
 
-                var resultados = db.resultados.Where(x => x.id_ganador == posicion.id_equipo ||
-                x.id_perdedor == posicion.id_equipo).ToList();
+                /* var resultados = db.resultados.Where(x => x.id_ganador == posicion.id_equipo ||
+                 x.id_perdedor == posicion.id_equipo).ToList();*/
 
-                var resultados_zona = db.resultados_zona.Where(x => x.id_ganador == posicion.id_equipo ||
-                x.id_perdedor == posicion.id_equipo).ToList();
+                var fixture_zona = db.fixture_zona.Where(x => x.id_torneo == 27 && x.id_zona == 19).SingleOrDefault();
 
-                var partidos = db.partidos.Where(x => x.local == posicion.id_equipo || x.visitante == posicion.id_equipo).ToList();
+                var fechas = db.fechas.Where(x => x.id_fixture_zona == fixture_zona.id_fixture).ToList();
+                foreach (var f in fechas)
+                {
+                    var lsPartidoDe = db.partidos.Where(x => x.id_fecha == f.id_fecha).ToList();
+                    foreach (var p in lsPartidoDe)
+                    {
+                        lsPartidos.Add(p);
+                    }
+                }
 
-                foreach (var p in partidos)
+                /*var resultados_zona = db.resultados_zona.Where(x => (x.id_ganador == posicion.id_equipo ||
+                                x.id_perdedor == posicion.id_equipo) && x.id_zona == 19).ToList();*/
+
+                foreach (var p in lsPartidos)
                 {
                     var listadoGolesContra = db.goles.Where(x => x.id_partido == p.id_partido && x.id_equipo != posicion.id_equipo).ToList();
-
+                    var listGolesFavor = db.goles.Where(x => x.id_partido == p.id_partido && x.id_equipo == posicion.id_equipo).ToList();
                     foreach (var golContra in listadoGolesContra)
                     {
                         listaCompletaGolesEnContra.Add(golContra);
+                    }
+
+                    foreach (var golAFavor in listGolesFavor)
+                    {
+                        listaGolesFavor.Add(golAFavor);
                     }
                 }
 
@@ -54,41 +70,39 @@ namespace RestServiceGolden.Controllers
                     goles_contra = listaCompletaGolesEnContra.Count;
                 }
 
-                listaGolesFavor = db.goles.Where(x => x.id_equipo == posicion.id_equipo).ToList();
-
                 if (listaGolesFavor != null)
                 {
                     goles_favor = listaGolesFavor.Count;
                 }
 
-                foreach (var resultado in resultados)
-                {
-                    // Significa que empato ese partido
-                    if ((posicion.id_equipo == resultado.id_ganador || posicion.id_equipo == resultado.id_perdedor)
-                        && resultado.empate == 1)
-                    {
-                        puntos = puntos + 1;
-                        partidos_jugados = partidos_jugados + 1;
-                        partidos_empatados = partidos_empatados + 1;
+                /* foreach (var resultado in resultados)
+                 {
+                     // Significa que empato ese partido
+                     if ((posicion.id_equipo == resultado.id_ganador || posicion.id_equipo == resultado.id_perdedor)
+                         && resultado.empate == 1)
+                     {
+                         puntos = puntos + 1;
+                         partidos_jugados = partidos_jugados + 1;
+                         partidos_empatados = partidos_empatados + 1;
 
-                    }
-                    else if (posicion.id_equipo == resultado.id_ganador)
-                    {
-                        //Gano el partido
-                        puntos = puntos + 3;
-                        partidos_jugados = partidos_jugados + 1;
-                        partidos_ganados = partidos_ganados + 1;
-                    }
-                    else
-                    {
-                        //Perdio el partid
-                        partidos_jugados = partidos_jugados + 1;
-                        partidos_perdidos = partidos_perdidos + 1;
-                    }
+                     }
+                     else if (posicion.id_equipo == resultado.id_ganador)
+                     {
+                         //Gano el partido
+                         puntos = puntos + 3;
+                         partidos_jugados = partidos_jugados + 1;
+                         partidos_ganados = partidos_ganados + 1;
+                     }
+                     else
+                     {
+                         //Perdio el partid
+                         partidos_jugados = partidos_jugados + 1;
+                         partidos_perdidos = partidos_perdidos + 1;
+                     }
 
-                }
+                 }*/
 
-                foreach (var resultado_zona in resultados_zona)
+                /*foreach (var resultado_zona in resultados_zona)
                 {
                     // Significa que empato ese partido
                     if ((posicion.id_equipo == resultado_zona.id_ganador || posicion.id_equipo == resultado_zona.id_perdedor)
@@ -112,13 +126,13 @@ namespace RestServiceGolden.Controllers
                         partidos_jugados = partidos_jugados + 1;
                         partidos_perdidos = partidos_perdidos + 1;
                     }
-                }
+                }*/
                 dif_gol = goles_favor - goles_contra;
 
                 Console.Write(posicion.id_equipo + puntos + partidos_jugados + partidos_ganados + partidos_perdidos + partidos_empatados + goles_favor + goles_contra + dif_gol);
 
-                posiciones posicionParaActualizar = db.posiciones.SingleOrDefault(x => x.id_equipo == posicion.id_equipo
-                    && x.id_torneo == 28);
+                posiciones_zona posicionParaActualizar = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == posicion.id_equipo
+                    && x.id_torneo == 27 && x.id_zona == 19);
 
                 posicionParaActualizar.puntos = puntos;
                 posicionParaActualizar.partidos_jugados = partidos_jugados;

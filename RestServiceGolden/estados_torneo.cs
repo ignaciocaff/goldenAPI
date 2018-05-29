@@ -14,16 +14,7 @@ namespace RestServiceGolden
     
     public partial class estados_torneo
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public estados_torneo()
-        {
-            this.torneos = new HashSet<torneos>();
-        }
-    
         public int id_estado { get; set; }
         public string descripcion { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<torneos> torneos { get; set; }
     }
 }

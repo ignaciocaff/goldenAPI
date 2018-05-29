@@ -12,7 +12,6 @@ using System.Web.Http.Description;
 
 namespace RestServiceGolden.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class FixtureController : ApiController
     {
         goldenEntities db = new goldenEntities();

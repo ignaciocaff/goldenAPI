@@ -20,15 +20,13 @@ namespace RestServiceGolden
             this.equipos_zona = new HashSet<equipos_zona>();
             this.fixture_zona = new HashSet<fixture_zona>();
             this.posiciones_zona = new HashSet<posiciones_zona>();
-            this.resultados_zona = new HashSet<resultados_zona>();
             this.sanciones = new HashSet<sanciones>();
-            this.sanciones_equipo = new HashSet<sanciones_equipo>();
         }
     
         public int id_zona { get; set; }
         public string descripcion { get; set; }
         public Nullable<int> id_torneo { get; set; }
-        public Nullable<int> id_fase { get; set; }
+        public int id_fase { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<equipos_zona> equipos_zona { get; set; }
@@ -38,11 +36,7 @@ namespace RestServiceGolden
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<posiciones_zona> posiciones_zona { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<resultados_zona> resultados_zona { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sanciones> sanciones { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<sanciones_equipo> sanciones_equipo { get; set; }
         public virtual torneos torneos { get; set; }
     }
 }

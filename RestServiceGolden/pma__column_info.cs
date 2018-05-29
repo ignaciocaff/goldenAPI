@@ -12,14 +12,17 @@ namespace RestServiceGolden
     using System;
     using System.Collections.Generic;
     
-    public partial class playoff
+    public partial class pma__column_info
     {
-        public int id_playoff { get; set; }
-        public Nullable<int> llave { get; set; }
-        public Nullable<int> local { get; set; }
-        public Nullable<int> visitante { get; set; }
-        public Nullable<int> ganador { get; set; }
-        public Nullable<int> id_etapa { get; set; }
-        public Nullable<int> id_torneo { get; set; }
+        public long id { get; set; }
+        public string db_name { get; set; }
+        public string table_name { get; set; }
+        public string column_name { get; set; }
+        public string comment { get; set; }
+        public string mimetype { get; set; }
+        public string transformation { get; set; }
+        public string transformation_options { get; set; }
+        public string input_transformation { get; set; }
+        public string input_transformation_options { get; set; }
     }
 }
