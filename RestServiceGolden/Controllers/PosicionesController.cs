@@ -60,17 +60,26 @@ namespace RestServiceGolden.Controllers
                 else
                 {
                     var lsZonas = new List<List<PosicionesZonas>>();
-                    var lsIdZonas = db.posiciones_zona.Where(x => x.id_torneo == id_torneo).Select(x => x.id_zona).Distinct().ToList();
+                    //var lsIdZonas = db.posiciones_zona.Where(x => x.id_torneo == id_torneo).Select(x => x.id_zona).Distinct().ToList();
 
-                    foreach (var id in lsIdZonas)
+                    var lsIdZonas = (from tPosZona in db.posiciones_zona
+                                     join tZona in db.zonas on tPosZona.id_zona equals tZona.id_zona
+                                     where tPosZona.id_torneo == id_torneo
+                                     select new
+                                     {
+                                         id = tPosZona.id_zona,
+                                         descripcion = tZona.descripcion,
+                                     }).Distinct().ToList().OrderBy(x => x.descripcion);
+
+                    foreach (var singleZona in lsIdZonas)
                     {
-                        var posiciones = db.posiciones_zona.Where(x => x.id_zona == id).OrderByDescending(x => x.puntos).ThenByDescending(x => x.dif_gol).ThenByDescending( x => x.goles_favor).ToList();
+                        var posiciones = db.posiciones_zona.Where(x => x.id_zona == singleZona.id).OrderByDescending(x => x.puntos).ThenByDescending(x => x.dif_gol).ThenByDescending(x => x.goles_favor).ToList();
                         List<PosicionesZonas> lsPosiciones = new List<PosicionesZonas>();
 
                         foreach (var pos in posiciones)
                         {
                             var eq = db.equipos.Where(x => x.id_equipo == pos.id_equipo).FirstOrDefault();
-                            var z = db.zonas.Where(x => x.id_zona == id).FirstOrDefault();
+                            var z = db.zonas.Where(x => x.id_zona == singleZona.id).FirstOrDefault();
                             var escudo = db.files.Where(x => x.Id == eq.logo).FirstOrDefault();
                             PosicionesZonas posicion = new PosicionesZonas();
                             IEquipo equipo = new IEquipo();
@@ -97,7 +106,7 @@ namespace RestServiceGolden.Controllers
                             posicion.torneo.id_torneo = id_torneo;
 
                             posicion.zona = zona;
-                            posicion.zona.id_zona = id;
+                            posicion.zona.id_zona = singleZona.id;
                             posicion.zona.descripcion = z.descripcion;
 
                             lsPosiciones.Add(posicion);
