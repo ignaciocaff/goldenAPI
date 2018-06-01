@@ -1227,6 +1227,38 @@ namespace RestServiceGolden.Controllers
                 return BadRequest(e.ToString());
             }
         }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/fecha/modificarFechaInterzonal/{id_torneo}/{nuevaFecha}")]
+        public IHttpActionResult modificarFechaInterzonal([FromBody]Fecha fechaDto, int id_torneo, DateTime nuevaFecha)
+        {
+            try
+            {
+                var fixture_zona = db.fixture_zona.Where(x => x.id_torneo == id_torneo && x.id_zona == null).FirstOrDefault();
+
+                if (fixture_zona != null)
+                {
+                    var fechas = db.fechas.Where(x => x.fecha == fechaDto.fecha && x.id_fixture_zona == fixture_zona.id_fixture).ToList();
+                    foreach (var fecha in fechas)
+                    {
+                        var fechaUpdate = db.fechas.SingleOrDefault(x => x.id_fecha == fecha.id_fecha);
+                        fechaUpdate.fecha = nuevaFecha;
+                        db.SaveChanges();
+                    }
+                }
+
+
+                return Ok(true);
+            }
+            catch (Exception e)
+            {
+                var logger = new Logger("FixtureController");
+                logger.AgregarMensaje("api/fecha/modificarFechaInterzonal/" + " Parametros de entrada: " +
+                 JsonConvert.SerializeObject(fechaDto, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
+                logger.EscribirLog();
+                return BadRequest(e.ToString());
+            }
+        }
         [ResponseType(typeof(IHttpActionResult))]
         [Route("api/fecha/obtenerFInterzonales/{id_torneo}")]
         public IHttpActionResult getObtenerFInterzonales(int id_torneo)
