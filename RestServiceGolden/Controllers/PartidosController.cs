@@ -137,21 +137,30 @@ namespace RestServiceGolden.Controllers
                     }
                     else
                     {
-                        resultados_zona resultadoDto2 = new resultados_zona();
-                        resultadoDto2.id_ganador = partido.resultado_zona.ganador.id_equipo;
-                        resultadoDto2.id_perdedor = partido.resultado_zona.perdedor.id_equipo;
-                        resultadoDto2.id_zona = partido.resultado_zona.zona.id_zona;
-                        if (partido.resultado_zona.empate == null)
+                        //Aca pregunto si es id_fase 3.
+                        if (id_fase == 3)
                         {
-                            resultadoDto2.empate = null;
+
                         }
                         else
                         {
-                            resultadoDto2.empate = 1;
+                            resultados_zona resultadoDto2 = new resultados_zona();
+                            resultadoDto2.id_ganador = partido.resultado_zona.ganador.id_equipo;
+                            resultadoDto2.id_perdedor = partido.resultado_zona.perdedor.id_equipo;
+                            resultadoDto2.id_zona = partido.resultado_zona.zona.id_zona;
+                            if (partido.resultado_zona.empate == null)
+                            {
+                                resultadoDto2.empate = null;
+                            }
+                            else
+                            {
+                                resultadoDto2.empate = 1;
+                            }
+                            db.resultados_zona.Add(resultadoDto2);
+                            db.SaveChanges();
+                            id_resultado_zona = resultadoDto2.id_resultado;
                         }
-                        db.resultados_zona.Add(resultadoDto2);
-                        db.SaveChanges();
-                        id_resultado_zona = resultadoDto2.id_resultado;
+
                     }
 
                     //Cuarto paso actualizo partidos con el id_resultado o id_resultado_zona
@@ -690,7 +699,7 @@ namespace RestServiceGolden.Controllers
 
                     if (id_fase == 3)
                     {
-                        // Pendiente Play Off
+                        // Actualizo id_ganador de la tabla playoff.
                     }
 
                     actualizarGoleadores(partido, id_torneo);

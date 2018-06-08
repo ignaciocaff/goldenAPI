@@ -140,32 +140,37 @@ namespace RestServiceGolden.Controllers
             {
                 goldenEntities db = new goldenEntities();
                 int id_usuario = 0;
-
+                usuarios usuarioCheck = new usuarios();
+                Usuario usuarioDto = new Usuario();
                 representante_equipo repreCheck = db.representante_equipo.Where(x => x.id_equipo == id_equipo).FirstOrDefault();
-                if (repreCheck == null)
+                if (repreCheck != null)
                 {
-                    var usuarioCheck = db.usuarios.Where(x => x.n_usuario == usuario.n_usuario).FirstOrDefault();
-                    if (usuarioCheck == null)
+                    usuarioCheck = db.usuarios.Where(x => x.n_usuario.Equals(usuario.n_usuario)).OrderByDescending(x => x.caducidad).FirstOrDefault();
+
+                    usuarioDto.caducidad = (DateTime)usuarioCheck.caducidad;
+
+                    if (usuarioDto.caducidad.Date > DateTime.Now)
                     {
-                        var usuarioDto = new usuarios();
-                        usuarioDto.caducidad = usuario.caducidad;
-                        usuarioDto.id_perfil = usuario.perfil.id_perfil;
-                        usuarioDto.n_usuario = usuario.n_usuario;
-                        usuarioDto.password = usuario.password;
-                        db.usuarios.Add(usuarioDto);
-                        db.SaveChanges();
-                        id_usuario = usuarioDto.id_usuario;
-
-                        var representante_equipo = new representante_equipo();
-                        representante_equipo.id_equipo = id_equipo;
-                        representante_equipo.id_usuario = id_usuario;
-                        db.representante_equipo.Add(representante_equipo);
-                        db.SaveChanges();
-
-                        return Ok();
+                        return BadRequest();
                     }
                 }
-                return BadRequest();
+
+                var usuarioNuevo = new usuarios();
+                usuarioNuevo.caducidad = usuario.caducidad;
+                usuarioNuevo.id_perfil = usuario.perfil.id_perfil;
+                usuarioNuevo.n_usuario = usuario.n_usuario;
+                usuarioNuevo.password = usuario.password;
+                db.usuarios.Add(usuarioNuevo);
+                db.SaveChanges();
+                id_usuario = usuarioNuevo.id_usuario;
+
+                var representante_equipo = new representante_equipo();
+                representante_equipo.id_equipo = id_equipo;
+                representante_equipo.id_usuario = id_usuario;
+                db.representante_equipo.Add(representante_equipo);
+                db.SaveChanges();
+
+                return Ok();
 
             }
             catch (Exception e)
@@ -184,18 +189,24 @@ namespace RestServiceGolden.Controllers
             try
             {
                 goldenEntities db = new goldenEntities();
-                var representante = db.representante_equipo.Where(x => x.id_equipo == id_equipo).SingleOrDefault();
+
+                var representante = db.representante_equipo.Where(x => x.id_equipo == id_equipo).OrderByDescending(x=> x.id).FirstOrDefault();
 
                 if (representante != null)
                 {
                     int id_usuario = (int)representante.id_usuario;
-                    db.representante_equipo.Remove(representante);
-                    db.SaveChanges();
 
                     var usuario = db.usuarios.Where(x => x.id_usuario == id_usuario).SingleOrDefault();
-                    db.usuarios.Remove(usuario);
-                    db.SaveChanges();
-                    return Ok();
+                    Usuario usuarioDto = new Usuario();
+                    usuarioDto.caducidad = (DateTime)usuario.caducidad;
+                    if (usuarioDto.caducidad.Date > DateTime.Now)
+                    {
+                        db.usuarios.Remove(usuario);
+                        db.representante_equipo.Remove(representante);
+                        db.SaveChanges();
+                        return Ok();
+                    }
+                    return BadRequest();
                 }
                 return BadRequest();
             }

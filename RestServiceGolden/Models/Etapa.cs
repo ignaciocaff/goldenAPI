@@ -5,9 +5,9 @@ using System.Web;
 
 namespace RestServiceGolden.Models
 {
-    public class Llave
+    public class Etapa
     {
-        public int? id_llave { get; set; }
+        public int? id_etapa { get; set; }
         public String descripcion { get; set; }
     }
 }

@@ -51,6 +51,28 @@ namespace RestServiceGolden.Controllers
                         partido.id_fecha = id_fecha;
                         db.partidos.Add(partido);
                         db.SaveChanges();
+
+                        //Si estamos en fase 3, por cada partido inserto en la tabla playoff lo correspondiente.
+                        if (id_fase == 3)
+                        {
+                            var playoff = db.playoff.Where(x =>
+                            (x.local == p.local.id_equipo || x.visitante == p.visitante.id_equipo)
+                            && x.llave == p.llave.id_llave
+                            && x.id_etapa == p.etapa.id_etapa).FirstOrDefault();
+
+                            if (playoff == null)
+                            {
+                                playoff playoffDto = new playoff();
+                                playoffDto.llave = p.llave.id_llave;
+                                playoffDto.id_etapa = p.etapa.id_etapa;
+                                playoffDto.local = p.local.id_equipo;
+                                playoffDto.visitante = p.visitante.id_equipo;
+                                playoffDto.id_torneo = id_torneo;
+                                playoffDto.id_partido = partido.id_partido;
+                                db.playoff.Add(playoffDto);
+                                db.SaveChanges();
+                            }
+                        }
                     }
                     return Ok();
                 }
@@ -120,7 +142,7 @@ namespace RestServiceGolden.Controllers
                 int id_fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == id_zona && x.id_torneo == id_torneo).id_fixture;
                 var fechaDto = partidos.FirstOrDefault().fecha.fecha;
                 var fechaCheck = db.fechas.Where(x => x.fecha == fechaDto && x.id_fixture_zona == id_fixture_zona).SingleOrDefault();
-
+                var torneo = db.torneos.SingleOrDefault(x => x.id_torneo == id_torneo);
                 if (fechaCheck != null)
                 {
                     foreach (Partido p in partidos)
@@ -139,6 +161,29 @@ namespace RestServiceGolden.Controllers
                             partido.id_fecha = fechaCheck.id_fecha;
                             db.partidos.Add(partido);
                             db.SaveChanges();
+
+                            //Si estamos en fase 3, por cada partido inserto en la tabla playoff lo correspondiente.
+                            if (torneo.id_fase == 3)
+                            {
+                                var playoff = db.playoff.Where(x =>
+                                (x.local == p.local.id_equipo || x.visitante == p.visitante.id_equipo)
+                                && x.llave == p.llave.id_llave
+                                && x.id_etapa == p.etapa.id_etapa).FirstOrDefault();
+
+                                if (playoff == null)
+                                {
+                                    playoff playoffDto = new playoff();
+                                    playoffDto.llave = p.llave.id_llave;
+                                    playoffDto.id_etapa = p.etapa.id_etapa;
+                                    playoffDto.local = p.local.id_equipo;
+                                    playoffDto.visitante = p.visitante.id_equipo;
+                                    playoffDto.id_torneo = id_torneo;
+                                    playoffDto.id_partido = partido.id_partido;
+                                    db.playoff.Add(playoffDto);
+                                    db.SaveChanges();
+                                }
+                            }
+
                         }
                         else
                         {
@@ -154,6 +199,20 @@ namespace RestServiceGolden.Controllers
                                 partidoUpdate.hora_fin = p.horario_fijo.fin;
                                 partidoUpdate.id_fecha = fechaCheck.id_fecha;
                                 db.SaveChanges();
+
+
+                                if (torneo.id_fase == 3)
+                                {
+                                    var playoffUpdate = db.playoff.SingleOrDefault(x => x.id_partido == p.id_partido);
+                                    if (playoffUpdate != null)
+                                    {
+                                        playoffUpdate.local = p.local.id_equipo;
+                                        playoffUpdate.visitante = p.visitante.id_equipo;
+                                        playoffUpdate.llave = p.llave.id_llave;
+                                        playoffUpdate.id_etapa = p.etapa.id_etapa;
+                                        db.SaveChanges();
+                                    }
+                                }
                             }
                         }
                     }
@@ -221,6 +280,8 @@ namespace RestServiceGolden.Controllers
                                 IEquipo iVisitante = new IEquipo();
                                 Turno turno = new Turno();
                                 Fecha fechaPartido = new Fecha();
+                                Llave llave = new Llave();
+                                Etapa etapa = new Etapa();
 
                                 var objLocal = (from tEquipos in db.equipos
                                                 join tArchivos in db.files on tEquipos.logo equals tArchivos.Id
@@ -268,6 +329,25 @@ namespace RestServiceGolden.Controllers
                                 iPartido.cancha.nombre = canchaDto.nombre;
 
                                 var horarioDto = db.horarios_fijos.SingleOrDefault(x => x.id_horario == partido.id_horario_fijo);
+
+
+                                var torneo = db.torneos.SingleOrDefault(x => x.id_torneo == id_torneo);
+
+                                if (torneo.id_fase == 3)
+                                {
+                                    var playoff = db.playoff.SingleOrDefault(x => x.id_partido == partido.id_partido);
+
+                                    iPartido.llave = llave;
+                                    iPartido.llave.id_llave = playoff.llave;
+                                    var llaveDto = db.llaves.SingleOrDefault(x => x.id_llave == playoff.llave);
+                                    iPartido.llave.descripcion = llaveDto.descripcion;
+
+                                    iPartido.etapa = etapa;
+                                    var etapaDto = db.etapa_playoff.SingleOrDefault(x => x.id_etapa == playoff.id_etapa);
+                                    iPartido.etapa.id_etapa = playoff.id_etapa;
+                                    iPartido.etapa.descripcion = etapaDto.descripcion;
+                                }
+
                                 iPartido.horario = horarioFijo;
                                 iPartido.horario.id_horario = partido.id_horario_fijo;
                                 iPartido.horario.inicio = horarioDto.inicio;
@@ -1037,8 +1117,8 @@ namespace RestServiceGolden.Controllers
         }
 
         [ResponseType(typeof(IHttpActionResult))]
-        [Route("api/fecha/eliminarPartido")]
-        public IHttpActionResult eliminarPartido([FromBody]IPartido iPartido)
+        [Route("api/fecha/eliminarPartido/{id_fase}")]
+        public IHttpActionResult eliminarPartido([FromBody]IPartido iPartido, int id_fase)
         {
             try
             {
@@ -1049,6 +1129,13 @@ namespace RestServiceGolden.Controllers
                 {
                     db.partidos.Remove(partido);
                     db.SaveChanges();
+
+                    if(id_fase == 3)
+                    {
+                        var playoff = db.playoff.SingleOrDefault(x => x.id_partido == iPartido.id_partido);
+                        db.playoff.Remove(playoff);
+                        db.SaveChanges();
+                    }
 
                     return Ok(new IPartido());
                 }

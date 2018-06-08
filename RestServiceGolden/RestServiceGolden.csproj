@@ -229,6 +229,7 @@
     <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\JugadorController.cs" />
     <Compile Include="Controllers\NoticiasController.cs" />
+    <Compile Include="Controllers\PlayoffController.cs" />
     <Compile Include="Controllers\PosicionesController.cs" />
     <Compile Include="Controllers\PartidosController.cs" />
     <Compile Include="Controllers\ReglasController.cs" />
@@ -329,6 +330,7 @@
     <Compile Include="Models\CategoriaEquipo.cs" />
     <Compile Include="Models\CategoriaNoticia.cs" />
     <Compile Include="Models\EstadoTorneo.cs" />
+    <Compile Include="Models\Etapa.cs" />
     <Compile Include="Models\Fase.cs" />
     <Compile Include="Models\IEquipoPlanilla.cs" />
     <Compile Include="Models\IJugador.cs" />
@@ -586,15 +588,6 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
@@ -602,6 +595,13 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

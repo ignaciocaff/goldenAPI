@@ -371,6 +371,7 @@
           <Property Name="ganador" Type="int" />
           <Property Name="id_etapa" Type="int" />
           <Property Name="id_torneo" Type="int" />
+          <Property Name="id_partido" Type="int" />
         </EntityType>
         <EntityType Name="pma__bookmark">
           <Key>
@@ -2845,6 +2846,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="ganador" Type="Int32" />
           <Property Name="id_etapa" Type="Int32" />
           <Property Name="id_torneo" Type="Int32" />
+          <Property Name="id_partido" Type="Int32" />
         </EntityType>
         <EntityType Name="pma__bookmark">
           <Key>
@@ -5299,6 +5301,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
                 <ScalarProperty Name="ganador" ColumnName="ganador" />
                 <ScalarProperty Name="id_etapa" ColumnName="id_etapa" />
                 <ScalarProperty Name="id_torneo" ColumnName="id_torneo" />
+                <ScalarProperty Name="id_partido" ColumnName="id_partido" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
