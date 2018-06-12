@@ -147,5 +147,67 @@ namespace RestServiceGolden.Controllers
 
             return Ok();
         }
+
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/camelCase")]
+        public IHttpActionResult getCamelCase()
+        {
+
+            var jugadores = db.jugadores.ToList();
+
+            foreach (var jug in jugadores)
+            {
+                var jugadorUpdate = db.personas.SingleOrDefault(x => x.id_persona == jug.id_persona);
+
+                var nombre = jugadorUpdate.nombre;
+                var apellido = jugadorUpdate.apellido;
+                for (var i = 0; i < nombre.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        nombre = nombre[0].ToString().ToUpper() + nombre.Substring(1).ToLower();
+                    }
+
+                    if (Char.IsLetter(nombre[i]))
+                    {
+                        if (i != 0)
+                        {
+                            if (Char.IsWhiteSpace(nombre[i - 1]))
+                            {
+                                nombre = nombre.Substring(0, i - 1) + ' ' + nombre[i].ToString().ToUpper() + nombre.Substring(i + 1, (nombre.Length - (i + 1))).ToLower();
+                            }
+                        }
+                    }
+
+                }
+
+                for (var i = 0; i < apellido.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        apellido = apellido[0].ToString().ToUpper() + apellido.Substring(1).ToLower();
+                    }
+
+                    if (Char.IsLetter(apellido[i]))
+                    {
+                        if (i != 0)
+                        {
+                            if (Char.IsWhiteSpace(apellido[i - 1]))
+                            {
+                                apellido = apellido.Substring(0, i - 1) + ' ' + apellido[i].ToString().ToUpper() + apellido.Substring(i + 1, (apellido.Length - (i + 1))).ToLower();
+                            }
+                        }
+                    }
+
+                }
+
+                jugadorUpdate.nombre = nombre;
+                jugadorUpdate.apellido = apellido;
+                db.SaveChanges();
+            }
+
+            return Ok();
+        }
     }
 }
