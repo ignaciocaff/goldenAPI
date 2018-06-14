@@ -49,56 +49,53 @@ namespace RestServiceGolden.Controllers
         {
             goldenEntities db = new goldenEntities();
 
-            usuarios usuario;
+            List<usuarios> lsUsuarios;
 
             if (string.IsNullOrEmpty(n_usuario) || string.IsNullOrEmpty(password))
                 return null;
-            usuario = db.usuarios.Where(x => x.n_usuario == n_usuario).ToList().FirstOrDefault();
-            // check if username exists
-            if (usuario == null)
-                return null;
 
-            // check if password is correct
-            if (usuario.password == null || usuario.password != password)
-                return null;
+            lsUsuarios = db.usuarios.Where(x => x.n_usuario == n_usuario).ToList();
 
-            try
+            foreach (var user in lsUsuarios)
             {
-                var usuarios = (from tUsuarios in db.usuarios
-                                join tPerfiles in db.perfiles on tUsuarios.id_perfil equals tPerfiles.id_perfil
-                                select new
-                                {
-                                    idUsuario = tUsuarios.id_usuario,
-                                    nUsuario = tUsuarios.n_usuario,
-                                    passwordU = tUsuarios.password,
-                                    nPerfil = tPerfiles.n_perfil,
-                                    nCaducidad = tUsuarios.caducidad,
-                                    id_perfil = tPerfiles.id_perfil
-                                });
-
-
-                foreach (var u in usuarios)
+                if (user.password == password && user.n_usuario == n_usuario)
                 {
-                    if (u.idUsuario == usuario.id_usuario)
+                    //Este es el usuario que estoy buscando
+                    try
                     {
+                        var usuarioDto = (from tUsuarios in db.usuarios
+                                          join tPerfiles in db.perfiles on tUsuarios.id_perfil equals tPerfiles.id_perfil
+                                          where tUsuarios.id_usuario == user.id_usuario
+                                          select new
+                                          {
+                                              idUsuario = tUsuarios.id_usuario,
+                                              nUsuario = tUsuarios.n_usuario,
+                                              passwordU = tUsuarios.password,
+                                              nPerfil = tPerfiles.n_perfil,
+                                              nCaducidad = tUsuarios.caducidad,
+                                              id_perfil = tPerfiles.id_perfil
+                                          }).FirstOrDefault();
+
+
                         Usuario objUsuario = new Usuario();
                         Perfil objPerfil = new Perfil();
 
-                        objUsuario.id_usuario = u.idUsuario;
-                        objUsuario.n_usuario = u.nUsuario;
-                        objUsuario.caducidad = Convert.ToDateTime(u.nCaducidad);
-                        objPerfil.n_perfil = u.nPerfil;
-                        objPerfil.id_perfil = u.id_perfil;
+                        objUsuario.id_usuario = usuarioDto.idUsuario;
+                        objUsuario.n_usuario = usuarioDto.nUsuario;
+                        objUsuario.caducidad = Convert.ToDateTime(usuarioDto.nCaducidad);
+                        objPerfil.n_perfil = usuarioDto.nPerfil;
+                        objPerfil.id_perfil = usuarioDto.id_perfil;
                         objUsuario.perfil = objPerfil;
 
 
                         return objUsuario;
                     }
+                    catch (Exception e)
+                    {
+                        return e.Message.ToString();
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                return e.Message.ToString();
+
             }
             return null;
         }
@@ -190,7 +187,7 @@ namespace RestServiceGolden.Controllers
             {
                 goldenEntities db = new goldenEntities();
 
-                var representante = db.representante_equipo.Where(x => x.id_equipo == id_equipo).OrderByDescending(x=> x.id).FirstOrDefault();
+                var representante = db.representante_equipo.Where(x => x.id_equipo == id_equipo).OrderByDescending(x => x.id).FirstOrDefault();
 
                 if (representante != null)
                 {
