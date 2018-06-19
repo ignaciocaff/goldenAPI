@@ -22,5 +22,8 @@ namespace RestServiceGolden.Models
         public List<Sancion> lsSancionesVisitante { get; set; }
         public Llave llave { get; set; }
         public Etapa etapa { get; set; }
+        public IEquipo ganadorPlayoff { get; set; }
+        public Boolean penales { get; set; }
+        public String detallePenales { get; set; }
     }
 }

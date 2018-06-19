@@ -140,7 +140,14 @@ namespace RestServiceGolden.Controllers
                         //Aca pregunto si es id_fase 3.
                         if (id_fase == 3)
                         {
-
+                            resultados_zona resultadoDtoPlayoff = new resultados_zona();
+                            resultadoDtoPlayoff.id_ganador = partido.resultado_zona.ganador.id_equipo;
+                            resultadoDtoPlayoff.id_perdedor = partido.resultado_zona.perdedor.id_equipo;
+                            resultadoDtoPlayoff.id_zona = partido.resultado_zona.zona.id_zona;
+                            resultadoDtoPlayoff.empate = null;
+                            db.resultados_zona.Add(resultadoDtoPlayoff);
+                            db.SaveChanges();
+                            id_resultado_zona = resultadoDtoPlayoff.id_resultado;
                         }
                         else
                         {
@@ -700,6 +707,13 @@ namespace RestServiceGolden.Controllers
                     if (id_fase == 3)
                     {
                         // Actualizo id_ganador de la tabla playoff.
+                        var playoffDto = db.playoff.SingleOrDefault(x => x.id_partido == partido.id_partido);
+
+                        if (playoffDto != null)
+                        {
+                            playoffDto.ganador = partido.resultado_zona.ganador.id_equipo;
+                            db.SaveChanges();
+                        }
                     }
 
                     actualizarGoleadores(partido, id_torneo);
