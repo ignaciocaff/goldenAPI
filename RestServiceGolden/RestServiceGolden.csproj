@@ -357,6 +357,7 @@
     <Compile Include="Models\Perfil.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Persona.cs" />
+    <Compile Include="Models\Playoff.cs" />
     <Compile Include="Models\Posiciones.cs" />
     <Compile Include="Models\PosicionesZonas.cs" />
     <Compile Include="Models\Provincia.cs" />
@@ -595,7 +596,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
