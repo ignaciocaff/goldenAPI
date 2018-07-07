@@ -18,6 +18,7 @@ namespace RestServiceGolden
         public turnos()
         {
             this.horarios_fijos = new HashSet<horarios_fijos>();
+            this.turnos_fixture = new HashSet<turnos_fixture>();
         }
     
         public int id { get; set; }
@@ -25,5 +26,7 @@ namespace RestServiceGolden
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<horarios_fijos> horarios_fijos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<turnos_fixture> turnos_fixture { get; set; }
     }
 }

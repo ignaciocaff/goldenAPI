@@ -777,6 +777,14 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="45" />
         </EntityType>
+        <EntityType Name="turnos_fixture">
+          <Key>
+            <PropertyRef Name="id_turno_fixture" />
+          </Key>
+          <Property Name="id_turno_fixture" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_cancha" Type="int" />
+          <Property Name="id_horario" Type="int" />
+        </EntityType>
         <EntityType Name="usuarios">
           <Key>
             <PropertyRef Name="id_usuario" />
@@ -1801,6 +1809,30 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_turno_cancha">
+          <End Role="canchas" Type="Self.canchas" Multiplicity="0..1" />
+          <End Role="turnos_fixture" Type="Self.turnos_fixture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="canchas">
+              <PropertyRef Name="id_cancha" />
+            </Principal>
+            <Dependent Role="turnos_fixture">
+              <PropertyRef Name="id_cancha" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_turno_horario">
+          <End Role="turnos" Type="Self.turnos" Multiplicity="0..1" />
+          <End Role="turnos_fixture" Type="Self.turnos_fixture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="turnos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="turnos_fixture">
+              <PropertyRef Name="id_horario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_usuario_perfil">
           <End Role="perfiles" Type="Self.perfiles" Multiplicity="0..1" />
           <End Role="usuarios" Type="Self.usuarios" Multiplicity="*" />
@@ -1985,6 +2017,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <EntitySet Name="tipos_torneos" EntityType="Self.tipos_torneos" Schema="golden" store:Type="Tables" />
           <EntitySet Name="torneos" EntityType="Self.torneos" Schema="golden" store:Type="Tables" />
           <EntitySet Name="turnos" EntityType="Self.turnos" Schema="golden" store:Type="Tables" />
+          <EntitySet Name="turnos_fixture" EntityType="Self.turnos_fixture" Schema="golden" store:Type="Tables" />
           <EntitySet Name="usuarios" EntityType="Self.usuarios" Schema="golden" store:Type="Tables" />
           <EntitySet Name="veedores" EntityType="Self.veedores" Schema="golden" store:Type="Tables" />
           <EntitySet Name="zonas" EntityType="Self.zonas" Schema="golden" store:Type="Tables" />
@@ -2320,6 +2353,14 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             <End Role="torneos" EntitySet="torneos" />
             <End Role="equipos_zona" EntitySet="equipos_zona" />
           </AssociationSet>
+          <AssociationSet Name="fk_turno_cancha" Association="Self.fk_turno_cancha">
+            <End Role="canchas" EntitySet="canchas" />
+            <End Role="turnos_fixture" EntitySet="turnos_fixture" />
+          </AssociationSet>
+          <AssociationSet Name="fk_turno_horario" Association="Self.fk_turno_horario">
+            <End Role="turnos" EntitySet="turnos" />
+            <End Role="turnos_fixture" EntitySet="turnos_fixture" />
+          </AssociationSet>
           <AssociationSet Name="fk_usuario_perfil" Association="Self.fk_usuario_perfil">
             <End Role="perfiles" EntitySet="perfiles" />
             <End Role="usuarios" EntitySet="usuarios" />
@@ -2385,6 +2426,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <NavigationProperty Name="partidos" Relationship="Self.fk_cancha_partido" FromRole="canchas" ToRole="partidos" />
           <NavigationProperty Name="tipos_cancha" Relationship="Self.fk_cancha_tipo" FromRole="canchas" ToRole="tipos_cancha" />
           <NavigationProperty Name="clubes" Relationship="Self.fk_club_cancha" FromRole="canchas" ToRole="clubes" />
+          <NavigationProperty Name="turnos_fixture" Relationship="Self.fk_turno_cancha" FromRole="canchas" ToRole="turnos_fixture" />
         </EntityType>
         <EntityType Name="categoria_equipos">
           <Key>
@@ -3304,6 +3346,17 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="horarios_fijos" Relationship="Self.fk_horario_turno" FromRole="turnos" ToRole="horarios_fijos" />
+          <NavigationProperty Name="turnos_fixture" Relationship="Self.fk_turno_horario" FromRole="turnos" ToRole="turnos_fixture" />
+        </EntityType>
+        <EntityType Name="turnos_fixture">
+          <Key>
+            <PropertyRef Name="id_turno_fixture" />
+          </Key>
+          <Property Name="id_turno_fixture" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_cancha" Type="Int32" />
+          <Property Name="id_horario" Type="Int32" />
+          <NavigationProperty Name="canchas" Relationship="Self.fk_turno_cancha" FromRole="turnos_fixture" ToRole="canchas" />
+          <NavigationProperty Name="turnos" Relationship="Self.fk_turno_horario" FromRole="turnos_fixture" ToRole="turnos" />
         </EntityType>
         <EntityType Name="usuarios">
           <Key>
@@ -3412,6 +3465,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Principal>
             <Dependent Role="canchas">
               <PropertyRef Name="id_club" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_turno_cancha">
+          <End Role="canchas" Type="Self.canchas" Multiplicity="0..1" />
+          <End Role="turnos_fixture" Type="Self.turnos_fixture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="canchas">
+              <PropertyRef Name="id_cancha" />
+            </Principal>
+            <Dependent Role="turnos_fixture">
+              <PropertyRef Name="id_cancha" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4447,6 +4512,18 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_turno_horario">
+          <End Role="turnos" Type="Self.turnos" Multiplicity="0..1" />
+          <End Role="turnos_fixture" Type="Self.turnos_fixture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="turnos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="turnos_fixture">
+              <PropertyRef Name="id_horario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="goldenEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="arbitros" EntityType="Self.arbitros" />
           <EntitySet Name="canchas" EntityType="Self.canchas" />
@@ -4523,6 +4600,7 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <EntitySet Name="tipos_torneos" EntityType="Self.tipos_torneos" />
           <EntitySet Name="torneos" EntityType="Self.torneos" />
           <EntitySet Name="turnos" EntityType="Self.turnos" />
+          <EntitySet Name="turnos_fixture" EntityType="Self.turnos_fixture" />
           <EntitySet Name="usuarios" EntityType="Self.usuarios" />
           <EntitySet Name="veedores" EntityType="Self.veedores" />
           <EntitySet Name="zonas" EntityType="Self.zonas" />
@@ -4549,6 +4627,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_club_cancha" Association="Self.fk_club_cancha">
             <End Role="clubes" EntitySet="clubes" />
             <End Role="canchas" EntitySet="canchas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_turno_cancha" Association="Self.fk_turno_cancha">
+            <End Role="canchas" EntitySet="canchas" />
+            <End Role="turnos_fixture" EntitySet="turnos_fixture" />
           </AssociationSet>
           <AssociationSet Name="fk_categoria_equipo" Association="Self.fk_categoria_equipo">
             <End Role="categorias" EntitySet="categorias" />
@@ -4893,6 +4975,10 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
           <AssociationSet Name="fk_zonas_torneo" Association="Self.fk_zonas_torneo">
             <End Role="torneos" EntitySet="torneos" />
             <End Role="zonas" EntitySet="zonas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_turno_horario" Association="Self.fk_turno_horario">
+            <End Role="turnos" EntitySet="turnos" />
+            <End Role="turnos_fixture" EntitySet="turnos_fixture" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -5725,6 +5811,15 @@ advertencia 6005: Actualmente, no se admite el tipo de datos 'ufloat' para la ve
               <MappingFragment StoreEntitySet="turnos">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="turnos_fixture">
+            <EntityTypeMapping TypeName="goldenModel.turnos_fixture">
+              <MappingFragment StoreEntitySet="turnos_fixture">
+                <ScalarProperty Name="id_turno_fixture" ColumnName="id_turno_fixture" />
+                <ScalarProperty Name="id_cancha" ColumnName="id_cancha" />
+                <ScalarProperty Name="id_horario" ColumnName="id_horario" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

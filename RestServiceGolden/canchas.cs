@@ -19,6 +19,7 @@ namespace RestServiceGolden
         {
             this.partidos = new HashSet<partidos>();
             this.tipos_cancha = new HashSet<tipos_cancha>();
+            this.turnos_fixture = new HashSet<turnos_fixture>();
         }
     
         public int id_cancha { get; set; }
@@ -33,5 +34,7 @@ namespace RestServiceGolden
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tipos_cancha> tipos_cancha { get; set; }
         public virtual clubes clubes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<turnos_fixture> turnos_fixture { get; set; }
     }
 }
