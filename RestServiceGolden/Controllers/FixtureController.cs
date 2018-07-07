@@ -1130,7 +1130,7 @@ namespace RestServiceGolden.Controllers
                     db.partidos.Remove(partido);
                     db.SaveChanges();
 
-                    if(id_fase == 3)
+                    if (id_fase == 3)
                     {
                         var playoff = db.playoff.SingleOrDefault(x => x.id_partido == iPartido.id_partido);
                         db.playoff.Remove(playoff);
@@ -1148,6 +1148,58 @@ namespace RestServiceGolden.Controllers
                   JsonConvert.SerializeObject(iPartido, Formatting.None), " Excepcion: " + e.Message + e.StackTrace);
                 logger.EscribirLog();
                 return BadRequest(e.ToString());
+            }
+        }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/fecha/obtenerTodasParaSancion/{id_torneo}")]
+        public IHttpActionResult getObtenerTodasParaSancion(int id_torneo)
+        {
+            try
+            {
+                var fechas = (from tFixtureZona in db.fixture_zona
+                              join tFecha in db.fechas on tFixtureZona.id_fixture equals tFecha.id_fixture_zona
+                              where tFixtureZona.id_torneo == id_torneo
+                              select new
+                              {
+                                  id_fixture = tFixtureZona.id_fixture,
+                                  id_torneo = tFixtureZona.id_torneo,
+                                  id_fecha = tFecha.id_fecha,
+                                  estado = tFecha.id_estado,
+                                  fecha = tFecha.fecha
+                              }).ToList();
+
+                if (fechas.Count > 0)
+                {
+                    Fixture fixture = new Fixture();
+                    Torneo torneo = new Torneo();
+                    List<Fecha> lsFechas = new List<Fecha>();
+
+                    fixture.fechas = lsFechas;
+                    fixture.torneo = torneo;
+
+                    foreach (var f in fechas)
+                    {
+                        fixture.id_fixture = f.id_fixture;
+                        fixture.torneo.id_torneo = f.id_torneo;
+
+                        Fecha fecha = new Fecha();
+                        EstadoFecha estado = new EstadoFecha();
+
+                        fecha.id_fecha = f.id_fecha;
+                        fecha.fecha = (DateTime)f.fecha;
+                        fecha.estado = estado;
+                        fecha.estado.id_estado = f.estado;
+                        fixture.fechas.Add(fecha);
+                    }
+
+                    return Ok(fixture);
+                }
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
             }
         }
 
