@@ -22,7 +22,7 @@ namespace RestServiceGolden.Controllers
 
         [ResponseType(typeof(IHttpActionResult))]
         [Route("api/fixtureAutomatico/generarTurnos")]
-        public IHttpActionResult generarTurnos()
+        public IHttpActionResult getGenerarTurnos()
         {
             goldenEntities db = new goldenEntities();
             try
@@ -45,6 +45,30 @@ namespace RestServiceGolden.Controllers
             }catch(Exception e)
             {
                 return BadRequest();
+            }
+        }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/fixtureAutomatico/obtenerTipos")]
+        public IHttpActionResult getObtenerTiposFixture()
+        {
+            goldenEntities db = new goldenEntities();
+            try
+            {
+                var lsTiposFixture = db.tipos_fixture.ToList();
+                List<TipoFixture> lsTiposFixtureDto = new List<TipoFixture>();
+                foreach (var tipo in lsTiposFixture)
+                {
+                    TipoFixture tipoDto = new TipoFixture();
+                    tipoDto.id_tipo = tipo.id_tipo;
+                    tipoDto.descripcion = tipo.descripcion;
+                    lsTiposFixtureDto.Add(tipoDto);
+                }
+                return Ok(lsTiposFixtureDto);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
             }
         }
     }

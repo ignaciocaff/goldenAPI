@@ -10,6 +10,9 @@ namespace RestServiceGolden.Models
         public int? id_partido { get; set; }
         public List<IEquipo> local { get; set; }
         public List<IEquipo> visitante { get; set; }
+        public IEquipo equipoLocal { get; set; }
+        public IEquipo equipoVisitante { get; set; }
+        public HorarioFijo horario_fijo { get; set; }
         public Cancha cancha { get; set; }
         public HorarioFijo horario { get; set; }
         public Fecha fecha { get; set; }

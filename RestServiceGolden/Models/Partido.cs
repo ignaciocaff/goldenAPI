@@ -25,6 +25,7 @@ namespace RestServiceGolden.Models
         public List<Gol> lsGoleadoresLocales { get; set; }
         public List<Sancion> lsSancionesLocal { get; set; }
         public List<Sancion> lsSancionesVisitante { get; set; }
+        public Boolean esInterzonal { get; set; }
         public Llave llave { get; set; }
         public Etapa etapa { get; set; }
         public Equipo ganadorPlayoff { get; set; }

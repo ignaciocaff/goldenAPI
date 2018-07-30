@@ -507,7 +507,7 @@ namespace RestServiceGolden.Controllers
 
             try
             {
-                var equipos = db.equipos.Where(x => x.id_torneo == id).ToList();
+                var equipos = db.equipos.Where(x => x.id_torneo == id).OrderBy(x => x.nombre).ToList();
 
                 foreach (var tEquipo in equipos)
                 {

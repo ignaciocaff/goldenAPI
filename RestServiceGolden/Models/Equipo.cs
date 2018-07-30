@@ -18,5 +18,6 @@ namespace RestServiceGolden.Models
         public Categoria categoria { get; set; }
         public Club club { get; set; }
         public Torneo torneo { get; set; }
+        public int id_zona { get; set; }
     }
 }

@@ -157,6 +157,7 @@ namespace RestServiceGolden.Controllers
                     TipoTorneo tTorneo = new TipoTorneo();
                     Regla regla = new Regla();
                     List<Equipo> lsEquipos = new List<Equipo>();
+                    EstadoTorneo estado = new EstadoTorneo();
                     Fase fase = new Fase();
                     var equipos = db.equipos.Where(x => x.id_torneo == t.id_torneo).ToList();
 
@@ -179,6 +180,8 @@ namespace RestServiceGolden.Controllers
                     torneo.fecha_inicio = t.fecha_inicio.Value.Date;
                     torneo.fase = fase;
                     torneo.fase.id_fase = t.id_fase;
+                    torneo.estado = estado;
+                    torneo.estado.id_estado = t.id_estado;
 
                     foreach (var e in equipos)
                     {
@@ -195,7 +198,10 @@ namespace RestServiceGolden.Controllers
                         lsEquipos.Add(equipo);
                     }
                     torneo.lsEquipos = lsEquipos;
-                    lsTorneos.Add(torneo);
+                    if (torneo.estado.id_estado != 3)
+                    {
+                        lsTorneos.Add(torneo);
+                    }
                 }
 
             }
@@ -222,7 +228,7 @@ namespace RestServiceGolden.Controllers
                 {
                     Torneo torneo = new Torneo();
                     Fase fase = new Fase();
-
+                    EstadoTorneo estado = new EstadoTorneo();
                     torneo.id_torneo = t.id_torneo;
                     torneo.nombre = t.nombre;
                     torneo.descripcion = t.descripcion;
@@ -230,7 +236,13 @@ namespace RestServiceGolden.Controllers
                     torneo.fecha_inicio = t.fecha_inicio.Value.Date;
                     torneo.fase = fase;
                     torneo.fase.id_fase = t.id_fase;
-                    lsTorneos.Add(torneo);
+                    torneo.estado = estado;
+                    torneo.estado.id_estado = t.id_estado;
+
+                    if (torneo.estado.id_estado != 3)
+                    {
+                        lsTorneos.Add(torneo);
+                    }
                 }
 
             }
@@ -251,12 +263,14 @@ namespace RestServiceGolden.Controllers
             var torneos = db.torneos.Where(x => x.nombre == nombre).FirstOrDefault();
             Torneo torneo = new Torneo();
             Fase fase = new Fase();
+            EstadoTorneo estado = new EstadoTorneo();
             torneo.id_torneo = torneos.id_torneo;
             torneo.nombre = torneos.nombre;
             torneo.descripcion = torneos.descripcion;
             torneo.fase = fase;
             torneo.fase.id_fase = torneos.id_fase;
-
+            torneo.estado = estado;
+            torneo.estado.id_estado = torneos.id_estado;
             return Ok(torneo);
         }
 

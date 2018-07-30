@@ -12,6 +12,7 @@ namespace RestServiceGolden.Models
         public String nombre { get; set; }
         public String imagePath { get; set; }
         public int? logo { get; set; }
+        public int? id_zona { get; set; }
         public List<Jugador> lsJugadores { get; set; }
         public IEquipo(int? id_equipo)
         {
