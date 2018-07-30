@@ -137,18 +137,22 @@ namespace RestServiceGolden.Controllers
             {
                 goldenEntities db = new goldenEntities();
                 int id_usuario = 0;
-                usuarios usuarioCheck = new usuarios();
+                List<usuarios> usuarioCheck = new List<usuarios>();
                 Usuario usuarioDto = new Usuario();
-                representante_equipo repreCheck = db.representante_equipo.Where(x => x.id_equipo == id_equipo).FirstOrDefault();
-                if (repreCheck != null)
-                {
-                    usuarioCheck = db.usuarios.Where(x => x.n_usuario.Equals(usuario.n_usuario)).OrderByDescending(x => x.caducidad).FirstOrDefault();
 
-                    usuarioDto.caducidad = (DateTime)usuarioCheck.caducidad;
+                representante_equipo repreCheck = db.representante_equipo.Where(x => x.id_equipo == id_equipo).OrderByDescending(y => y.id).FirstOrDefault();
+                usuarioCheck = db.usuarios.Where(x => x.n_usuario.Equals(usuario.n_usuario)).OrderByDescending(x => x.caducidad).ToList();
+                foreach (var usuarioBd in usuarioCheck)
+                {
+                    usuarioDto.caducidad = (DateTime)usuarioBd.caducidad;
+                    usuarioDto.id_usuario = usuarioBd.id_usuario;
 
                     if (usuarioDto.caducidad.Date > DateTime.Now)
                     {
-                        return BadRequest();
+                        if (repreCheck.id_usuario == usuarioDto.id_usuario)
+                        {
+                            return BadRequest();
+                        }
                     }
                 }
 
@@ -168,7 +172,6 @@ namespace RestServiceGolden.Controllers
                 db.SaveChanges();
 
                 return Ok();
-
             }
             catch (Exception e)
             {
