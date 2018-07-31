@@ -260,7 +260,7 @@ namespace RestServiceGolden.Controllers
         [Route("api/torneo/{nombre}")]
         public IHttpActionResult GetById(String nombre)
         {
-            var torneos = db.torneos.Where(x => x.nombre == nombre).FirstOrDefault();
+            var torneos = db.torneos.Where(x => x.nombre == nombre && x.id_estado != 3).FirstOrDefault();
             Torneo torneo = new Torneo();
             Fase fase = new Fase();
             EstadoTorneo estado = new EstadoTorneo();
