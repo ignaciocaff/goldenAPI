@@ -11,13 +11,22 @@ namespace RestServiceGolden.Utilidades
         {
             goldenEntities db = new goldenEntities();
             List<turnos_fixture> turnos = db.turnos_fixture.ToList();
+
             if (lsquipos.Count % 2 != 0)
             {
-                lsquipos.Add(new Equipo());
+                Equipo e = new Equipo();
+                e.id_equipo = -1;
+                lsquipos.Add(e);
             }
 
             int cantidadDias = (cantidadEquipos - 1);
+
             int mitadTamaño = cantidadEquipos / 2;
+
+            if (parametros.tipoDeFixture.id_tipo == 2)
+            {
+                mitadTamaño = lsquipos.Count / 2;
+            }
 
             List<Equipo> equipos = new List<Equipo>();
 
@@ -25,24 +34,20 @@ namespace RestServiceGolden.Utilidades
             equipos.RemoveAt(0); // Excluimos el primer equipo
 
             int equiposTamaño = equipos.Count;
-            String completo = "";
             Fixture fixture = new Fixture();
             List<Fecha> lsFechas = new List<Fecha>();
             for (int dia = 0; dia < cantidadDias; dia++)
             {
                 Fecha fecha = new Fecha();
                 fecha.partidos = new List<Partido>();
-                fecha.fecha = parametros.fechaInicioFixture.AddDays(parametros.cantidadDiasEntrePartidos);
-                completo += " Dia" + (dia + 1) + " ";
+                fecha.fecha = parametros.fechaInicioFixture.AddDays(parametros.cantidadDiasEntrePartidos * dia);
                 int equipoIndice = dia % equiposTamaño;
 
 
                 Partido partido = new Partido();
-                Console.WriteLine("{0} vs {1}", equipos[equipoIndice].nombre, lsquipos[0].nombre);
-                completo += " " + equipos[equipoIndice].nombre + " vs " + lsquipos[0].nombre + " ";
                 partido.local = equipos[equipoIndice];
                 partido.visitante = lsquipos[0];
-                asignacionTurnos(turnos, partido);
+                asignacionTurnos(turnos, partido, fecha);
                 fecha.partidos.Add(partido);
 
                 for (int i = 1; i < mitadTamaño; i++)
@@ -50,11 +55,9 @@ namespace RestServiceGolden.Utilidades
                     Partido p2 = new Partido();
                     int primerEquipo = (dia + i) % equiposTamaño;
                     int segundoEquipo = (dia + equiposTamaño - i) % equiposTamaño;
-                    Console.WriteLine("{0} vs {1}", equipos[primerEquipo].nombre, equipos[segundoEquipo].nombre);
-                    completo += " " + equipos[primerEquipo].nombre + " vs " + equipos[segundoEquipo].nombre + " ";
                     p2.local = equipos[primerEquipo];
                     p2.visitante = equipos[segundoEquipo];
-                    asignacionTurnos(turnos, p2);
+                    asignacionTurnos(turnos, p2, fecha);
                     fecha.partidos.Add(p2);
                 }
 
@@ -65,21 +68,32 @@ namespace RestServiceGolden.Utilidades
             return fixture;
         }
 
-        public Partido asignacionTurnos(List<turnos_fixture> turnos, Partido partido)
+        public Partido asignacionTurnos(List<turnos_fixture> turnos, Partido partido, Fecha fecha)
         {
             goldenEntities db = new goldenEntities();
-            
+
 
             HorarioFijo horario = new HorarioFijo();
             Cancha cancha = new Cancha();
             Random random = new Random();
+            int turno = 0;
+            fechas comprobacion;
+            do
+            {
+                turno = random.Next(0, turnos.Count);
+                comprobacion = (from fechaDto in db.fechas
+                                from partidoDto in db.partidos
+                                where fechaDto.fecha == fecha.fecha && partidoDto.id_horario_fijo == horario.id_horario
+                                && partidoDto.id_cancha == cancha.id_cancha
+                                select fechaDto).SingleOrDefault();
+                if (comprobacion != null)
+                {
+                    turnos.RemoveAt(turno);
+                }
+            } while (comprobacion != null);
 
-            int turno = random.Next(0, turnos.Count);
             cancha.id_cancha = (int)turnos[turno].id_cancha;
             horario.id_horario = turnos[turno].id_horario;
-
-            partido.horario_fijo = horario;
-            partido.cancha = cancha;
             turnos.RemoveAt(turno);
 
             return partido;
@@ -89,24 +103,129 @@ namespace RestServiceGolden.Utilidades
         {
             goldenEntities db = new goldenEntities();
             Fixture fixture;
-            List<Equipo> listadoEquipos = generarEquiposPorZonaYTorneo(parametros);
+            List<Equipo> listadoEquipos = new List<Equipo>();
             switch (parametros.tipoDeFixture.id_tipo)
             {
                 case 1:
+                    //Fixture zona con equipos par o todos contra todos.
                     //fixture = generarFixturePorZona(parametros);
                     //persistenciaDatosZonas(fixture, parametros);
+                    listadoEquipos = generarEquiposPorZonaYTorneo(parametros);
                     fixture = listadoPartidos(listadoEquipos, listadoEquipos.Count, parametros);
                     break;
                 case 2:
-                    //fixture = generarFixturePorZona(parametros);
-                    fixture = listadoPartidos(listadoEquipos, listadoEquipos.Count, parametros);
+                    //Fixture completo con interzonal, numero de zonas par, numero de equipos impar
+                    var zonas = db.zonas.Where(x => x.id_torneo == parametros.id_torneo).ToList();
+
+                    Fixture fixtureDto = new Fixture();
+                    List<Fecha> lsFechas = new List<Fecha>();
+                    fixtureDto.fechas = lsFechas;
+                    foreach (var zona in zonas)
+                    {
+                        parametros.zona.id_zona = zona.id_zona;
+                        listadoEquipos = generarEquiposPorZonaYTorneo(parametros);
+
+                        foreach (var fecha in listadoPartidos(listadoEquipos, listadoEquipos.Count, parametros).fechas)
+                        {
+
+                            int? indice = lsFechas.FindIndex(x => x.fecha == fecha.fecha);
+                            if (indice != -1)
+                            {
+                                lsFechas.ElementAt((int)indice).partidos.AddRange(fecha.partidos);
+                                lsFechas.ElementAt((int)indice).iPartidos.AddRange(fecha.iPartidos);
+                            }
+                            else
+                            {
+                                lsFechas.Add(fecha);
+                            }
+                        }
+                    }
+
+                    foreach (var fechaInterzonal in lsFechas)
+                    {
+                        List<Equipo> equiposInterzonales = new List<Equipo>();
+                        List<IEquipo> iEquiposInterzonales = new List<IEquipo>();
+                        Partido partidoInterzonal = new Partido();
+                        IPartido iPartidoInterzonal = new IPartido();
+
+                        for (var i = fechaInterzonal.partidos.Count - 1; i >= 0; i--)
+                        {
+                            if (fechaInterzonal.partidos[i].local.id_equipo == -1)
+                            {
+                                equiposInterzonales.Add(fechaInterzonal.partidos[i].visitante);
+                                iEquiposInterzonales.Add(fechaInterzonal.iPartidos[i].visitante[0]);
+                                partidoInterzonal.cancha = fechaInterzonal.partidos[i].cancha;
+                                partidoInterzonal.horario_fijo = fechaInterzonal.partidos[i].horario_fijo;
+                                iPartidoInterzonal.cancha = fechaInterzonal.iPartidos[i].cancha;
+                                iPartidoInterzonal.horario = fechaInterzonal.iPartidos[i].horario;
+                                fechaInterzonal.partidos.RemoveAt(i);
+                                fechaInterzonal.iPartidos.RemoveAt(i);
+                            }
+                            else if (fechaInterzonal.partidos[i].visitante.id_equipo == -1)
+                            {
+                                equiposInterzonales.Add(fechaInterzonal.partidos[i].local);
+                                iEquiposInterzonales.Add(fechaInterzonal.iPartidos[i].local[0]);
+                                partidoInterzonal.cancha = fechaInterzonal.partidos[i].cancha;
+                                partidoInterzonal.horario_fijo = fechaInterzonal.partidos[i].horario_fijo;
+                                iPartidoInterzonal.cancha = fechaInterzonal.iPartidos[i].cancha;
+                                iPartidoInterzonal.horario = fechaInterzonal.iPartidos[i].horario;
+                                fechaInterzonal.partidos.RemoveAt(i);
+                                fechaInterzonal.iPartidos.RemoveAt(i);
+                            }
+                        }
+                        Random randomEquiposInterzonales = new Random();
+
+                        equiposInterzonales = equiposInterzonales.OrderBy(a => randomEquiposInterzonales.Next()).ToList();
+
+                        for (var j = 0; j < equiposInterzonales.Count / 2; j += 2)
+                        {
+                            List<IEquipo> lsLocal = new List<IEquipo>();
+                            List<IEquipo> lsVisitante = new List<IEquipo>();
+                            iPartidoInterzonal.local = lsLocal;
+                            iPartidoInterzonal.visitante = lsVisitante;
+                            partidoInterzonal.local = equiposInterzonales[j];
+                            partidoInterzonal.visitante = equiposInterzonales[j + 1];
+                            iPartidoInterzonal.local.Add(iEquiposInterzonales.Find(x => x.id_equipo == equiposInterzonales[j].id_equipo));
+                            iPartidoInterzonal.visitante.Add(iEquiposInterzonales.Find(x => x.id_equipo == equiposInterzonales[j + 1].id_equipo));
+                            fechaInterzonal.partidos.Add(partidoInterzonal);
+                            fechaInterzonal.iPartidos.Add(iPartidoInterzonal);
+                        }
+                    }
+
+                    fixtureDto.fechas = lsFechas;
+                    fixture = fixtureDto;
+
                     //persistenciaDatos(fixture, parametros);
                     break;
                 case 3:
-                    //fixture = generarFixtureTorneoCompleto(parametros);
-                    /*persistenciaDatos(fixture, parametros);*/
-                    // Get the schedule.
-                    fixture = listadoPartidos(listadoEquipos, listadoEquipos.Count, parametros);
+                    //Fixture completo sin interzonal, numero de zonas par o impar, numero de equipos par
+                    var zonasTipo3 = db.zonas.Where(x => x.id_torneo == parametros.id_torneo).ToList();
+
+                    Fixture fixtureDtoTipo3 = new Fixture();
+                    List<Fecha> lsFechasTipo3 = new List<Fecha>();
+                    fixtureDtoTipo3.fechas = lsFechasTipo3;
+                    foreach (var zona in zonasTipo3)
+                    {
+                        parametros.zona.id_zona = zona.id_zona;
+                        listadoEquipos = generarEquiposPorZonaYTorneo(parametros);
+
+                        foreach (var fecha in listadoPartidos(listadoEquipos, listadoEquipos.Count, parametros).fechas)
+                        {
+
+                            int? indice = lsFechasTipo3.FindIndex(x => x.fecha == fecha.fecha);
+                            if (indice != -1)
+                            {
+                                lsFechasTipo3.ElementAt((int)indice).partidos.AddRange(fecha.partidos);
+                                lsFechasTipo3.ElementAt((int)indice).iPartidos.AddRange(fecha.iPartidos);
+                            }
+                            else
+                            {
+                                lsFechasTipo3.Add(fecha);
+                            }
+                        }
+                    }
+                    fixtureDtoTipo3.fechas = lsFechasTipo3;
+                    fixture = fixtureDtoTipo3;
                     break;
                 default:
                     fixture = null;
@@ -234,10 +353,10 @@ namespace RestServiceGolden.Utilidades
                     interfazPartido.horario.fin = horarios.Where(x => x.id_horario == interfazPartido.horario.id_horario).SingleOrDefault().fin;
                     interfazLocal.id_equipo = partido.local.id_equipo;
                     interfazLocal.nombre = partido.local.nombre;
-                    interfazLocal.imagePath = archivos.Where(x => x.Id == partido.local.camisetalogo).SingleOrDefault().ImagePath;
+                    interfazLocal.imagePath = partido.local.camisetalogo != 0 ? archivos.Where(x => x.Id == partido.local.camisetalogo).SingleOrDefault().ImagePath : null;
                     interfazVisitante.id_equipo = partido.visitante.id_equipo;
                     interfazVisitante.nombre = partido.visitante.nombre;
-                    interfazVisitante.imagePath = archivos.Where(x => x.Id == partido.visitante.camisetalogo).SingleOrDefault().ImagePath;
+                    interfazVisitante.imagePath = partido.visitante.camisetalogo != 0 ? archivos.Where(x => x.Id == partido.visitante.camisetalogo).SingleOrDefault().ImagePath : null;
                     interfazPartido.local = listaLocal;
                     interfazPartido.visitante = listaVisitante;
                     interfazPartido.local.Add(interfazLocal);
