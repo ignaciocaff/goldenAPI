@@ -30,6 +30,7 @@ namespace RestServiceGolden.Controllers
                 {
                     var filesReadToProvider = await Request.Content.ReadAsMultipartAsync();
                     var index = 0;
+
                     foreach (var streamContent in filesReadToProvider.Contents)
                     {
                         var fileBytes = await streamContent.ReadAsByteArrayAsync();
@@ -37,7 +38,7 @@ namespace RestServiceGolden.Controllers
                         file.ProjectId = projectId;
                         file.SectionId = sectionId;
                         //file.FileName = context.Files[index].FileName;
-                        file.FileName = string.Join(Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8),".jpg");
+                        file.FileName = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8) + ".jpg";
                         file.FileSize = fileBytes.Length;
                         file.ImagePath = String.Format("/UploadedFiles/{0}_{1}_{2}", projectId, sectionId, file.FileName);
                         file.ThumbPath = String.Format("/UploadedFiles/{0}_{1}_th_{2}", projectId, sectionId, file.FileName);
