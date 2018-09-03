@@ -441,7 +441,10 @@ namespace RestServiceGolden.Controllers
                             iPartido.fecha.id_fecha = f.id_fecha;
                             iPartido.fecha.fecha = (DateTime)f.fecha;
 
-                            if (partido.esInterzonal == 1 && partido.id_resultado == null && partido.id_resultados_zona == null)
+                            var equipoLocal = db.equipos.Where(x => x.id_equipo == partido.local).FirstOrDefault();
+                            var equipoVisitante = db.equipos.Where(x => x.id_equipo == partido.visitante).FirstOrDefault();
+                            if (partido.esInterzonal == 1 && partido.id_resultado == null && partido.id_resultados_zona == null &&
+                                (equipoLocal.id_torneo == id_torneo && equipoVisitante.id_torneo == id_torneo))
                             {
                                 lsPartidos.Add(iPartido);
                             }
@@ -737,18 +740,17 @@ namespace RestServiceGolden.Controllers
                 }
                 else
                 {
-
                     var fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == null && x.id_torneo == id_torneo);
                     if (fixture_zona != null)
                     {
-                        var partidos = db.fechas.Where(x => x.id_fixture_zona == fixture_zona.id_fixture && x.fecha == fecha.fecha).SingleOrDefault().partidos;
-                        if (partidos != null)
+                        var fechas = db.fechas.Where(x => x.id_fixture_zona == fixture_zona.id_fixture && x.fecha == fecha.fecha).ToList();
+
+                        foreach(var f in fechas)
                         {
-                            var partido = partidos.Where(x => (x.local == id_equipo || x.visitante == id_equipo) && x.esInterzonal != null && x.id_resultado != null).SingleOrDefault();
+                            var partido = db.partidos.Where(x => (x.local == id_equipo || x.visitante == id_equipo) && x.esInterzonal != null && x.id_resultado != null
+                            && x.id_fecha == f.id_fecha).SingleOrDefault();
                             if (partido != null)
                             {
-
-
                                 Cancha cancha = new Cancha();
                                 HorarioFijo horarioFijo = new HorarioFijo();
                                 IEquipo iLocal = new IEquipo();
@@ -1003,7 +1005,7 @@ namespace RestServiceGolden.Controllers
                                 iPartido.resultado.id_resultado = (int)partido.id_resultado;
                             }
                         }
-                    }
+                    }             
                 }
                 return Ok(iPartido);
             }
