@@ -1007,6 +1007,166 @@ namespace RestServiceGolden.Controllers
                     }
                 }
                 db.SaveChanges();
+
+                //Chequeo si no hay cambios de ganador y perdedor y solamente se agregaron o sacaron goles
+                var partidoSinCambioResultado = db.partidos.SingleOrDefault(x => x.id_partido == partido.id_partido);
+                if (esInterzonal != 0)
+                {
+                    //Es interzonal
+                    var resultadoPSCR = db.resultados.SingleOrDefault(x => x.id_resultado == partidoSinCambioResultado.id_resultado);
+                    if (partido.resultado.ganador.id_equipo == resultadoPSCR.id_ganador
+                        && resultadoPSCR.empate == partido.resultado.empate)
+                    {
+                        //No hubo cambio de resultados en el partido más que goles
+                        if (id_fase == 1)
+                        {
+                            //Busco en posiciones
+                            var posicionesPSCRGanador = db.posiciones.SingleOrDefault(x => x.id_equipo == partido.resultado.ganador.id_equipo
+                            && x.id_torneo == id_torneo);
+                            var posicionesPSCRPerdedor = db.posiciones.SingleOrDefault(x => x.id_equipo == partido.resultado.perdedor.id_equipo
+                             && x.id_torneo == id_torneo);
+
+                            //Busco goles a favor y en contra de las 3 listas para el ganador
+                            var ganadorAFavor = lsGolesLocal.Where(x => x.equipo.id_equipo == partido.resultado.ganador.id_equipo).ToList().Count
+                                + lsGolesVisitante.Where(x => x.equipo.id_equipo == partido.resultado.ganador.id_equipo).ToList().Count;
+                            var ganadorEnContra = lsGolesLocal.Where(x => x.equipo.id_equipo == partido.resultado.perdedor.id_equipo).ToList().Count +
+                                lsGolesVisitante.Where(x => x.equipo.id_equipo == partido.resultado.perdedor.id_equipo).ToList().Count;
+
+                            var ganadorRestarAFavor = partido.lsGolesABorrar.Where(x => x.equipo.id_equipo == partido.resultado.ganador.id_equipo).ToList().Count;
+                            var ganadorRestarEnContra = partido.lsGolesABorrar.Where(x => x.equipo.id_equipo == partido.resultado.perdedor.id_equipo).ToList().Count;
+
+                            //Busco goles a favor y en contra de las 3 listas para el perdedor.
+                            var perdedorAFavor = ganadorEnContra;
+                            var perdedorEnContra = ganadorAFavor;
+                            var perdedorRestarAFavor = ganadorRestarEnContra;
+                            var perdedorRestarEnContra = ganadorRestarAFavor;
+
+                            posicionesPSCRGanador.goles_favor = posicionesPSCRGanador.goles_favor + ganadorAFavor - ganadorRestarAFavor;
+                            posicionesPSCRGanador.goles_contra = posicionesPSCRGanador.goles_contra + ganadorEnContra - ganadorRestarEnContra;
+                            posicionesPSCRGanador.dif_gol = posicionesPSCRGanador.goles_favor - posicionesPSCRGanador.goles_contra;
+                            posicionesPSCRPerdedor.goles_favor = posicionesPSCRPerdedor.goles_favor + perdedorAFavor - perdedorRestarAFavor;
+                            posicionesPSCRPerdedor.goles_contra = posicionesPSCRPerdedor.goles_contra + perdedorEnContra - perdedorRestarEnContra;
+                            posicionesPSCRPerdedor.dif_gol = posicionesPSCRPerdedor.goles_favor - posicionesPSCRPerdedor.goles_contra;
+                            db.SaveChanges();
+                            return Ok();
+                        }
+                        else
+                        {
+                            //Es fase 2 busco en posiciones_zona sacando la zona de equipos_zona para ese id_equipo
+                            var zonaGanador = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado.ganador.id_equipo);
+                            var zonaPerdedor = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado.ganador.id_equipo);
+                            //Busco en posiciones zona
+                            var posicionesPSCRGanador = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == partido.resultado.ganador.id_equipo
+                            && x.id_torneo == id_torneo && x.id_zona == zonaGanador.id_zona);
+                            var posicionesPSCRPerdedor = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == partido.resultado.perdedor.id_equipo
+                             && x.id_torneo == id_torneo && x.id_zona == zonaPerdedor.id_zona);
+
+                            //Busco goles a favor y en contra de las 3 listas para el ganador
+                            var ganadorAFavor = lsGolesLocal.Where(x => x.equipo.id_equipo == partido.resultado.ganador.id_equipo).ToList().Count
+                                + lsGolesVisitante.Where(x => x.equipo.id_equipo == partido.resultado.ganador.id_equipo).ToList().Count;
+                            var ganadorEnContra = lsGolesLocal.Where(x => x.equipo.id_equipo == partido.resultado.perdedor.id_equipo).ToList().Count +
+                                lsGolesVisitante.Where(x => x.equipo.id_equipo == partido.resultado.perdedor.id_equipo).ToList().Count;
+
+                            var ganadorRestarAFavor = partido.lsGolesABorrar.Where(x => x.equipo.id_equipo == partido.resultado.ganador.id_equipo).ToList().Count;
+                            var ganadorRestarEnContra = partido.lsGolesABorrar.Where(x => x.equipo.id_equipo == partido.resultado.perdedor.id_equipo).ToList().Count;
+
+                            //Busco goles a favor y en contra de las 3 listas para el perdedor.
+                            var perdedorAFavor = ganadorEnContra;
+                            var perdedorEnContra = ganadorAFavor;
+                            var perdedorRestarAFavor = ganadorRestarEnContra;
+                            var perdedorRestarEnContra = ganadorRestarAFavor;
+
+                            posicionesPSCRGanador.goles_favor = posicionesPSCRGanador.goles_favor + ganadorAFavor - ganadorRestarAFavor;
+                            posicionesPSCRGanador.goles_contra = posicionesPSCRGanador.goles_contra + ganadorEnContra - ganadorRestarEnContra;
+                            posicionesPSCRGanador.dif_gol = posicionesPSCRGanador.goles_favor - posicionesPSCRGanador.goles_contra;
+                            posicionesPSCRPerdedor.goles_favor = posicionesPSCRPerdedor.goles_favor + perdedorAFavor - perdedorRestarAFavor;
+                            posicionesPSCRPerdedor.goles_contra = posicionesPSCRPerdedor.goles_contra + perdedorEnContra - perdedorRestarEnContra;
+                            posicionesPSCRPerdedor.dif_gol = posicionesPSCRPerdedor.goles_favor - posicionesPSCRPerdedor.goles_contra;
+                            db.SaveChanges();
+                            return Ok();
+
+                        }
+                    }
+                }
+                else
+                {
+                    //No es un partido interzonal
+                    var resultadoPSCR = db.resultados_zona.SingleOrDefault(x => x.id_resultado == partidoSinCambioResultado.id_resultados_zona);
+                    if (partido.resultado_zona.ganador.id_equipo == resultadoPSCR.id_ganador
+    && resultadoPSCR.empate == partido.resultado_zona.empate)
+                    {
+                        //No hubo cambio de resultados en el partido más que goles
+                        if (id_fase == 1)
+                        {
+                            //Busco en posiciones
+                            var posicionesPSCRGanador = db.posiciones.SingleOrDefault(x => x.id_equipo == partido.resultado_zona.ganador.id_equipo
+                            && x.id_torneo == id_torneo);
+                            var posicionesPSCRPerdedor = db.posiciones.SingleOrDefault(x => x.id_equipo == partido.resultado_zona.perdedor.id_equipo
+                             && x.id_torneo == id_torneo);
+
+                            //Busco goles a favor y en contra de las 3 listas para el ganador
+                            var ganadorAFavor = lsGolesLocal.Where(x => x.equipo.id_equipo == partido.resultado_zona.ganador.id_equipo).ToList().Count
+                                + lsGolesVisitante.Where(x => x.equipo.id_equipo == partido.resultado_zona.ganador.id_equipo).ToList().Count;
+                            var ganadorEnContra = lsGolesLocal.Where(x => x.equipo.id_equipo == partido.resultado_zona.perdedor.id_equipo).ToList().Count +
+                                lsGolesVisitante.Where(x => x.equipo.id_equipo == partido.resultado_zona.perdedor.id_equipo).ToList().Count;
+
+                            var ganadorRestarAFavor = partido.lsGolesABorrar.Where(x => x.equipo.id_equipo == partido.resultado_zona.ganador.id_equipo).ToList().Count;
+                            var ganadorRestarEnContra = partido.lsGolesABorrar.Where(x => x.equipo.id_equipo == partido.resultado_zona.perdedor.id_equipo).ToList().Count;
+
+                            //Busco goles a favor y en contra de las 3 listas para el perdedor.
+                            var perdedorAFavor = ganadorEnContra;
+                            var perdedorEnContra = ganadorAFavor;
+                            var perdedorRestarAFavor = ganadorRestarEnContra;
+                            var perdedorRestarEnContra = ganadorRestarAFavor;
+
+                            posicionesPSCRGanador.goles_favor = posicionesPSCRGanador.goles_favor + ganadorAFavor - ganadorRestarAFavor;
+                            posicionesPSCRGanador.goles_contra = posicionesPSCRGanador.goles_contra + ganadorEnContra - ganadorRestarEnContra;
+                            posicionesPSCRGanador.dif_gol = posicionesPSCRGanador.goles_favor - posicionesPSCRGanador.goles_contra;
+                            posicionesPSCRPerdedor.goles_favor = posicionesPSCRPerdedor.goles_favor + perdedorAFavor - perdedorRestarAFavor;
+                            posicionesPSCRPerdedor.goles_contra = posicionesPSCRPerdedor.goles_contra + perdedorEnContra - perdedorRestarEnContra;
+                            posicionesPSCRPerdedor.dif_gol = posicionesPSCRPerdedor.goles_favor - posicionesPSCRPerdedor.goles_contra;
+                            db.SaveChanges();
+                            return Ok();
+                        }
+                        else
+                        {
+                            //Es fase 2 busco en posiciones_zona sacando la zona de equipos_zona para ese id_equipo
+                            var zonaGanador = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado_zona.ganador.id_equipo);
+                            var zonaPerdedor = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado_zona.ganador.id_equipo);
+                            //Busco en posiciones zona
+                            var posicionesPSCRGanador = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == partido.resultado_zona.ganador.id_equipo
+                            && x.id_torneo == id_torneo && x.id_zona == zonaGanador.id_zona);
+                            var posicionesPSCRPerdedor = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == partido.resultado_zona.perdedor.id_equipo
+                             && x.id_torneo == id_torneo && x.id_zona == zonaPerdedor.id_zona);
+
+                            //Busco goles a favor y en contra de las 3 listas para el ganador
+                            var ganadorAFavor = lsGolesLocal.Where(x => x.equipo.id_equipo == partido.resultado_zona.ganador.id_equipo).ToList().Count
+                                + lsGolesVisitante.Where(x => x.equipo.id_equipo == partido.resultado_zona.ganador.id_equipo).ToList().Count;
+                            var ganadorEnContra = lsGolesLocal.Where(x => x.equipo.id_equipo == partido.resultado_zona.perdedor.id_equipo).ToList().Count +
+                                lsGolesVisitante.Where(x => x.equipo.id_equipo == partido.resultado_zona.perdedor.id_equipo).ToList().Count;
+
+                            var ganadorRestarAFavor = partido.lsGolesABorrar.Where(x => x.equipo.id_equipo == partido.resultado_zona.ganador.id_equipo).ToList().Count;
+                            var ganadorRestarEnContra = partido.lsGolesABorrar.Where(x => x.equipo.id_equipo == partido.resultado_zona.perdedor.id_equipo).ToList().Count;
+
+                            //Busco goles a favor y en contra de las 3 listas para el perdedor.
+                            var perdedorAFavor = ganadorEnContra;
+                            var perdedorEnContra = ganadorAFavor;
+                            var perdedorRestarAFavor = ganadorRestarEnContra;
+                            var perdedorRestarEnContra = ganadorRestarAFavor;
+
+                            posicionesPSCRGanador.goles_favor = posicionesPSCRGanador.goles_favor + ganadorAFavor - ganadorRestarAFavor;
+                            posicionesPSCRGanador.goles_contra = posicionesPSCRGanador.goles_contra + ganadorEnContra - ganadorRestarEnContra;
+                            posicionesPSCRGanador.dif_gol = posicionesPSCRGanador.goles_favor - posicionesPSCRGanador.goles_contra;
+                            posicionesPSCRPerdedor.goles_favor = posicionesPSCRPerdedor.goles_favor + perdedorAFavor - perdedorRestarAFavor;
+                            posicionesPSCRPerdedor.goles_contra = posicionesPSCRPerdedor.goles_contra + perdedorEnContra - perdedorRestarEnContra;
+                            posicionesPSCRPerdedor.dif_gol = posicionesPSCRPerdedor.goles_favor - posicionesPSCRPerdedor.goles_contra;
+                            db.SaveChanges();
+                            return Ok();
+
+                        }
+                    }
+                }
+
                 //Tercer paso registro resultados (Es partido fase 1 2 o 3)
                 if (esInterzonal != 0)
                 {
