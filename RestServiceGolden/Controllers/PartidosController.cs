@@ -1054,7 +1054,7 @@ namespace RestServiceGolden.Controllers
                         {
                             //Es fase 2 busco en posiciones_zona sacando la zona de equipos_zona para ese id_equipo
                             var zonaGanador = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado.ganador.id_equipo);
-                            var zonaPerdedor = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado.ganador.id_equipo);
+                            var zonaPerdedor = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado.perdedor.id_equipo);
                             //Busco en posiciones zona
                             var posicionesPSCRGanador = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == partido.resultado.ganador.id_equipo
                             && x.id_torneo == id_torneo && x.id_zona == zonaGanador.id_zona);
@@ -1132,7 +1132,7 @@ namespace RestServiceGolden.Controllers
                         {
                             //Es fase 2 busco en posiciones_zona sacando la zona de equipos_zona para ese id_equipo
                             var zonaGanador = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado_zona.ganador.id_equipo);
-                            var zonaPerdedor = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado_zona.ganador.id_equipo);
+                            var zonaPerdedor = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.resultado_zona.perdedor.id_equipo);
                             //Busco en posiciones zona
                             var posicionesPSCRGanador = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == partido.resultado_zona.ganador.id_equipo
                             && x.id_torneo == id_torneo && x.id_zona == zonaGanador.id_zona);
