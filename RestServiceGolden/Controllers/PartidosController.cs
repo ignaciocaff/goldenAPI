@@ -855,138 +855,26 @@ namespace RestServiceGolden.Controllers
             }
         }
 
-        [ResponseType(typeof(IHttpActionResult))]
-        [Route("api/partido/eliminar/gol/{id_gol}/{id_fase}/{id_zona}")]
-        public IHttpActionResult getEliminargol(int id_gol, int id_fase, int id_zona)
+
+        public void eliminarGol(int? id_equipo, int? id_jugador, int? id_gol, int id_torneo)
         {
             try
             {
                 goldenEntities db = new goldenEntities();
                 var gol = db.goles.SingleOrDefault(x => x.id_gol == id_gol);
+                db.goles.Remove(gol);
 
-                var goleador = db.goleadores.SingleOrDefault(x => x.id_jugador == gol.id_jugador && x.id_equipo == gol.id_equipo && x.id_torneo == gol.id_torneo);
-
+                var goleador = db.goleadores.SingleOrDefault(x => x.id_jugador == id_jugador && x.id_equipo == id_equipo && x.id_torneo == id_torneo);
                 goleador.cantidad_goles = goleador.cantidad_goles - 1;
 
-                var partido = db.partidos.SingleOrDefault(x => x.id_partido == gol.id_partido);
-
-                var posicionEquipoContrario = new posiciones();
-                var posicionesEquipoContrarioPorZona = new posiciones_zona();
-                if (partido.local != gol.id_equipo)
-                {
-                    if (id_fase == 1)
-                    {
-                        //Significa que a este equipo le tengo q restar un gol en contra.
-                        posicionEquipoContrario = db.posiciones.SingleOrDefault(x => x.id_equipo == partido.local && x.id_torneo == gol.id_torneo);
-                        posicionEquipoContrario.goles_contra = posicionEquipoContrario.goles_contra - 1;
-                        posicionEquipoContrario.dif_gol = posicionEquipoContrario.goles_favor - posicionEquipoContrario.goles_contra;
-                    }
-                    else if (id_fase == 2)
-                    {
-                        if (id_zona != 0)
-                        {
-                            var equipoContrarioInterzonal = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.local);
-
-                            posicionesEquipoContrarioPorZona = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == partido.local && x.id_torneo == gol.id_torneo
-                                && x.id_zona == equipoContrarioInterzonal.id_zona);
-                            posicionesEquipoContrarioPorZona.goles_contra = posicionesEquipoContrarioPorZona.goles_contra - 1;
-                            posicionesEquipoContrarioPorZona.dif_gol = posicionesEquipoContrarioPorZona.goles_favor - posicionesEquipoContrarioPorZona.goles_contra;
-                        }
-                        else
-                        {
-                            //Es interzonal
-                            var equipoInterzonal = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.local);
-
-                            var posicionEquipo = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == partido.local && x.id_torneo == gol.id_torneo && x.id_zona == equipoInterzonal.id_zona);
-                            posicionEquipo.goles_contra = posicionEquipo.goles_contra - 1;
-                            posicionEquipo.dif_gol = posicionEquipo.goles_favor - posicionEquipo.goles_contra;
-                        }
-                    }
-                    else
-                    {
-                        //Es fase 3, PlayOff
-                    }
-                }
-                else
-                {
-                    //Significa que el otro es el contrario
-                    posicionEquipoContrario = db.posiciones.SingleOrDefault(x => x.id_equipo == partido.visitante && x.id_torneo == gol.id_torneo);
-
-                    if (id_fase == 1)
-                    {
-                        //Significa que a este equipo le tengo q restar un gol en contra.
-                        posicionEquipoContrario = db.posiciones.SingleOrDefault(x => x.id_equipo == partido.visitante && x.id_torneo == gol.id_torneo);
-                        posicionEquipoContrario.goles_contra = posicionEquipoContrario.goles_contra - 1;
-                        posicionEquipoContrario.dif_gol = posicionEquipoContrario.goles_favor - posicionEquipoContrario.goles_contra;
-                    }
-                    else if (id_fase == 2)
-                    {
-                        if (id_zona != 0)
-                        {
-                            var equipoContrarioInterzonal = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.visitante);
-
-                            posicionesEquipoContrarioPorZona = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == partido.visitante && x.id_torneo == gol.id_torneo
-                                && x.id_zona == equipoContrarioInterzonal.id_zona);
-                            posicionesEquipoContrarioPorZona.goles_contra = posicionesEquipoContrarioPorZona.goles_contra - 1;
-                            posicionesEquipoContrarioPorZona.dif_gol = posicionesEquipoContrarioPorZona.goles_favor - posicionesEquipoContrarioPorZona.goles_contra;
-                        }
-                        else
-                        {
-                            //Es interzonal
-                            var equipoInterzonal = db.equipos_zona.SingleOrDefault(x => x.id_equipo == partido.visitante);
-
-                            var posicionEquipo = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == partido.visitante && x.id_torneo == gol.id_torneo && x.id_zona == equipoInterzonal.id_zona);
-                            posicionEquipo.goles_contra = posicionEquipo.goles_contra - 1;
-                            posicionEquipo.dif_gol = posicionEquipo.goles_favor - posicionEquipo.goles_contra;
-                        }
-                    }
-                    else
-                    {
-                        //Es fase 3, PlayOff
-                    }
-                }
-
-                if (id_fase == 1)
-                {
-                    var posicionEquipo = db.posiciones.SingleOrDefault(x => x.id_equipo == gol.id_equipo && x.id_torneo == gol.id_torneo);
-
-                    posicionEquipo.goles_favor = posicionEquipo.goles_favor - 1;
-                    posicionEquipo.dif_gol = posicionEquipo.goles_favor - posicionEquipo.goles_contra;
-                }
-                else if (id_fase == 2)
-                {
-                    if (id_zona != 0)
-                    {
-                        var posicionEquipo = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == gol.id_equipo && x.id_torneo == gol.id_torneo && x.id_zona == id_zona);
-                        posicionEquipo.goles_favor = posicionEquipo.goles_favor - 1;
-                        posicionEquipo.dif_gol = posicionEquipo.goles_favor - posicionEquipo.goles_contra;
-                    }
-                    else
-                    {
-                        //Es interzonal
-                        var equipoInterzonal = db.equipos_zona.SingleOrDefault(x => x.id_equipo == gol.id_equipo);
-
-                        var posicionEquipo = db.posiciones_zona.SingleOrDefault(x => x.id_equipo == gol.id_equipo && x.id_torneo == gol.id_torneo && x.id_zona == equipoInterzonal.id_zona);
-                        posicionEquipo.goles_favor = posicionEquipo.goles_favor - 1;
-                        posicionEquipo.dif_gol = posicionEquipo.goles_favor - posicionEquipo.goles_contra;
-                    }
-                }
-                else
-                {
-                    //Fase 3, pendiente
-                }
-
-                db.goles.Remove(gol);
                 db.SaveChanges();
-                return Ok();
             }
             catch (Exception e)
             {
                 var logger = new Logger("PartidosController");
                 logger.AgregarMensaje("api/partido/eliminar/gol" + " Parametros de entrada: " +
-                id_gol + id_fase + id_zona, " Excepcion: " + e.Message + e.StackTrace);
+                id_gol + id_jugador + id_torneo, " Excepcion: " + e.Message + e.StackTrace);
                 logger.EscribirLog();
-                return BadRequest("No es posible eliminar el gol" + e.Message);
             }
         }
 
@@ -998,6 +886,8 @@ namespace RestServiceGolden.Controllers
             {
                 List<Gol> lsGolesLocal = new List<Gol>();
                 List<Gol> lsGolesVisitante = new List<Gol>();
+                int localGFborrados = 0, visitanteGFborrados = 0;
+
                 //Primer paso registro Goles
                 foreach (var golL in partido.lsGoleadoresLocales)
                 {
@@ -1023,6 +913,21 @@ namespace RestServiceGolden.Controllers
                         golDtoV.id_torneo = id_torneo;
                         db.goles.Add(golDtoV);
                         lsGolesVisitante.Add(golV);
+                    }
+                }
+
+                foreach (var golBorrado in partido.lsGolesABorrar)
+                {
+                    eliminarGol(golBorrado.equipo.id_equipo, golBorrado.jugador.id_jugador, golBorrado.id_gol, id_torneo);
+
+                    //Logica calculo de goles
+                    if (golBorrado.equipo.id_equipo == partido.local.id_equipo)
+                    {
+                        localGFborrados += 1;
+                    }
+                    else
+                    {
+                        visitanteGFborrados += 1;
                     }
                 }
                 partido.lsGoleadoresLocales = lsGolesLocal;
@@ -1133,19 +1038,19 @@ namespace RestServiceGolden.Controllers
 
                             if (partido.resultado.ganador.id_equipo == partido.local.id_equipo)
                             {
-                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count;
-                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count;
-                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count;
-                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count;
+                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                 posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                 posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                             }
                             else
                             {
-                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count;
-                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count;
-                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count;
-                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count;
+                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                 posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                 posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                             }
@@ -1169,19 +1074,19 @@ namespace RestServiceGolden.Controllers
 
                             if (partido.resultado.ganador.id_equipo == partido.local.id_equipo)
                             {
-                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count;
-                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count;
-                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count;
-                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count;
+                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                 posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                 posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                             }
                             else
                             {
-                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count;
-                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count;
-                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count;
-                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count;
+                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                 posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                 posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                             }
@@ -1225,19 +1130,19 @@ namespace RestServiceGolden.Controllers
 
                             if (resultadoUpdate.id_ganador == partido.local.id_equipo)
                             {
-                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count;
-                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count;
-                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count;
-                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count;
+                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                 posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                 posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                             }
                             else
                             {
-                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count;
-                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count;
-                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count;
-                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count;
+                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                 posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                 posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                             }
@@ -1259,19 +1164,19 @@ namespace RestServiceGolden.Controllers
 
                             if (resultadoUpdate.id_ganador == partido.local.id_equipo)
                             {
-                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count;
-                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count;
-                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count;
-                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count;
+                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                 posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                 posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                             }
                             else
                             {
-                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count;
-                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count;
-                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count;
-                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count;
+                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                 posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                 posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                             }
@@ -1315,19 +1220,19 @@ namespace RestServiceGolden.Controllers
 
                                 if (partido.resultado.ganador.id_equipo == partido.local.id_equipo)
                                 {
-                                    posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count;
-                                    posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count;
-                                    posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count;
-                                    posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count;
+                                    posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                    posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                     posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                     posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                                 }
                                 else
                                 {
-                                    posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count;
-                                    posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count;
-                                    posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count;
-                                    posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count;
+                                    posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                    posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                    posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                     posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                     posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                                 }
@@ -1349,19 +1254,19 @@ namespace RestServiceGolden.Controllers
 
                                 if (partido.resultado.ganador.id_equipo == partido.local.id_equipo)
                                 {
-                                    posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count;
-                                    posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count;
-                                    posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count;
-                                    posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count;
+                                    posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                    posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                     posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                     posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                                 }
                                 else
                                 {
-                                    posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count;
-                                    posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count;
-                                    posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count;
-                                    posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count;
+                                    posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                    posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                    posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                     posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                     posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                                 }
@@ -1411,19 +1316,19 @@ namespace RestServiceGolden.Controllers
 
                             if (partido.resultado_zona.ganador.id_equipo == partido.local.id_equipo)
                             {
-                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count;
-                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count;
-                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count;
-                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count;
+                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                 posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                 posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                             }
                             else
                             {
-                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count;
-                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count;
-                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count;
-                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count;
+                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                 posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                 posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                             }
@@ -1447,19 +1352,19 @@ namespace RestServiceGolden.Controllers
 
                             if (partido.resultado_zona.ganador.id_equipo == partido.local.id_equipo)
                             {
-                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count;
-                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count;
-                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count;
-                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count;
+                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                 posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                 posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                             }
                             else
                             {
-                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count;
-                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count;
-                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count;
-                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count;
+                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                 posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                 posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                             }
@@ -1502,19 +1407,19 @@ namespace RestServiceGolden.Controllers
 
                             if (resultadoUpdate.id_ganador == partido.local.id_equipo)
                             {
-                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count;
-                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count;
-                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count;
-                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count;
+                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                 posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                 posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                             }
                             else
                             {
-                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count;
-                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count;
-                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count;
-                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count;
+                                posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                 posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                 posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                             }
@@ -1537,19 +1442,19 @@ namespace RestServiceGolden.Controllers
 
                             if (resultadoUpdate.id_ganador == partido.local.id_equipo)
                             {
-                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count;
-                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count;
-                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count;
-                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count;
+                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                 posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                 posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                             }
                             else
                             {
-                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count;
-                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count;
-                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count;
-                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count;
+                                posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                 posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                 posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                             }
@@ -1594,19 +1499,19 @@ namespace RestServiceGolden.Controllers
 
                                 if (partido.resultado_zona.ganador.id_equipo == partido.local.id_equipo)
                                 {
-                                    posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count;
-                                    posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count;
-                                    posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count;
-                                    posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count;
+                                    posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                    posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                     posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                     posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                                 }
                                 else
                                 {
-                                    posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count;
-                                    posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count;
-                                    posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count;
-                                    posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count;
+                                    posicionesGanador.goles_favor = posicionesGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesPerdedor.goles_favor = posicionesPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                    posicionesGanador.goles_contra = posicionesGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                    posicionesPerdedor.goles_contra = posicionesPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                     posicionesGanador.dif_gol = posicionesGanador.goles_favor - posicionesGanador.goles_contra;
                                     posicionesPerdedor.dif_gol = posicionesPerdedor.goles_favor - posicionesPerdedor.goles_contra;
                                 }
@@ -1628,19 +1533,19 @@ namespace RestServiceGolden.Controllers
 
                                 if (partido.resultado_zona.ganador.id_equipo == partido.local.id_equipo)
                                 {
-                                    posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count;
-                                    posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count;
-                                    posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count;
-                                    posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count;
+                                    posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                    posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesLocal.Count - localGFborrados;
                                     posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                     posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                                 }
                                 else
                                 {
-                                    posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count;
-                                    posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count;
-                                    posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count;
-                                    posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count;
+                                    posicionesZonaGanador.goles_favor = posicionesZonaGanador.goles_favor + lsGolesVisitante.Count - visitanteGFborrados;
+                                    posicionesZonaPerdedor.goles_favor = posicionesZonaPerdedor.goles_favor + lsGolesLocal.Count - localGFborrados;
+                                    posicionesZonaGanador.goles_contra = posicionesZonaGanador.goles_contra + lsGolesLocal.Count - localGFborrados;
+                                    posicionesZonaPerdedor.goles_contra = posicionesZonaPerdedor.goles_contra + lsGolesVisitante.Count - visitanteGFborrados;
                                     posicionesZonaGanador.dif_gol = posicionesZonaGanador.goles_favor - posicionesZonaGanador.goles_contra;
                                     posicionesZonaPerdedor.dif_gol = posicionesZonaPerdedor.goles_favor - posicionesZonaPerdedor.goles_contra;
                                 }

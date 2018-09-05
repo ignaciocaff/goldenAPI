@@ -23,6 +23,7 @@ namespace RestServiceGolden.Models
         public HorarioFijo horario_fijo { get; set; }
         public List<Gol> lsGoleadoresVisitantes { get; set; }
         public List<Gol> lsGoleadoresLocales { get; set; }
+        public List<Gol> lsGolesABorrar { get; set; }
         public List<Sancion> lsSancionesLocal { get; set; }
         public List<Sancion> lsSancionesVisitante { get; set; }
         public Boolean esInterzonal { get; set; }

@@ -19,13 +19,19 @@ namespace RestServiceGolden.Utilidades
                 lsquipos.Add(e);
             }
 
-            int cantidadDias = (cantidadEquipos - 1);
+            int cantidadDias = 0;
 
-            int mitadTamaño = cantidadEquipos / 2;
+            int mitadTamaño = 0;
 
             if (parametros.tipoDeFixture.id_tipo == 2)
             {
                 mitadTamaño = lsquipos.Count / 2;
+                cantidadDias = cantidadEquipos;
+            }
+            else
+            {
+                mitadTamaño = cantidadEquipos / 2;
+                cantidadDias = (cantidadEquipos - 1);
             }
 
             List<Equipo> equipos = new List<Equipo>();
@@ -95,6 +101,8 @@ namespace RestServiceGolden.Utilidades
             cancha.id_cancha = (int)turnos[turno].id_cancha;
             horario.id_horario = turnos[turno].id_horario;
             turnos.RemoveAt(turno);
+            partido.cancha = cancha;
+            partido.horario_fijo = horario;
 
             return partido;
         }
