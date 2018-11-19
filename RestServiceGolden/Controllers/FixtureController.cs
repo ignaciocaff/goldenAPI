@@ -17,19 +17,18 @@ namespace RestServiceGolden.Controllers
         goldenEntities db = new goldenEntities();
 
         [ResponseType(typeof(IHttpActionResult))]
-        [Route("api/fecha/registrar/{id_zona}/{id_torneo}")]
-        public IHttpActionResult registrar([FromBody]List<Partido> partidos, int id_zona, int id_torneo)
+        [Route("api/fecha/registrar/{id_zona}/{id_torneo}/{fechaParam}")]
+        public IHttpActionResult registrar([FromBody]List<Partido> partidos, int id_zona, int id_torneo, DateTime fechaParam)
         {
             try
             {
                 int id_fixture_zona = db.fixture_zona.SingleOrDefault(x => x.id_zona == id_zona && x.id_torneo == id_torneo).id_fixture;
-                var fechaDto = partidos.FirstOrDefault().fecha.fecha;
-                var fechaCheck = db.fechas.Where(x => x.fecha == fechaDto && x.id_fixture_zona == id_fixture_zona).SingleOrDefault();
+                var fechaCheck = db.fechas.Where(x => x.fecha == fechaParam && x.id_fixture_zona == id_fixture_zona).SingleOrDefault();
                 var id_fase = db.torneos.Where(x => x.id_torneo == id_torneo).FirstOrDefault().id_fase;
                 if (id_fixture_zona != 0 && fechaCheck == null)
                 {
                     fechas fecha = new fechas();
-                    fecha.fecha = partidos.FirstOrDefault().fecha.fecha;
+                    fecha.fecha = fechaParam;
                     fecha.id_estado = 1;
                     fecha.id_fixture_zona = id_fixture_zona;
                     fecha.id_fase = id_fase;
@@ -58,7 +57,8 @@ namespace RestServiceGolden.Controllers
                             var playoff = db.playoff.Where(x =>
                             (x.local == p.local.id_equipo || x.visitante == p.visitante.id_equipo)
                             && x.llave == p.llave.id_llave
-                            && x.id_etapa == p.etapa.id_etapa).FirstOrDefault();
+                            && x.id_etapa == p.etapa.id_etapa
+                            && x.id_torneo == id_torneo).FirstOrDefault();
 
                             if (playoff == null)
                             {
@@ -168,7 +168,8 @@ namespace RestServiceGolden.Controllers
                                 var playoff = db.playoff.Where(x =>
                                 (x.local == p.local.id_equipo || x.visitante == p.visitante.id_equipo)
                                 && x.llave == p.llave.id_llave
-                                && x.id_etapa == p.etapa.id_etapa).FirstOrDefault();
+                                && x.id_etapa == p.etapa.id_etapa
+                                && x.id_torneo == id_torneo).FirstOrDefault();
 
                                 if (playoff == null)
                                 {
