@@ -14,5 +14,6 @@ namespace RestServiceGolden.Models
         public string rol { get; set; }
         public int acumAmarillas { get; set; }
         public int acumRojas { get; set; }
+        public Boolean tieneUltSancion { get; set; }
     }
 }

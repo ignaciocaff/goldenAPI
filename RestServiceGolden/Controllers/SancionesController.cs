@@ -39,6 +39,78 @@ namespace RestServiceGolden.Controllers
         }
 
         [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/sanciones/zonaPorEquipo/{id_equipo}")]
+        public IHttpActionResult getZonaPorEquipo(int id_equipo)
+        {
+            Zona zona = new Zona();
+            try
+            {
+                var equipo_zona = db.equipos_zona.Where(x => x.id_equipo == id_equipo).FirstOrDefault();
+                zona.id_zona = equipo_zona.id_zona;
+                return Ok(zona);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/sanciones/ultimaSancion/{id_jugador}")]
+        public IHttpActionResult getUltimaSancion(int id_jugador)
+        {
+            Sancion sancionDto = new Sancion();
+            try
+            {
+                var sancion = db.sanciones.Where(x => x.id_jugador == id_jugador).OrderByDescending(y => y.id_sancion).FirstOrDefault();
+                Fecha fechaInicio = new Fecha();
+                Fecha fechaFin = new Fecha();
+                TipoSancion tipoSancion = new TipoSancion();
+                Jugador jugador = new Jugador();
+                Zona zona = new Zona();
+
+                if (sancion != null)
+                {
+                    sancionDto.id_sancion = sancion.id_sancion;
+                    sancionDto.jugador = jugador;
+                    sancionDto.jugador.id_jugador = id_jugador;
+                    sancionDto.tipo_sancion = tipoSancion;
+                    sancionDto.tipo_sancion.id_tipo = sancion.id_tipo;
+                    sancionDto.tipo_sancion.descripcion = db.tipos_sanciones.Where(x => x.id_tipo == sancion.id_tipo).FirstOrDefault().descripcion;
+                    sancionDto.fecha_inicio = fechaInicio;
+                    sancionDto.fecha_fin = fechaFin;
+                    sancionDto.fecha_inicio.fecha = (DateTime)db.fechas.Where(x => x.id_fecha == sancion.fecha_inicio).FirstOrDefault().fecha;
+                    sancionDto.fecha_fin.fecha = (DateTime)db.fechas.Where(x => x.id_fecha == sancion.fecha_fin).FirstOrDefault().fecha;
+                    sancionDto.detalle = sancion.detalle;
+                }
+                return Ok(sancionDto);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("api/sanciones/modificarUltimaSancion")]
+        public IHttpActionResult modificarUltimaSancion([FromBody]Sancion sancion)
+        {
+            try
+            {
+                var sancionUpdate = db.sanciones.SingleOrDefault(x => x.id_sancion == sancion.id_sancion);
+                sancionUpdate.id_tipo = sancion.tipo_sancion.id_tipo;
+                sancionUpdate.fecha_fin = sancion.fecha_fin.id_fecha;
+                sancionUpdate.detalle = sancion.detalle;
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
+
+        [ResponseType(typeof(IHttpActionResult))]
         [Route("api/sanciones/acumuladoJugador/{id_torneo}/{id_jugador}")]
         public IHttpActionResult getAcumuladoJugador(int id_torneo, int id_jugador)
         {
